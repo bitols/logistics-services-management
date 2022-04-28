@@ -1,4 +1,6 @@
+import CreateProductUseCase from '@modules/products/useCases/CreateProductUseCase';
 import { Request, Response } from 'express';
+import { ProductRepository } from '../../typeorm/repositories/ProductRepository';
 
 export default class ProductsController {
   public async getById(request: Request, response: Response): Promise<Response> {
@@ -14,7 +16,31 @@ export default class ProductsController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    return response.json({ create: 'ok' });
+    const {
+      name,
+      height,
+      width,
+      lenght,
+      price,
+      clientId,
+      depotId
+    } = request.body;
+
+    const productRepository = new ProductRepository();
+
+    const createProduct = new CreateProductUseCase(productRepository);
+
+    const product = await createProduct.execute({
+      name,
+      height,
+      width,
+      lenght,
+      price,
+      clientId,
+      depotId
+    });
+
+    return response.json(product);
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
