@@ -6,6 +6,7 @@ import Product from "../entities/Product";
 
 export class ProductRepository implements IProductRepository {
   private ormRepository: Repository<Product>
+
   constructor (  ) {
     this.ormRepository = getRepository(Product);
   }

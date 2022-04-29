@@ -1,7 +1,6 @@
 import CreateProductUseCase from '@modules/products/useCases/CreateProductUseCase';
 import { Request, Response } from 'express';
-import { ProductRepository } from '../../typeorm/repositories/ProductRepository';
-
+import { container } from 'tsyringe';
 export default class ProductsController {
   public async getById(request: Request, response: Response): Promise<Response> {
     return response.json({ getById: 'ok' });
@@ -26,9 +25,7 @@ export default class ProductsController {
       depotId
     } = request.body;
 
-    const productRepository = new ProductRepository();
-
-    const createProduct = new CreateProductUseCase(productRepository);
+    const createProduct = container.resolve(CreateProductUseCase);
 
     const product = await createProduct.execute({
       name,
