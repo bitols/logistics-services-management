@@ -1,0 +1,11 @@
+{
+  "type": "mongodb",
+  "url": "mongodb+srv://products:kAdbZwJFU1u769pi@cluster0.bw7lb.mongodb.net/products?retryWrites=true&w=majority",
+  "useNewUrlParser": true,
+  "synchronize": true,
+  "logging": true,
+  "entities": [
+     "./src/modules/**/infra/typeorm/entities/*.ts"
+  ]
+}
+
