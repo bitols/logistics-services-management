@@ -1,52 +1,53 @@
-import { IProduct } from "@modules/products/domain/models/entities/IProduct";
-import { ICreateProductRequest } from "@modules/products/domain/models/requests/ICreateProductRequest";
-import { IProductRepository } from "@modules/products/domain/repositories/IProductRepository";
-import { ObjectId } from "mongodb";
-import { ObjectID } from "typeorm";
-import { getRepository, Repository } from "typeorm";
-import Product from "../entities/Product";
+import { IProduct } from '@modules/products/domain/models/entities/IProduct';
+import { ICreateProductRequest } from '@modules/products/domain/models/requests/ICreateProductRequest';
+import { IProductRepository } from '@modules/products/domain/repositories/IProductRepository';
+import { getRepository, Repository } from 'typeorm';
+import Product from '../entities/Product';
 
 export class ProductRepository implements IProductRepository {
-  private ormRepository: Repository<Product>
+  private ormRepository: Repository<Product>;
 
-  constructor (  ) {
+  constructor() {
     this.ormRepository = getRepository(Product);
   }
 
   public async create(data: ICreateProductRequest): Promise<IProduct> {
     const product = this.ormRepository.create(data);
 
-    return product
-
+    return product;
   }
+
   public async save(product: IProduct): Promise<IProduct> {
     await this.ormRepository.save(product);
 
     return product;
   }
+
   public async remove(product: IProduct): Promise<void> {
-    throw new Error("Method not implemented.");
+    await this.ormRepository.remove(product);
   }
+
   public async getById(id: string): Promise<IProduct | undefined> {
     const product = await this.ormRepository.findOne(id);
 
     return product;
   }
+
   public async getAllByClient(client: string): Promise<IProduct[]> {
     const products = await this.ormRepository.find({
       where: {
-         clientId: {$eq: client},
-      }
+        clientId: { $eq: client },
+      },
     });
 
     return products;
   }
+
   public async getAllByDepot(depot: string): Promise<IProduct[]> {
-    console.log(`repository - depotId: ${depot}`)
     const products = await this.ormRepository.find({
       where: {
-         depotId: {$eq: depot},
-      }
+        depotId: { $eq: depot },
+      },
     });
 
     return products;

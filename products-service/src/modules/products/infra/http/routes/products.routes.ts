@@ -5,34 +5,16 @@ const productsRouter = Router();
 
 const productsController = new ProductsController();
 
-productsRouter.get(
-  '/:id',
-  productsController.getById,
-);
+productsRouter.get('/:id', productsController.getById);
 
-productsRouter.get(
-  '/depot/:id',
-  productsController.getAllByDepotId,
-);
+productsRouter.get('/depot/:id', productsController.getAllByDepotId);
 
-productsRouter.get(
-  '/client/:id',
-  productsController.getAllByClientId,
-);
+productsRouter.get('/client/:id', productsController.getAllByClientId);
 
-productsRouter.post(
-  '/',
-  productsController.create,
-);
+productsRouter.post('/', productsController.create);
 
-productsRouter.put(
-  '/:id',
-  productsController.update,
-);
+productsRouter.put('/:id', productsController.update);
 
-productsRouter.delete(
-  '/:id',
-  productsController.delete,
-);
+productsRouter.delete('/:id', productsController.delete);
 
 export default productsRouter;

@@ -1,6 +1,4 @@
-import { IDeleteProductRequest } from "../models/requests/IDeleteProductRequest";
-import { IProductResponse } from "../models/responses/IProductResponse";
-
+import { IDeleteProductRequest } from '../models/requests/IDeleteProductRequest';
 export interface IDeleteProductUseCase {
-  execute(data: IDeleteProductRequest): Promise<void>
+  execute(data: IDeleteProductRequest): Promise<void>;
 }

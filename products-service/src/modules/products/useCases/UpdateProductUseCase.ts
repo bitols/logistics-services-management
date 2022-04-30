@@ -1,9 +1,9 @@
-import AppError from "@shared/errors/AppError";
-import { inject, injectable } from "tsyringe";
-import { IUpdateProductRequest } from "../domain/models/requests/IUpdateProductRequest";
-import { IProductResponse } from "../domain/models/responses/IProductResponse";
-import { IProductRepository } from "../domain/repositories/IProductRepository";
-import { IUpdateProductUseCase } from "../domain/useCases/IUpdateProductUseCase";
+import AppError from '@shared/errors/AppError';
+import { inject, injectable } from 'tsyringe';
+import { IUpdateProductRequest } from '../domain/models/requests/IUpdateProductRequest';
+import { IProductResponse } from '../domain/models/responses/IProductResponse';
+import { IProductRepository } from '../domain/repositories/IProductRepository';
+import { IUpdateProductUseCase } from '../domain/useCases/IUpdateProductUseCase';
 
 @injectable()
 export default class UpdateProductUseCase implements IUpdateProductUseCase {
@@ -36,8 +36,7 @@ export default class UpdateProductUseCase implements IUpdateProductUseCase {
       width: product.width,
       lenght: product.lenght,
       price: product.price,
-      depotId: product.depotId
+      depotId: product.depotId,
     };
   }
-
 }
