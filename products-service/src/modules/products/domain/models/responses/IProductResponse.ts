@@ -5,4 +5,5 @@ export interface IProductResponse {
   width: number;
   lenght: number;
   price: number;
+  depotId: string;
 }

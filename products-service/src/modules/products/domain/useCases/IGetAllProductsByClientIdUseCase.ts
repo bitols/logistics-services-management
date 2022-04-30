@@ -2,5 +2,5 @@ import { IGetAllProductByClientIdRequest } from "../models/requests/IGetAllProdu
 import { IProductResponse } from "../models/responses/IProductResponse";
 
 export interface IGetAllProductsByClientIdUseCase {
-  execute: (data: IGetAllProductByClientIdRequest) => Promise<IProductResponse[]>
+  execute(data: IGetAllProductByClientIdRequest): Promise<IProductResponse[]>
 }

@@ -1,23 +1,25 @@
+import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
-import { ICreateProductRequest } from "../domain/models/requests/ICreateProductRequest";
+import { IGetProductRequest } from "../domain/models/requests/IGetProductRequest";
 import { IProductResponse } from "../domain/models/responses/IProductResponse";
 import { IProductRepository } from "../domain/repositories/IProductRepository";
-import { ICreateProductUseCase } from "../domain/useCases/ICreateProductUseCase";
+import { IGetProductUseCase } from "../domain/useCases/IGetProductUseCase";
 
 @injectable()
-export default class CreateProductUseCase implements ICreateProductUseCase {
+export default class GetProductUseCase implements IGetProductUseCase {
 
   constructor(
     @inject('ProductRepository')
     private productsRepository: IProductRepository,
     ) {}
 
-  public async execute(data: ICreateProductRequest): Promise<IProductResponse> {
-    const product = await this.productsRepository.create(data);
+  public async execute(data: IGetProductRequest): Promise<IProductResponse> {
+    const product = await this.productsRepository.getById(data.id);
 
-    await this.productsRepository.save(product);
-
-     return {
+    if (!product) {
+      throw new AppError('Product not found');
+    }
+    return {
       id: product.id,
       name: product.name,
       height: product.height,
@@ -26,8 +28,6 @@ export default class CreateProductUseCase implements ICreateProductUseCase {
       price: product.price,
       depotId: product.depotId
     };
-
   }
-
 
 }

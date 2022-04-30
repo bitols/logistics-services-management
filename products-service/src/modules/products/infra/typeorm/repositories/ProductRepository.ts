@@ -1,6 +1,8 @@
 import { IProduct } from "@modules/products/domain/models/entities/IProduct";
 import { ICreateProductRequest } from "@modules/products/domain/models/requests/ICreateProductRequest";
 import { IProductRepository } from "@modules/products/domain/repositories/IProductRepository";
+import { ObjectId } from "mongodb";
+import { ObjectID } from "typeorm";
 import { getRepository, Repository } from "typeorm";
 import Product from "../entities/Product";
 
@@ -27,22 +29,24 @@ export class ProductRepository implements IProductRepository {
   }
   public async getById(id: string): Promise<IProduct | undefined> {
     const product = await this.ormRepository.findOne(id);
+
     return product;
   }
-  public async getAllByClient(clientId: string): Promise<IProduct[]> {
+  public async getAllByClient(client: string): Promise<IProduct[]> {
     const products = await this.ormRepository.find({
       where: {
-        clientId,
-      },
+         clientId: {$eq: client},
+      }
     });
 
     return products;
   }
-  public async getAllByDepot(depotId: string): Promise<IProduct[]> {
+  public async getAllByDepot(depot: string): Promise<IProduct[]> {
+    console.log(`repository - depotId: ${depot}`)
     const products = await this.ormRepository.find({
       where: {
-        depotId,
-      },
+         depotId: {$eq: depot},
+      }
     });
 
     return products;
