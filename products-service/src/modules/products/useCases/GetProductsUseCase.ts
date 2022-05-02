@@ -1,31 +1,23 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IGetAllProductsByClientIdRequest } from '../domain/models/requests/IGetAllProductsByClientIdRequest';
+import { IGetProductsRequest } from '../domain/models/requests/IGetProductsRequest';
 import { IProductsResponse } from '../domain/models/responses/IProductsResponse';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
-import { IGetAllProductsByClientIdUseCase } from '../domain/useCases/IGetAllProductsByClientIdUseCase';
+import { IGetProductsUseCase } from '../domain/useCases/IGetProductsUseCase';
 
 @injectable()
-export default class GetAllProductsByClientIdUseCase
-  implements IGetAllProductsByClientIdUseCase
-{
+export default class GetProductsUseCase implements IGetProductsUseCase {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
   ) {}
 
-  public async execute(
-    data: IGetAllProductsByClientIdRequest,
-  ): Promise<IProductsResponse[]> {
-    const products = await this.productsRepository.getAllByClient(
-      data.clientId,
-    );
-
-    if (!products) {
+  public async execute(data: IGetProductsRequest): Promise<IProductsResponse> {
+    const product = await this.productsRepository.getById(data.id);
+    if (!product) {
       throw new AppErrors('Product not found');
     }
-
-    return products.map(product => ({
+    return {
       id: product.id,
       name: product.name,
       height: product.height,
@@ -33,6 +25,6 @@ export default class GetAllProductsByClientIdUseCase
       lenght: product.lenght,
       price: product.price,
       depotId: product.depotId,
-    }));
+    };
   }
 }

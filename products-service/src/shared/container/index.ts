@@ -1,8 +1,8 @@
-import { IProductRepository } from '@modules/products/domain/repositories/IProductRepository';
-import { ProductRepository } from '@modules/products/infra/typeorm/repositories/ProductRepository';
+import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
+import { ProductsRepository } from '@modules/products/infra/typeorm/repositories/ProductsRepository';
 import { container } from 'tsyringe';
 
-container.registerSingleton<IProductRepository>(
-  'ProductRepository',
-  ProductRepository,
+container.registerSingleton<IProductsRepository>(
+  'ProductsRepository',
+  ProductsRepository,
 );
