@@ -1,4 +1,4 @@
-export interface IProductResponse {
+export interface IUpdateProductsRequest {
   id: string;
   name: string;
   height: number;

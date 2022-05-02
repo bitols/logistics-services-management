@@ -1,17 +1,17 @@
 import { IProduct } from '@modules/products/domain/models/entities/IProduct';
-import { ICreateProductRequest } from '@modules/products/domain/models/requests/ICreateProductRequest';
-import { IProductRepository } from '@modules/products/domain/repositories/IProductRepository';
+import { ICreateProductsRequest } from '@modules/products/domain/models/requests/ICreateProductsRequest';
+import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
 import { getRepository, Repository } from 'typeorm';
 import Product from '../entities/Product';
 
-export class ProductRepository implements IProductRepository {
+export class ProductsRepository implements IProductsRepository {
   private ormRepository: Repository<Product>;
 
   constructor() {
     this.ormRepository = getRepository(Product);
   }
 
-  public async create(data: ICreateProductRequest): Promise<IProduct> {
+  public async create(data: ICreateProductsRequest): Promise<IProduct> {
     const product = this.ormRepository.create(data);
 
     return product;

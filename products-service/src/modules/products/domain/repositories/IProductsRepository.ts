@@ -1,8 +1,8 @@
-import { ICreateProductRequest } from '../models/requests/ICreateProductRequest';
+import { ICreateProductsRequest } from '../models/requests/ICreateProductsRequest';
 import { IProduct } from '../models/entities/IProduct';
 
-export interface IProductRepository {
-  create(data: ICreateProductRequest): Promise<IProduct>;
+export interface IProductsRepository {
+  create(data: ICreateProductsRequest): Promise<IProduct>;
   save(product: IProduct): Promise<IProduct>;
   remove(product: IProduct): Promise<void>;
   getById(id: string): Promise<IProduct | undefined>;
