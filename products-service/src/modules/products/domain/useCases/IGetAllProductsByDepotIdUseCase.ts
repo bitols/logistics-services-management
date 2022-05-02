@@ -1,6 +1,6 @@
-import { IGetAllProductByDepotIdRequest } from "../models/requests/IGetAllProductByDepotIdRequest";
-import { IProductResponse } from "../models/responses/IProductResponse";
+import { IGetAllProductsByDepotIdRequest } from '../models/requests/IGetAllProductsByDepotIdRequest';
+import { IProductsResponse } from '../models/responses/IProductsResponse';
 
 export interface IGetAllProductsByDepotIdUseCase {
-  execute(data: IGetAllProductByDepotIdRequest): Promise<IProductResponse[]>
+  execute(data: IGetAllProductsByDepotIdRequest): Promise<IProductsResponse[]>;
 }
