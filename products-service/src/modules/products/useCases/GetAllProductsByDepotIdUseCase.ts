@@ -23,14 +23,6 @@ export default class GetAllProductsByDepotIdUseCase
       throw new AppErrors('Product not found');
     }
 
-    return products.map(product => ({
-      id: product.id,
-      name: product.name,
-      height: product.height,
-      width: product.width,
-      lenght: product.lenght,
-      price: product.price,
-      depotId: product.depotId,
-    }));
+    return products.map(product => product as IProductsResponse);
   }
 }

@@ -17,14 +17,6 @@ export default class GetProductsUseCase implements IGetProductsUseCase {
     if (!product) {
       throw new AppErrors('Product not found');
     }
-    return {
-      id: product.id,
-      name: product.name,
-      height: product.height,
-      width: product.width,
-      lenght: product.lenght,
-      price: product.price,
-      depotId: product.depotId,
-    };
+    return product as IProductsResponse;
   }
 }

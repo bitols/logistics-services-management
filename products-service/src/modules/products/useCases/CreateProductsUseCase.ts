@@ -18,14 +18,6 @@ export default class CreateProductsUseCase implements ICreateProductUseCase {
 
     await this.productsRepository.save(product);
 
-    return {
-      id: product.id,
-      name: product.name,
-      height: product.height,
-      width: product.width,
-      lenght: product.lenght,
-      price: product.price,
-      depotId: product.depotId,
-    };
+    return product as IProductsResponse;
   }
 }

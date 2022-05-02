@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import 'dotenv/config';
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
@@ -7,6 +8,8 @@ import routes from './routes';
 import AppErrors from '@shared/errors/AppErrors';
 import '@shared/infra/typeorm';
 import '@shared/container';
+
+const port = process.env.APP_API_PORT;
 
 const app = express();
 
@@ -33,7 +36,7 @@ app.use(
   },
 );
 
-app.listen(3333, () => {
+app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log('Server started on port 3333!');
+  console.log(`Server started on port ${port}!`);
 });
