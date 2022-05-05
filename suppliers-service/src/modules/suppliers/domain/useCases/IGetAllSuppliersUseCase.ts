@@ -1,5 +1,5 @@
 import { ISuppliersResponse } from '../models/responses/ISuppliersResponse';
 
-export interface IGetSuppliersUseCase {
+export interface IGetAllSuppliersUseCase {
   execute(): Promise<ISuppliersResponse[]>;
 }

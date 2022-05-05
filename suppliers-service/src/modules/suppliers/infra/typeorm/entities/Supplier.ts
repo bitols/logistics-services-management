@@ -10,9 +10,6 @@ export default class Supplier implements ISupplier {
   name: string;
 
   @Column()
-  address: string;
-
-  @Column()
   email: string;
 
   @Column()
