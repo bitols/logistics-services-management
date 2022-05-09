@@ -1,5 +1,3 @@
-import { DataSource } from 'typeorm';
-import ormconfig from './ormconfig';
+import { createConnection } from 'typeorm';
 
-const dataSource = new DataSource(ormconfig);
-dataSource.initialize();
+createConnection();
