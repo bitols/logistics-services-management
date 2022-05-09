@@ -14,7 +14,7 @@ export default class GetAllSuppliersUseCase implements IGetAllSuppliersUseCase {
   public async execute(): Promise<ISuppliersResponse[]> {
     const suppliers = await this.suppliersRepository.getAll();
     if (!suppliers.length) {
-      throw new AppErrors('Supplier not found');
+      throw new AppErrors('Suppliers not found');
     }
 
     return suppliers.map(supplier => supplier as ISuppliersResponse);
