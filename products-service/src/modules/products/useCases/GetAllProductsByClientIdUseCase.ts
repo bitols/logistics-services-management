@@ -21,8 +21,8 @@ export default class GetAllProductsByClientIdUseCase
       data.clientId,
     );
 
-    if (!products) {
-      throw new AppErrors('Product not found');
+    if (!products.length) {
+      throw new AppErrors('Products not found');
     }
 
     return products.map(product => product as IProductsResponse);
