@@ -22,7 +22,7 @@ export default class Product implements IProduct {
   price: number;
 
   @Column()
-  depotId: string;
+  storageId: string;
 
   @Column()
   clientId: string;

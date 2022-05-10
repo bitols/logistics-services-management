@@ -1,7 +1,7 @@
 import CreateProductsUseCase from '@modules/products/useCases/CreateProductsUseCase';
 import DeleteProductsUseCase from '@modules/products/useCases/DeleteProductsUseCase';
 import GetAllProductsByClientIdUseCase from '@modules/products/useCases/GetAllProductsByClientIdUseCase';
-import GetAllProductsByDepotIdUseCase from '@modules/products/useCases/GetAllProductsByDepotIdUseCase';
+import GetAllProductsByStorageIdUseCase from '@modules/products/useCases/GetAllProductsByStorageIdUseCase';
 import GetProductsUseCase from '@modules/products/useCases/GetProductsUseCase';
 import UpdateProductsUseCase from '@modules/products/useCases/UpdateProductsUseCase';
 import { Request, Response } from 'express';
@@ -19,16 +19,16 @@ export default class ProductsController {
     return response.json(product);
   }
 
-  public async getAllByDepotId(
+  public async getAllByStorageId(
     request: Request,
     response: Response,
   ): Promise<Response> {
     const { id } = request.params;
 
-    const getAllProductsByDepot = container.resolve(
-      GetAllProductsByDepotIdUseCase,
+    const getAllProductsByStorage = container.resolve(
+      GetAllProductsByStorageIdUseCase,
     );
-    const products = await getAllProductsByDepot.execute({ depotId: id });
+    const products = await getAllProductsByStorage.execute({ storageId: id });
 
     return response.json(products);
   }
@@ -48,7 +48,7 @@ export default class ProductsController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, height, width, lenght, price, clientId, depotId } =
+    const { name, height, width, lenght, price, clientId, storageId } =
       request.body;
 
     const createProduct = container.resolve(CreateProductsUseCase);
@@ -59,7 +59,7 @@ export default class ProductsController {
       lenght,
       price,
       clientId,
-      depotId,
+      storageId,
     });
 
     return response.json(product);
@@ -67,7 +67,7 @@ export default class ProductsController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
-    const { name, height, width, lenght, price, depotId } = request.body;
+    const { name, height, width, lenght, price, storageId } = request.body;
 
     const updateProduct = container.resolve(UpdateProductsUseCase);
     const product = await updateProduct.execute({
@@ -77,7 +77,7 @@ export default class ProductsController {
       width,
       lenght,
       price,
-      depotId,
+      storageId,
     });
 
     return response.json(product);

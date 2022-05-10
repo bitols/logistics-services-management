@@ -7,5 +7,5 @@ export interface IProductsRepository {
   remove(product: IProduct): Promise<void>;
   getById(id: string): Promise<IProduct | undefined>;
   getAllByClient(client: string): Promise<IProduct[]>;
-  getAllByDepot(depot: string): Promise<IProduct[]>;
+  getAllByStorage(storage: string): Promise<IProduct[]>;
 }

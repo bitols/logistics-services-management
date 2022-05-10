@@ -43,10 +43,10 @@ export class ProductsRepository implements IProductsRepository {
     return products;
   }
 
-  public async getAllByDepot(depot: string): Promise<IProduct[]> {
+  public async getAllByStorage(storage: string): Promise<IProduct[]> {
     const products = await this.ormRepository.find({
       where: {
-        depotId: { $eq: depot },
+        storageId: { $eq: storage },
       },
     });
 
