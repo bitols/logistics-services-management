@@ -4,6 +4,6 @@ export interface ICreateProductsRequest {
   width: number;
   lenght: number;
   price: number;
-  depotId: string;
+  storageId: string;
   clientId: string;
 }

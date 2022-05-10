@@ -5,5 +5,5 @@ export interface IProductsResponse {
   width: number;
   lenght: number;
   price: number;
-  depotId: string;
+  storageId: string;
 }
