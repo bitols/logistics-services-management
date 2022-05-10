@@ -5,6 +5,6 @@ export interface IProduct {
   width: number;
   lenght: number;
   price: number;
-  depotId: string;
+  storageId: string;
   clientId: string;
 }

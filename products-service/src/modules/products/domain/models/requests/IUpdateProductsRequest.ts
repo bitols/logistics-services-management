@@ -5,5 +5,5 @@ export interface IUpdateProductsRequest {
   width: number;
   lenght: number;
   price: number;
-  depotId: string;
+  storageId: string;
 }

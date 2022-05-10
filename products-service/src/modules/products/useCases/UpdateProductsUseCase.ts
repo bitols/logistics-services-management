@@ -27,7 +27,7 @@ export default class UpdateProductsUseCase implements IUpdateProducstUseCase {
     product.lenght = data.lenght;
     product.width = data.width;
     product.price = data.price;
-    product.depotId = data.depotId;
+    product.storageId = data.storageId;
 
     await this.productsRepository.save(product);
 

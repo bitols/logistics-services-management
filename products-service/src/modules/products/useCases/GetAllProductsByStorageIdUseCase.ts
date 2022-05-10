@@ -1,13 +1,13 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { injectable, inject } from 'tsyringe';
-import { IGetAllProductsByDepotIdRequest } from '../domain/models/requests/IGetAllProductsByDepotIdRequest';
+import { IGetAllProductsByStorageIdRequest } from '../domain/models/requests/IGetAllProductsByStoragedRequest';
 import { IProductsResponse } from '../domain/models/responses/IProductsResponse';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
-import { IGetAllProductsByDepotIdUseCase } from '../domain/useCases/IGetAllProductsByDepotIdUseCase';
+import { IGetAllProductsByStorageIdUseCase } from '../domain/useCases/IGetAllProductsByStorageIdUseCase';
 
 @injectable()
-export default class GetAllProductsByDepotIdUseCase
-  implements IGetAllProductsByDepotIdUseCase
+export default class GetAllProductsByStorageIdUseCase
+  implements IGetAllProductsByStorageIdUseCase
 {
   constructor(
     @inject('ProductsRepository')
@@ -15,9 +15,11 @@ export default class GetAllProductsByDepotIdUseCase
   ) {}
 
   public async execute(
-    data: IGetAllProductsByDepotIdRequest,
+    data: IGetAllProductsByStorageIdRequest,
   ): Promise<IProductsResponse[]> {
-    const products = await this.productsRepository.getAllByDepot(data.depotId);
+    const products = await this.productsRepository.getAllByStorage(
+      data.storageId,
+    );
 
     if (!products.length) {
       throw new AppErrors('Products not found');
