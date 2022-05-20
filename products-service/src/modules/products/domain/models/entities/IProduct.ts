@@ -6,5 +6,5 @@ export interface IProduct {
   lenght: number;
   price: number;
   storageId: string;
-  clientId: string;
+  senderId: string;
 }

@@ -1,6 +1,6 @@
 import CreateProductsUseCase from '@modules/products/useCases/CreateProductsUseCase';
 import DeleteProductsUseCase from '@modules/products/useCases/DeleteProductsUseCase';
-import GetAllProductsByClientIdUseCase from '@modules/products/useCases/GetAllProductsByClientIdUseCase';
+import GetAllProductsBySenderIdUseCase from '@modules/products/useCases/GetAllProductsBySenderIdUseCase';
 import GetAllProductsByStorageIdUseCase from '@modules/products/useCases/GetAllProductsByStorageIdUseCase';
 import GetProductsUseCase from '@modules/products/useCases/GetProductsUseCase';
 import UpdateProductsUseCase from '@modules/products/useCases/UpdateProductsUseCase';
@@ -33,22 +33,22 @@ export default class ProductsController {
     return response.json(products);
   }
 
-  public async getAllByClientId(
+  public async getAllBySenderId(
     request: Request,
     response: Response,
   ): Promise<Response> {
     const { id } = request.params;
 
-    const getAllProductsByClient = container.resolve(
-      GetAllProductsByClientIdUseCase,
+    const getAllProductsBySender = container.resolve(
+      GetAllProductsBySenderIdUseCase,
     );
-    const products = await getAllProductsByClient.execute({ clientId: id });
+    const products = await getAllProductsBySender.execute({ senderId: id });
 
     return response.json(products);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, height, width, lenght, price, clientId, storageId } =
+    const { name, height, width, lenght, price, senderId, storageId } =
       request.body;
 
     const createProduct = container.resolve(CreateProductsUseCase);
@@ -58,7 +58,7 @@ export default class ProductsController {
       width,
       lenght,
       price,
-      clientId,
+      senderId,
       storageId,
     });
 

@@ -1,13 +1,13 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IGetAllProductsByClientIdRequest } from '../domain/models/requests/IGetAllProductsByClientIdRequest';
+import { IGetAllProductsBySenderIdRequest } from '../domain/models/requests/IGetAllProductsBySenderIdRequest';
 import { IProductsResponse } from '../domain/models/responses/IProductsResponse';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
-import { IGetAllProductsByClientIdUseCase } from '../domain/useCases/IGetAllProductsByClientIdUseCase';
+import { IGetAllProductsBySenderIdUseCase } from '../domain/useCases/IGetAllProductsBySenderIdUseCase';
 
 @injectable()
-export default class GetAllProductsByClientIdUseCase
-  implements IGetAllProductsByClientIdUseCase
+export default class GetAllProductsBySenderIdUseCase
+  implements IGetAllProductsBySenderIdUseCase
 {
   constructor(
     @inject('ProductsRepository')
@@ -15,10 +15,10 @@ export default class GetAllProductsByClientIdUseCase
   ) {}
 
   public async execute(
-    data: IGetAllProductsByClientIdRequest,
+    data: IGetAllProductsBySenderIdRequest,
   ): Promise<IProductsResponse[]> {
-    const products = await this.productsRepository.getAllByClient(
-      data.clientId,
+    const products = await this.productsRepository.getAllBySender(
+      data.senderId,
     );
 
     if (!products.length) {

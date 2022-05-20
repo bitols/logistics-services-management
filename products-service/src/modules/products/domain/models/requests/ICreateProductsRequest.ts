@@ -5,5 +5,5 @@ export interface ICreateProductsRequest {
   lenght: number;
   price: number;
   storageId: string;
-  clientId: string;
+  senderId: string;
 }

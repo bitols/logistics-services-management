@@ -6,6 +6,6 @@ export interface IProductsRepository {
   save(product: IProduct): Promise<IProduct>;
   remove(product: IProduct): Promise<void>;
   getById(id: string): Promise<IProduct | undefined>;
-  getAllByClient(client: string): Promise<IProduct[]>;
+  getAllBySender(sender: string): Promise<IProduct[]>;
   getAllByStorage(storage: string): Promise<IProduct[]>;
 }
