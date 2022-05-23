@@ -25,5 +25,5 @@ export default class Product implements IProduct {
   storageId: string;
 
   @Column()
-  clientId: string;
+  senderId: string;
 }

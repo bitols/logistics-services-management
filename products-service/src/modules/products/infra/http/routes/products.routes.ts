@@ -26,13 +26,13 @@ productsRouter.get(
 );
 
 productsRouter.get(
-  '/client/:id',
+  '/sender/:id',
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().hex().required(),
     },
   }),
-  productsController.getAllByClientId,
+  productsController.getAllBySenderId,
 );
 
 productsRouter.post(
@@ -44,7 +44,7 @@ productsRouter.post(
       width: Joi.number().precision(5).required(),
       lenght: Joi.number().precision(5).required(),
       price: Joi.number().precision(2).required(),
-      clientId: Joi.string().hex().required(),
+      senderId: Joi.string().hex().required(),
       storageId: Joi.string().hex().required(),
     },
   }),
@@ -60,7 +60,6 @@ productsRouter.put(
       width: Joi.number().precision(5).required(),
       lenght: Joi.number().precision(5).required(),
       price: Joi.number().precision(2).required(),
-      clientId: Joi.string().hex().required(),
       storageId: Joi.string().hex().required(),
     },
     [Segments.PARAMS]: {

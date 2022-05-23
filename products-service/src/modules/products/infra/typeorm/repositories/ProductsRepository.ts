@@ -33,10 +33,10 @@ export class ProductsRepository implements IProductsRepository {
     return product;
   }
 
-  public async getAllByClient(client: string): Promise<IProduct[]> {
+  public async getAllBySender(sender: string): Promise<IProduct[]> {
     const products = await this.ormRepository.find({
       where: {
-        clientId: { $eq: client },
+        senderId: { $eq: sender },
       },
     });
 
