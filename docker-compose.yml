@@ -1,0 +1,78 @@
+version: '3'
+
+services:
+  senders:
+    build: ./senders-service
+    container_name: senders_service
+    environment:
+      - APP_API_PORT=3330
+      - DB_NAME=senders
+      - DB_USERNAME=senders
+      - DB_PASSWORD=adB0OebSab1oj5Kv
+      - DB_HOST=cluster0.llwh0.mongodb.net
+    networks:
+      - logistics-management-network
+    ports:
+      - '3330:3330'
+
+  suppliers:
+    build: ./suppliers-service
+    container_name: suppliers_service
+    environment:
+      - APP_API_PORT=3331
+      - DB_NAME=suppliers
+      - DB_USERNAME=suppliers
+      - DB_PASSWORD=uwmMpX9J8WtLIH2H
+      - DB_HOST=cluster0.prysc.mongodb.net
+    networks:
+      - logistics-management-network
+    ports:
+      - '3331:3331'
+
+  storages:
+    build: ./storages-service
+    container_name: storages_service
+    environment:
+      - APP_API_PORT=3332
+      - DB_NAME=storages
+      - DB_USERNAME=storages
+      - DB_PASSWORD=8p0cYL2ODepNmt4K
+      - DB_HOST=cluster0.ymx1e.mongodb.net
+    networks:
+      - logistics-management-network
+    ports:
+      - '3332:3332'
+
+  products:
+    build: ./products-service
+    container_name: products_service
+    environment:
+      - APP_API_PORT=3333
+      - DB_NAME=products
+      - DB_USERNAME=products
+      - DB_PASSWORD=kAdbZwJFU1u769pi
+      - DB_HOST=cluster0.bw7lb.mongodb.net
+    networks:
+      - logistics-management-network
+    ports:
+      - '3333:3333'
+
+  receivers:
+    build: ./receivers-service
+    container_name: receivers_service
+    env_file:
+      - ./receivers-service/.env
+    environment:
+      - APP_API_PORT=3334
+      - DB_NAME=receivers
+      - DB_USERNAME=receivers
+      - DB_PASSWORD=ATDJx5cjxVx7qvrM
+      - DB_HOST=cluster0.gxar7.mongodb.net
+    networks:
+      - logistics-management-network
+    ports:
+      - '3334:3334'
+
+networks:
+  logistics-management-network:
+    driver: bridge
