@@ -1,4 +1,4 @@
-import { ISupplier } from '@modules/suppliers/domain/models/entities/ISupplier';
+import { ISupplier } from '@shared-types/suppliers/domain/models/entities/ISupplier';
 import { Column, Entity, ObjectIdColumn, ObjectID } from 'typeorm';
 
 @Entity('supplier')

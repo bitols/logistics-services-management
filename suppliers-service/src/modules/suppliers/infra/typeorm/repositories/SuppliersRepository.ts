@@ -1,5 +1,5 @@
-import { ISupplier } from '@modules/suppliers/domain/models/entities/ISupplier';
-import { ICreateSuppliersRequest } from '@modules/suppliers/domain/models/requests/ICreateSuppliersRequest';
+import { ISupplier } from '@shared-types/suppliers/domain/models/entities/ISupplier';
+import { ICreateSuppliersRequest } from '@shared-types/suppliers/domain/models/requests/ICreateSuppliersRequest';
 import { ISuppliersRepository } from '@modules/suppliers/domain/repositories/ISuppliersRepository';
 import { getRepository, Repository } from 'typeorm';
 import Supplier from '../entities/Supplier';
