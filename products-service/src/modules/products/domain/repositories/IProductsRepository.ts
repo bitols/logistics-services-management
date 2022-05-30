@@ -1,5 +1,5 @@
-import { ICreateProductsRequest } from '../models/requests/ICreateProductsRequest';
-import { IProduct } from '../models/entities/IProduct';
+import { ICreateProductsRequest } from '@shared-types/products/domain/models/requests/ICreateProductsRequest';
+import { IProduct } from '@shared-types/products/domain/models/entities/IProduct';
 
 export interface IProductsRepository {
   create(data: ICreateProductsRequest): Promise<IProduct>;
