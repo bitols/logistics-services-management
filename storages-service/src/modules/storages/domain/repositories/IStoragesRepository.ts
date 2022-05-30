@@ -1,5 +1,5 @@
-import { IStorage } from '../models/entities/IStorage';
-import { ICreateStoragesRequest } from '../models/requests/ICreateStoragesRequest';
+import { IStorage } from '@shared-types/storages/domain/models/entities/IStorage';
+import { ICreateStoragesRequest } from '@shared-types/storages/domain/models/requests/ICreateStoragesRequest';
 
 export interface IStoragesRepository {
   create(data: ICreateStoragesRequest): Promise<IStorage>;

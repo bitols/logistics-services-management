@@ -1,6 +1,6 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IDeleteProductsRequest } from '../domain/models/requests/IDeleteProductsRequest';
+import { IDeleteProductsRequest } from '@shared-types/products/domain/models/requests/IDeleteProductsRequest';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 import { IDeleteProductsUseCase } from '../domain/useCases/IDeleteProductsUseCase';
 

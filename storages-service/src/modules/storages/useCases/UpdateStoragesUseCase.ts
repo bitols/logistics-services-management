@@ -1,7 +1,7 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IUpdateStoragesRequest } from '../domain/models/requests/IUpdateStoragesRequest';
-import { IStoragesResponse } from '../domain/models/responses/IStoragesResponse';
+import { IUpdateStoragesRequest } from '@shared-types/storages/domain/models/requests/IUpdateStoragesRequest';
+import { IStoragesResponse } from '@shared-types/storages/domain/models/responses/IStoragesResponse';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
 import { IUpdateStoragesUseCase } from '../domain/useCases/IUpdateStoragesUseCase';
 

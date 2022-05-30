@@ -1,5 +1,5 @@
-import { IReceiver } from '../models/entities/IReceiver';
-import { ICreateReceiversRequest } from '../models/requests/ICreateReceiversRequest';
+import { IReceiver } from '@shared-types/receivers/domain/models/entities/IReceiver';
+import { ICreateReceiversRequest } from '@shared-types/receivers/domain/models/requests/ICreateReceiversRequest';
 
 export interface IReceiversRepository {
   create(data: ICreateReceiversRequest): Promise<IReceiver>;

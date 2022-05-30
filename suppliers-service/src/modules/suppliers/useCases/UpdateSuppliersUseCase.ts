@@ -1,7 +1,7 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IUpdateSuppliersRequest } from '../domain/models/requests/IUpdateSuppliersRequest';
-import { ISuppliersResponse } from '../domain/models/responses/ISuppliersResponse';
+import { IUpdateSuppliersRequest } from '@shared-types/suppliers/domain/models/requests/IUpdateSuppliersRequest';
+import { ISuppliersResponse } from '@shared-types/suppliers/domain/models/responses/ISuppliersResponse';
 import { ISuppliersRepository } from '../domain/repositories/ISuppliersRepository';
 import { IUpdateSuppliersUseCase } from '../domain/useCases/IUpdateSuppliersUseCase';
 

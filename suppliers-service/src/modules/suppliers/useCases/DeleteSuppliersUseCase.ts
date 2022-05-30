@@ -1,6 +1,6 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IDeleteSuppliersRequest } from '../domain/models/requests/IDeleteSuppliersRequests';
+import { IDeleteSuppliersRequest } from '@shared-types/suppliers/domain/models/requests/IDeleteSuppliersRequests';
 import { ISuppliersRepository } from '../domain/repositories/ISuppliersRepository';
 import { IDeleteSuppliersUseCase } from '../domain/useCases/IDeleteSuppliersUseCase';
 

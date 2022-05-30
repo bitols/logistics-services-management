@@ -1,5 +1,5 @@
-import { IProduct } from '@modules/products/domain/models/entities/IProduct';
-import { ICreateProductsRequest } from '@modules/products/domain/models/requests/ICreateProductsRequest';
+import { IProduct } from '@shared-types/products/domain/models/entities/IProduct';
+import { ICreateProductsRequest } from '@shared-types/products/domain/models/requests/ICreateProductsRequest';
 import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
 import { getRepository, Repository } from 'typeorm';
 import Product from '../entities/Product';
