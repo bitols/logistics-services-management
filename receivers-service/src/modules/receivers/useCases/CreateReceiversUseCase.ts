@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
-import { ICreateReceiversRequest } from '../domain/models/requests/ICreateReceiversRequest';
-import { IReceiversResponse } from '../domain/models/responses/IReceiversResponse';
+import { ICreateReceiversRequest } from '@shared-types/receivers/domain/models/requests/ICreateReceiversRequest';
+import { IReceiversResponse } from '@shared-types/receivers/domain/models/responses/IReceiversResponse';
 import { IReceiversRepository } from '../domain/repositories/IReceiverRepository';
 import { ICreateReceiversUseCase } from '../domain/useCases/ICreateReceiversUseCase';
 

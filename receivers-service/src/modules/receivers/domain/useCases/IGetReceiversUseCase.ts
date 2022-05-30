@@ -1,5 +1,5 @@
-import { IGetReceiversRequest } from '../models/requests/IGetReceiversRequest';
-import { IReceiversResponse } from '../models/responses/IReceiversResponse';
+import { IGetReceiversRequest } from '@shared-types/receivers/domain/models/requests/IGetReceiversRequest';
+import { IReceiversResponse } from '@shared-types/receivers/domain/models/responses/IReceiversResponse';
 
 export interface IGetReceiversUseCase {
   execute(data: IGetReceiversRequest): Promise<IReceiversResponse>;
