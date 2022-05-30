@@ -1,6 +1,6 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IDeleteSendersRequest } from '../domain/models/requests/IDeleteSendersRequests';
+import { IDeleteSendersRequest } from '@shared-types/senders/domain/models/requests/IDeleteSendersRequests';
 import { ISendersRepository } from '../domain/repositories/ISendersRepository';
 import { IDeleteSendersUseCase } from '../domain/useCases/IDeleteSendersUseCase';
 
