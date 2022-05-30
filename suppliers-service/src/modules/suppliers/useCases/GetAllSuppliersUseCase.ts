@@ -1,6 +1,6 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { ISuppliersResponse } from '../domain/models/responses/ISuppliersResponse';
+import { ISuppliersResponse } from '@shared-types/suppliers/domain/models/responses/ISuppliersResponse';
 import { ISuppliersRepository } from '../domain/repositories/ISuppliersRepository';
 import { IGetAllSuppliersUseCase } from '../domain/useCases/IGetAllSuppliersUseCase';
 

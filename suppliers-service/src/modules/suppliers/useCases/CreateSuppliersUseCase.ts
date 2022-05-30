@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
-import { ICreateSuppliersRequest } from '../domain/models/requests/ICreateSuppliersRequest';
-import { ISuppliersResponse } from '../domain/models/responses/ISuppliersResponse';
+import { ICreateSuppliersRequest } from '@shared-types/suppliers/domain/models/requests/ICreateSuppliersRequest';
+import { ISuppliersResponse } from '@shared-types/suppliers/domain/models/responses/ISuppliersResponse';
 import { ISuppliersRepository } from '../domain/repositories/ISuppliersRepository';
 import { ICreateSuppliersUseCase } from '../domain/useCases/ICreateSuppliersUseCase';
 

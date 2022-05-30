@@ -1,6 +1,6 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IDeleteStoragesRequest } from '../domain/models/requests/IDeleteStoragesRequest';
+import { IDeleteStoragesRequest } from '@shared-types/storages/domain/models/requests/IDeleteStoragesRequest';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
 import { IDeleteStoragesUseCase } from '../domain/useCases/IDeleteStoragesUseCase';
 

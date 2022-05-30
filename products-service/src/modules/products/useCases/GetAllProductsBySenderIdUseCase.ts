@@ -1,7 +1,7 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IGetAllProductsBySenderIdRequest } from '../domain/models/requests/IGetAllProductsBySenderIdRequest';
-import { IProductsResponse } from '../domain/models/responses/IProductsResponse';
+import { IGetAllProductsBySenderIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsBySenderIdRequest';
+import { IProductsResponse } from '@shared-types/products/domain/models/responses/IProductsResponse';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 import { IGetAllProductsBySenderIdUseCase } from '../domain/useCases/IGetAllProductsBySenderIdUseCase';
 

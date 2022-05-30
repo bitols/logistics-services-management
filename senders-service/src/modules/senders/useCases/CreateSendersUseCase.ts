@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
-import { ICreateSendersRequest } from '../domain/models/requests/ICreateSendersRequest';
-import { ISendersResponse } from '../domain/models/responses/ISendersResponse';
+import { ICreateSendersRequest } from '@shared-types/senders/domain/models/requests/ICreateSendersRequest';
+import { ISendersResponse } from '@shared-types/senders/domain/models/responses/ISendersResponse';
 import { ISendersRepository } from '../domain/repositories/ISendersRepository';
 import { ICreateSendersUseCase } from '../domain/useCases/ICreateSendersUseCase';
 

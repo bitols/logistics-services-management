@@ -1,5 +1,5 @@
-import { IStorage } from '@modules/storages/domain/models/entities/IStorage';
-import { ICreateStoragesRequest } from '@modules/storages/domain/models/requests/ICreateStoragesRequest';
+import { IStorage } from '@shared-types/storages/domain/models/entities/IStorage';
+import { ICreateStoragesRequest } from '@shared-types/storages/domain/models/requests/ICreateStoragesRequest';
 import { IStoragesRepository } from '@modules/storages/domain/repositories/IStoragesRepository';
 import { getRepository, Repository } from 'typeorm';
 import Storage from '../entities/Storage';

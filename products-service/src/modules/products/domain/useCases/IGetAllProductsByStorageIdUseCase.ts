@@ -1,5 +1,5 @@
-import { IGetAllProductsByStorageIdRequest } from '../models/requests/IGetAllProductsByStoragedRequest';
-import { IProductsResponse } from '../models/responses/IProductsResponse';
+import { IGetAllProductsByStorageIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsByStoragedRequest';
+import { IProductsResponse } from '@shared-types/products/domain/models/responses/IProductsResponse';
 
 export interface IGetAllProductsByStorageIdUseCase {
   execute(

@@ -1,7 +1,7 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IUpdateReceiversrequest } from '../domain/models/requests/IUpdateReceiversRequest';
-import { IReceiversResponse } from '../domain/models/responses/IReceiversResponse';
+import { IUpdateReceiversrequest } from '@shared-types/receivers/domain/models/requests/IUpdateReceiversRequest';
+import { IReceiversResponse } from '@shared-types/receivers/domain/models/responses/IReceiversResponse';
 import { IReceiversRepository } from '../domain/repositories/IReceiverRepository';
 import { IUpdateReceiversUseCase } from '../domain/useCases/IUpdateReceiversUseCase';
 
