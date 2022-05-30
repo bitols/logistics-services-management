@@ -1,4 +1,4 @@
-import { IStorage } from '@modules/storages/domain/models/entities/IStorage';
+import { IStorage } from '@shared-types/storages/domain/models/entities/IStorage';
 import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 
 @Entity('storage')
