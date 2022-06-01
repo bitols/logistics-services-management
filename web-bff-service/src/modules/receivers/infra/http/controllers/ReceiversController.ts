@@ -1,4 +1,4 @@
-import GetReceiversUseCase from '@modules/receivers/usecases/GetReceiversUseCase';
+import GetReceiversUseCase from '@modules/receivers/useCases/GetReceiversUseCase';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
