@@ -2,6 +2,6 @@ import { ISendersResponse } from '@shared-types/senders/domain/models/responses/
 import { IGetSendersRequest } from '@shared-types/senders/domain/models/requests/IGetSendersRequest';
 
 export interface ISendersGateway {
-  getAll(): Promise<ISendersResponse[]>;
-  getById(request: IGetSendersRequest): Promise<ISendersResponse>;
+  getAll(): Promise<ISendersResponse[] | undefined>;
+  getById(request: IGetSendersRequest): Promise<ISendersResponse | undefined>;
 }
