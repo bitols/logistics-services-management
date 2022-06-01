@@ -30,7 +30,7 @@ export class SuppliersGateway implements ISuppliersGateway {
   public async getById(
     request: IGetSuppliersRequest,
   ): Promise<ISuppliersResponse | undefined> {
-    console.log('request sender: ', request);
+    console.log('request supplier: ', request);
     try {
       const { data, status } = await axios.get<ISuppliersResponse | undefined>(
         `${process.env.API_SUPPLIERS_ADDRESS}/suppliers/${request.id}`,
