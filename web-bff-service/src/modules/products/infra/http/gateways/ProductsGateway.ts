@@ -35,7 +35,7 @@ export class ProductsGateway implements IProductsGateway {
   public async getAllBySender(
     request: IGetAllProductsBySenderIdRequest,
   ): Promise<IProductsResponse[] | undefined> {
-    console.log('request all products');
+    console.log('request all products by sender', request);
 
     try {
       const { data, status } = await axios.get<IProductsResponse[]>(
@@ -60,21 +60,26 @@ export class ProductsGateway implements IProductsGateway {
 
   public async getAllByStorage(
     request: IGetAllProductsByStorageIdRequest,
-  ): Promise<IProductsResponse[]> {
-    const { data, status } = await axios.get<IProductsResponse[]>(
-      `${process.env.API_PRODUCTS_ADDRESS}/products/storage/${request.storageId}`,
-      {
-        headers: {
-          Accept: 'application/json',
+  ): Promise<IProductsResponse[] | undefined> {
+    console.log('request all products by storage', request);
+    try {
+      const { data, status } = await axios.get<IProductsResponse[]>(
+        `${process.env.API_PRODUCTS_ADDRESS}/products/storage/${request.storageId}`,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
         },
-      },
-    );
+      );
 
-    console.log(JSON.stringify(data, null, 4));
+      console.log(JSON.stringify(data, null, 4));
 
-    // 👇️ "response status is: 200"
-    console.log('response status is: ', status);
+      // 👇️ "response status is: 200"
+      console.log('response status is: ', status);
 
-    return data;
+      return data;
+    } catch (error: any) {
+      console.error(error.message);
+    }
   }
 }

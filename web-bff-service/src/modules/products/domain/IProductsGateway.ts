@@ -9,5 +9,5 @@ export interface IProductsGateway {
   ): Promise<IProductsResponse[] | undefined>;
   getAllByStorage(
     request: IGetAllProductsByStorageIdRequest,
-  ): Promise<IProductsResponse[]>;
+  ): Promise<IProductsResponse[] | undefined>;
 }
