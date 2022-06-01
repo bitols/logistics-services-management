@@ -4,41 +4,51 @@ import { ISuppliersResponse } from '@shared-types/suppliers/domain/models/respon
 import axios from 'axios';
 
 export class SuppliersGateway implements ISuppliersGateway {
-  public async getAll(): Promise<ISuppliersResponse[]> {
-    const { data, status } = await axios.get<ISuppliersResponse[]>(
-      `${process.env.API_SUPPLIERS_ADDRESS}/suppliers/`,
-      {
+  public async getAll(): Promise<ISuppliersResponse[] | undefined> {
+    console.log('request all suppliers');
+
+    try {
+      const { data, status } = await axios.get<
+        ISuppliersResponse[] | undefined
+      >(`${process.env.API_SUPPLIERS_ADDRESS}/suppliers/`, {
         headers: {
           Accept: 'application/json',
         },
-      },
-    );
+      });
 
-    console.log(JSON.stringify(data, null, 4));
+      console.log(JSON.stringify(data, null, 4));
 
-    // 👇️ "response status is: 200"
-    console.log('response status is: ', status);
+      // 👇️ "response status is: 200"
+      console.log('response status is: ', status);
 
-    return data;
+      return data;
+    } catch (error: any) {
+      console.error(error.message);
+    }
   }
 
   public async getById(
     request: IGetSuppliersRequest,
-  ): Promise<ISuppliersResponse> {
-    const { data, status } = await axios.get<ISuppliersResponse>(
-      `${process.env.API_SUPPLIERS_ADDRESS}/suppliers/${request.id}`,
-      {
-        headers: {
-          Accept: 'application/json',
+  ): Promise<ISuppliersResponse | undefined> {
+    console.log('request sender: ', request);
+    try {
+      const { data, status } = await axios.get<ISuppliersResponse | undefined>(
+        `${process.env.API_SUPPLIERS_ADDRESS}/suppliers/${request.id}`,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
         },
-      },
-    );
+      );
 
-    console.log(JSON.stringify(data, null, 4));
+      console.log(JSON.stringify(data, null, 4));
 
-    // 👇️ "response status is: 200"
-    console.log('response status is: ', status);
+      // 👇️ "response status is: 200"
+      console.log('response status is: ', status);
 
-    return data;
+      return data;
+    } catch (error: any) {
+      console.error(error.message);
+    }
   }
 }
