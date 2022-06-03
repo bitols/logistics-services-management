@@ -1,4 +1,4 @@
-import { IProductsGateway } from '@modules/products/domain/IProductsGateway';
+import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
 import { ProductsGateway } from '@modules/products/infra/http/gateways/ProductsGateway';
 import { IReceiversGateway } from '@modules/receivers/domain/gateways/IReceiversGateway';
 import { ReceiversGateway } from '@modules/receivers/infra/http/gateways/ReceiversGateway';

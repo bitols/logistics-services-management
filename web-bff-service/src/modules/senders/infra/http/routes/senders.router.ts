@@ -12,7 +12,16 @@ sendersRouter.get(
       id: Joi.string().hex().required(),
     },
   }),
-  sendersController.getById,
+  sendersController.getInfoById,
+);
+sendersRouter.get(
+  '/:id/products',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().hex().required(),
+    },
+  }),
+  sendersController.getProductsById,
 );
 
 export default sendersRouter;

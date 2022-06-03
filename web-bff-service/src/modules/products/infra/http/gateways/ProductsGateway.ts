@@ -1,4 +1,4 @@
-import { IProductsGateway } from '@modules/products/domain/IProductsGateway';
+import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
 import { IGetAllProductsBySenderIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsBySenderIdRequest';
 import { IGetAllProductsByStorageIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsByStoragedRequest';
 import { IGetProductsRequest } from '@shared-types/products/domain/models/requests/IGetProductsRequest';

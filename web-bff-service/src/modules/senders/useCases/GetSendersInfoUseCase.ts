@@ -1,4 +1,4 @@
-import { IProductsGateway } from '@modules/products/domain/IProductsGateway';
+import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
 import { IGetSendersRequest } from '@shared-types/senders/domain/models/requests/IGetSendersRequest';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
@@ -15,24 +15,36 @@ export class GetSenderInfoUseCase implements IGetSendersInfoUseCase {
   ) {}
 
   public async execute(data: IGetSendersRequest): Promise<any> {
+    console.time('GetSendersInfoUseCase');
+
     const sender = await this.sendersGateway.getById(data);
     if (!sender) {
       throw new AppErrors('Sender not found');
     }
 
+    let productsCount = 0;
+    let storagesCount = 0;
+
     const products = await this.productsGateway.getAllBySender({
       senderId: sender.id,
     });
+
+    if (products) {
+      productsCount = products.length;
+      storagesCount = products
+        .map(x => x.storageId)
+        .filter((x, i, a) => a.indexOf(x) == i).length;
+    }
+
+    console.timeEnd('GetSendersInfoUseCase');
 
     return {
       id: sender.id,
       name: sender.name,
       email: sender.email,
       phone: sender.phone,
-      products: products?.length,
-      storages: products
-        ?.map(x => x.storageId)
-        .filter((x, i, a) => a.indexOf(x) == i).length,
+      products: productsCount,
+      storages: storagesCount,
     };
   }
 }
