@@ -60,8 +60,6 @@ services:
   receivers:
     build: ./receivers-service
     container_name: receivers_service
-    env_file:
-      - ./receivers-service/.env
     environment:
       - APP_API_PORT=3334
       - DB_NAME=receivers
@@ -73,6 +71,20 @@ services:
     ports:
       - '3334:3334'
 
+  web-bff:
+    build: ./web-bff-service
+    container_name: web-bff-service
+    environment:
+      - APP_API_PORT=3000
+      - API_RECEIVERS_ADDRESS=http://receivers:3334
+      - API_PRODUCTS_ADDRESS=http://products:3333
+      - API_SENDERS_ADDRESS=http://senders:3330
+      - API_STORAGES_ADDRESS=http://storages:3332
+      - API_SUPPLIERS_ADDRESS=http://suppliers:3331
+    networks:
+      - logistics-management-network
+    ports:
+      - '3000:3000'
 networks:
   logistics-management-network:
     driver: bridge
