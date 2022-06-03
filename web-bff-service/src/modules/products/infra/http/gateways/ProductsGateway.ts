@@ -21,8 +21,6 @@ export class ProductsGateway implements IProductsGateway {
         },
       );
 
-      console.log(JSON.stringify(data, null, 4));
-
       // 👇️ "response status is: 200"
       console.log('response status is: ', status);
 
@@ -47,9 +45,6 @@ export class ProductsGateway implements IProductsGateway {
         },
       );
 
-      console.log(JSON.stringify(data, null, 4));
-
-      // 👇️ "response status is: 200"
       console.log('response status is: ', status);
 
       return data;
@@ -72,11 +67,7 @@ export class ProductsGateway implements IProductsGateway {
         },
       );
 
-      console.log(JSON.stringify(data, null, 4));
-
-      // 👇️ "response status is: 200"
       console.log('response status is: ', status);
-
       return data;
     } catch (error: any) {
       console.error(error.message);

@@ -20,9 +20,6 @@ export class StoragesGateway implements IStoragesGateway {
         },
       );
 
-      console.log(JSON.stringify(data, null, 4));
-
-      // 👇️ "response status is: 200"
       console.log('response status is: ', status);
 
       return data;
@@ -34,6 +31,8 @@ export class StoragesGateway implements IStoragesGateway {
   public async getById(
     request: IGetStoragesRequest,
   ): Promise<IStoragesResponse | undefined> {
+    console.log('request storage by id: ', request);
+
     try {
       const { data, status } = await axios.get<IStoragesResponse>(
         `${process.env.API_STORAGES_ADDRESS}/storages/${request.id}`,
@@ -44,9 +43,6 @@ export class StoragesGateway implements IStoragesGateway {
         },
       );
 
-      console.log(JSON.stringify(data, null, 4));
-
-      // 👇️ "response status is: 200"
       console.log('response status is: ', status);
 
       return data;

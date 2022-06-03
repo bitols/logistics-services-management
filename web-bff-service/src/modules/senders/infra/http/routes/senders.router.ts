@@ -15,13 +15,13 @@ sendersRouter.get(
   sendersController.getInfoById,
 );
 sendersRouter.get(
-  '/:id/products',
+  '/:id/storages',
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().hex().required(),
     },
   }),
-  sendersController.getProductsById,
+  sendersController.getStoragesControlById,
 );
 
 export default sendersRouter;
