@@ -20,14 +20,10 @@ export default class SendersController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-    console.time('getStoragesControlById');
-
     const { id } = request.params;
 
     const getSendersStorages = container.resolve(GetSendersStoragesInfoUseCase);
     const productsInfo = await getSendersStorages.execute({ id });
-
-    console.timeEnd('getStoragesControlById');
 
     return response.json(productsInfo);
   }

@@ -15,8 +15,6 @@ export class GetSenderInfoUseCase implements IGetSendersInfoUseCase {
   ) {}
 
   public async execute(data: IGetSendersRequest): Promise<any> {
-    console.time('GetSendersInfoUseCase');
-
     const sender = await this.sendersGateway.getById(data);
     if (!sender) {
       throw new AppErrors('Sender not found');
@@ -35,8 +33,6 @@ export class GetSenderInfoUseCase implements IGetSendersInfoUseCase {
         .map(x => x.storageId)
         .filter((x, i, a) => a.indexOf(x) == i).length;
     }
-
-    console.timeEnd('GetSendersInfoUseCase');
 
     return {
       id: sender.id,
