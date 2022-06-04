@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
-import { ICreateStoragesRequest } from '../domain/models/requests/ICreateStoragesRequest';
-import { IStoragesResponse } from '../domain/models/responses/IStoragesResponse';
+import { ICreateStoragesRequest } from '@shared-types/storages/domain/models/requests/ICreateStoragesRequest';
+import { IStoragesResponse } from '@shared-types/storages/domain/models/responses/IStoragesResponse';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
 import { ICreateStoragesUseCase } from '../domain/useCases/ICreateStoragesUseCase';
 

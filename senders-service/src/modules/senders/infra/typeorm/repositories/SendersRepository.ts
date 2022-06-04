@@ -1,5 +1,5 @@
-import { ISender } from '@modules/senders/domain/models/entities/ISender';
-import { ICreateSendersRequest } from '@modules/senders/domain/models/requests/ICreateSendersRequest';
+import { ISender } from '@shared-types/senders/domain/models/entities/ISender';
+import { ICreateSendersRequest } from '@shared-types/senders/domain/models/requests/ICreateSendersRequest';
 import { ISendersRepository } from '@modules/senders/domain/repositories/ISendersRepository';
 import { getRepository, Repository } from 'typeorm';
 import Supplier from '../entities/Sender';

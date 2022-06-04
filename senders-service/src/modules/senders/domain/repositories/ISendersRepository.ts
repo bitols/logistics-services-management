@@ -1,5 +1,5 @@
-import { ISender } from '../models/entities/ISender';
-import { ICreateSendersRequest } from '../models/requests/ICreateSendersRequest';
+import { ISender } from '@shared-types/senders/domain/models/entities/ISender';
+import { ICreateSendersRequest } from '@shared-types/senders/domain/models/requests/ICreateSendersRequest';
 
 export interface ISendersRepository {
   create(data: ICreateSendersRequest): Promise<ISender>;

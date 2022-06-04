@@ -1,6 +1,6 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IReceiversResponse } from '../domain/models/responses/IReceiversResponse';
+import { IReceiversResponse } from '@shared-types/receivers/domain/models/responses/IReceiversResponse';
 import { IReceiversRepository } from '../domain/repositories/IReceiverRepository';
 import { IGetAllReceiversUseCase } from '../domain/useCases/IGetAllReceiversUseCase';
 

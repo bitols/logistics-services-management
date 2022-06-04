@@ -1,5 +1,5 @@
-import { IReceiver } from '@modules/receivers/domain/models/entities/IReceiver';
-import { ICreateReceiversRequest } from '@modules/receivers/domain/models/requests/ICreateReceiversRequest';
+import { IReceiver } from '@shared-types/receivers/domain/models/entities/IReceiver';
+import { ICreateReceiversRequest } from '@shared-types/receivers/domain/models/requests/ICreateReceiversRequest';
 import { IReceiversRepository } from '@modules/receivers/domain/repositories/IReceiverRepository';
 import { getRepository, Repository } from 'typeorm';
 import Receiver from '../entities/Receiver';
