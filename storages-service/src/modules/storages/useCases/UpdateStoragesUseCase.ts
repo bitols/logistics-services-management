@@ -25,7 +25,7 @@ export default class UpdateStoragesUseCase implements IUpdateStoragesUseCase {
     storage.email = data.email;
     storage.phone = data.phone;
     storage.address = data.address;
-    storage.supplierId = data.supplierId;
+    storage.capacity = data.capacity;
 
     await this.storagesRepository.save(storage);
 

@@ -7,4 +7,5 @@ export interface IStoragesRepository {
   remove(storage: IStorage): Promise<void>;
   getById(id: string): Promise<IStorage | undefined>;
   getAllBySupplier(supplier: string): Promise<IStorage[]>;
+  getAllBySender(sender: string): Promise<IStorage[]>;
 }
