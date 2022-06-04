@@ -1,6 +1,6 @@
 export interface ICreateStoragesRequest {
   name: string;
-  capacity: string;
+  capacity: number;
   email: string;
   phone: string;
   address: string;

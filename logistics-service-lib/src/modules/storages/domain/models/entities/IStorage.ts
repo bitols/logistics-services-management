@@ -1,7 +1,7 @@
 export interface IStorage {
   id: any;
   name: string;
-  capacity: string;
+  capacity: number;
   email: string;
   phone: string;
   address: string;
