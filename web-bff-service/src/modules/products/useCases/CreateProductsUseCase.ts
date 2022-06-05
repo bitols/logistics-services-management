@@ -28,6 +28,10 @@ export class CreateProductsUseCase implements ICreateProductUseCase {
       throw new AppErrors('Sender not found');
     }
 
+    if (sender.id !== storage.senderId) {
+      throw new AppErrors('Sender and Storage not compatible');
+    }
+
     return await this.productsGateway.create(data);
   }
 }

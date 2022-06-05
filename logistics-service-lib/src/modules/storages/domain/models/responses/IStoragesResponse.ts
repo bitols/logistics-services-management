@@ -6,4 +6,5 @@ export interface IStoragesResponse {
   phone: string;
   address: string;
   supplierId: string;
+  senderId: string;
 }
