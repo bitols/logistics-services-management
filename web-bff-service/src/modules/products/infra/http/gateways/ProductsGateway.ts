@@ -1,4 +1,5 @@
 import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
+import { ICreateProductsRequest } from '@shared-types/products/domain/models/requests/ICreateProductsRequest';
 import { IGetAllProductsBySenderIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsBySenderIdRequest';
 import { IGetAllProductsByStorageIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsByStoragedRequest';
 import { IGetProductsRequest } from '@shared-types/products/domain/models/requests/IGetProductsRequest';
@@ -6,10 +7,35 @@ import { IProductsResponse } from '@shared-types/products/domain/models/response
 import axios from 'axios';
 
 export class ProductsGateway implements IProductsGateway {
+  public async create(
+    request: ICreateProductsRequest,
+  ): Promise<IProductsResponse | undefined> {
+    console.log('request create product: ', request);
+
+    try {
+      const { data, status } = await axios.post<IProductsResponse>(
+        `${process.env.API_PRODUCTS_ADDRESS}/products/`,
+        request,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      // 👇️ "response status is: 200"
+      console.log('response status is: ', status);
+
+      return data;
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+
   public async getById(
     request: IGetProductsRequest,
   ): Promise<IProductsResponse | undefined> {
-    console.log('request product: ', request);
+    console.log('request product by Id: ', request);
 
     try {
       const { data, status } = await axios.get<IProductsResponse>(
