@@ -42,4 +42,14 @@ export class StoragesRepository implements IStoragesRepository {
 
     return products;
   }
+
+  public async getAllBySender(sender: string): Promise<IStorage[]> {
+    const products = await this.ormRepository.find({
+      where: {
+        senderId: { $eq: sender },
+      },
+    });
+
+    return products;
+  }
 }

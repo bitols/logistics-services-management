@@ -1,10 +1,34 @@
 import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
+import { IGetAllStoragesBySenderIdRequest } from '@shared-types/storages/domain/models/requests/IGetAllStoragesBySenderIdRequests';
 import { IGetAllStoragesBySupplierIdRequest } from '@shared-types/storages/domain/models/requests/IGetAllStoragesBySupplierIdRequest';
 import { IGetStoragesRequest } from '@shared-types/storages/domain/models/requests/IGetStoragesRequest';
 import { IStoragesResponse } from '@shared-types/storages/domain/models/responses/IStoragesResponse';
 import axios from 'axios';
 
 export class StoragesGateway implements IStoragesGateway {
+  public async getAllBySender(
+    request: IGetAllStoragesBySenderIdRequest,
+  ): Promise<IStoragesResponse[] | undefined> {
+    console.log('request all storages by sender: ', request);
+
+    try {
+      const { data, status } = await axios.get<IStoragesResponse[]>(
+        `${process.env.API_STORAGES_ADDRESS}/storages/senders/${request.senderId}`,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      console.log('response status is: ', status);
+
+      return data;
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+
   public async getAllBySupplier(
     request: IGetAllStoragesBySupplierIdRequest,
   ): Promise<IStoragesResponse[] | undefined> {
@@ -12,7 +36,7 @@ export class StoragesGateway implements IStoragesGateway {
 
     try {
       const { data, status } = await axios.get<IStoragesResponse[]>(
-        `${process.env.API_STORAGES_ADDRESS}/storages/supplier/${request.supplierId}`,
+        `${process.env.API_STORAGES_ADDRESS}/storages/suppliers/${request.supplierId}`,
         {
           headers: {
             Accept: 'application/json',
