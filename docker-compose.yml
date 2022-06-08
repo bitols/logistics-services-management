@@ -89,6 +89,25 @@ services:
     ports:
       - '3000:3000'
 
+  orchestrator:
+    build: ./orchestratorservice
+    container_name: orchestrator-service
+    environment:
+      - APP_API_PORT=3335
+      - API_RECEIVERS_ADDRESS=http://receivers:3334
+      - API_PRODUCTS_ADDRESS=http://products:3333
+      - API_SENDERS_ADDRESS=http://senders:3330
+      - API_STORAGES_ADDRESS=http://storages:3332
+      - API_SUPPLIERS_ADDRESS=http://suppliers:3331
+      - KAFKA_HOST=kafka:29092
+      - KAFKA_CLIENT_ID=logistics-services-management
+      - STORAGE_CONTROL_TOPIC=storage-control 
+      - KAFKA_GROUP_ID=logistics-services     
+    networks:
+      - logistics-management-network
+    ports:
+      - '3335:3335'
+
   zookeeper:
     image: 'confluentinc/cp-zookeeper:5.2.1'
     container_name: 'zookeeper'
