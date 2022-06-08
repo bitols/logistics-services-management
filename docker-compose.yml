@@ -52,6 +52,9 @@ services:
       - DB_USERNAME=products
       - DB_PASSWORD=kAdbZwJFU1u769pi
       - DB_HOST=cluster0.bw7lb.mongodb.net
+      - KAFKA_HOST=kafka:29092
+      - KAFKA_CLIENT_ID=logistics-services-management
+      - STORAGE_CONTROL_TOPIC=storage-control
     networks:
       - logistics-management-network
     ports:
@@ -85,6 +88,55 @@ services:
       - logistics-management-network
     ports:
       - '3000:3000'
+
+  orchestrator:
+    build: ./orchestrator-service
+    container_name: orchestrator-service
+    environment:
+      - APP_API_PORT=3335
+      - API_RECEIVERS_ADDRESS=http://receivers:3334
+      - API_PRODUCTS_ADDRESS=http://products:3333
+      - API_SENDERS_ADDRESS=http://senders:3330
+      - API_STORAGES_ADDRESS=http://storages:3332
+      - API_SUPPLIERS_ADDRESS=http://suppliers:3331
+      - KAFKA_HOST=kafka:29092
+      - KAFKA_CLIENT_ID=logistics-services-management
+      - STORAGE_CONTROL_TOPIC=storage-control 
+      - KAFKA_GROUP_ID=logistics-services     
+    networks:
+      - logistics-management-network
+    ports:
+      - '3335:3335'
+
+  zookeeper:
+    image: 'confluentinc/cp-zookeeper:5.2.1'
+    container_name: 'zookeeper'
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - logistics-management-network
+
+  kafka:
+    image: 'confluentinc/cp-enterprise-kafka:5.2.1'
+    container_name: 'kafka'
+    ports:
+      - '9092:9092'
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_BROKER_ID=0
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENERS=INSIDE://kafka:29092,OUTSIDE://kafka:9092
+      - KAFKA_ADVERTISED_LISTENERS=INSIDE://kafka:29092,OUTSIDE://localhost:9092
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INSIDE
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=100
+      - KAFKAJS_NO_PARTITIONER_WARNING=1
+    networks:
+      - logistics-management-network
+
 networks:
   logistics-management-network:
     driver: bridge

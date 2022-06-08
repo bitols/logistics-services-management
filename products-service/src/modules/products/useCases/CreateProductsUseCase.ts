@@ -3,12 +3,16 @@ import { ICreateProductsRequest } from '@shared-types/products/domain/models/req
 import { IProductsResponse } from '@shared-types/products/domain/models/responses/IProductsResponse';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 import { ICreateProductUseCase } from '../domain/useCases/ICreateProductsUseCase';
+import kafkaConfig from '@config/kafkaConfig';
+import { KafkaQueue } from '@shared/infra/queue/KafkaQueue';
 
 @injectable()
 export default class CreateProductsUseCase implements ICreateProductUseCase {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
+    @inject('KafkaQueue')
+    private kafkaQueue: KafkaQueue,
   ) {}
 
   public async execute(
@@ -17,6 +21,11 @@ export default class CreateProductsUseCase implements ICreateProductUseCase {
     const product = await this.productsRepository.create(data);
 
     await this.productsRepository.save(product);
+
+    await this.kafkaQueue.send(
+      kafkaConfig.storageControlTopic,
+      JSON.stringify({ id: product.storageId }),
+    );
 
     return product as IProductsResponse;
   }
