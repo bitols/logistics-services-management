@@ -1,11 +1,11 @@
 import { Kafka, Producer } from 'kafkajs';
 import kafkaConfig from '@config/kafkaConfig';
+import { IKafkaQueue } from './IKafkaQueue';
 
-export class KafkaQueue {
+export class KafkaQueue implements IKafkaQueue {
   private producer: Producer;
 
   constructor() {
-    console.log('kafka brokers: ', kafkaConfig.brokers);
     const kafka = new Kafka({
       clientId: kafkaConfig.clientId,
       brokers: kafkaConfig.brokers,
@@ -21,6 +21,6 @@ export class KafkaQueue {
       messages: [{ value: message }],
     });
 
-    console.log(JSON.stringify(result));
+    console.log(`KafkaQueue.send${JSON.stringify(result)}`);
   }
 }

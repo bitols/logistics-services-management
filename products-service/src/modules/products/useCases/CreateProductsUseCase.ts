@@ -8,14 +8,12 @@ import { KafkaQueue } from '@shared/infra/queue/KafkaQueue';
 
 @injectable()
 export default class CreateProductsUseCase implements ICreateProductUseCase {
-  private kafkaQueue: KafkaQueue;
-
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
-  ) {
-    this.kafkaQueue = new KafkaQueue();
-  }
+    @inject('KafkaQueue')
+    private kafkaQueue: KafkaQueue,
+  ) {}
 
   public async execute(
     data: ICreateProductsRequest,
@@ -29,10 +27,6 @@ export default class CreateProductsUseCase implements ICreateProductUseCase {
       JSON.stringify({ id: product.storageId }),
     );
 
-    console.log(
-      `producing on kafka,
-      topic: ${kafkaConfig.storageControlTopic}`,
-    );
     return product as IProductsResponse;
   }
 }

@@ -4,12 +4,16 @@ import { IUpdateProductsRequest } from '@shared-types/products/domain/models/req
 import { IProductsResponse } from '@shared-types/products/domain/models/responses/IProductsResponse';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 import { IUpdateProducstUseCase } from '../domain/useCases/IUpdateProductsUseCase';
+import { KafkaQueue } from '@shared/infra/queue/KafkaQueue';
+import kafkaConfig from '@config/kafkaConfig';
 
 @injectable()
 export default class UpdateProductsUseCase implements IUpdateProducstUseCase {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
+    @inject('KafkaQueue')
+    private kafkaQueue: KafkaQueue,
   ) {}
 
   public async execute(
@@ -30,6 +34,11 @@ export default class UpdateProductsUseCase implements IUpdateProducstUseCase {
     product.storageId = data.storageId;
 
     await this.productsRepository.save(product);
+
+    await this.kafkaQueue.send(
+      kafkaConfig.storageControlTopic,
+      JSON.stringify({ id: product.storageId }),
+    );
 
     return product as IProductsResponse;
   }
