@@ -1,10 +1,11 @@
 import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
 import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
+import { IGetStoragesRequest } from '@shared-types/storages/domain/models/requests/IGetStoragesRequest';
 import AppErrors from '@shared/errors/AppErrors';
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import { IGenerateStoragesIndicatorsUseCase } from '../domain/useCases/IGenerateStoragesIndicatorsUseCase';
-
-export class GenerateStoragesIndicatorsUseCase
+@injectable()
+export default class GenerateStoragesIndicatorsUseCase
   implements IGenerateStoragesIndicatorsUseCase
 {
   constructor(
@@ -14,8 +15,8 @@ export class GenerateStoragesIndicatorsUseCase
     private productsGateway: IProductsGateway,
   ) {}
 
-  public async execute(id: string): Promise<void> {
-    const storage = await this.storagesGateway.getById({ id });
+  public async execute(request: IGetStoragesRequest): Promise<void> {
+    const storage = await this.storagesGateway.getById({ id: request.id });
 
     if (!storage) {
       throw new AppErrors('Storage not found');
@@ -57,6 +58,6 @@ export class GenerateStoragesIndicatorsUseCase
       supplierId: storage.supplierId,
     };
 
-    console.log('Storages Indicators: ', JSON.stringify(indicators));
+    console.log('Storages Indicators: ', indicators);
   }
 }

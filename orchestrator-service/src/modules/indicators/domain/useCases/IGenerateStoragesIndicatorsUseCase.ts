@@ -1,3 +1,5 @@
+import { IGetStoragesRequest } from '@shared-types/storages/domain/models/requests/IGetStoragesRequest';
+
 export interface IGenerateStoragesIndicatorsUseCase {
-  execute(id: string): Promise<void>;
+  execute(request: IGetStoragesRequest): Promise<void>;
 }
