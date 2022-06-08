@@ -43,19 +43,15 @@ export default class GenerateStoragesIndicatorsUseCase
       });
 
     const indicators = {
-      id: storage.id,
-      name: storage.name,
-      indicators: {
-        capacity: storage.capacity,
-        stored: data ? Number(data.volume.toFixed(3)) : 0,
-        usage: data
-          ? Number(((data.volume * 100) / storage.capacity).toFixed(2))
-          : 0,
-        products: data ? data.qtd : 0,
-        value: data ? Number(data.value.toFixed(2)) : 0,
-      },
+      storageId: storage.id,
+      capacity: storage.capacity,
+      stored: data ? Number(data.volume.toFixed(3)) : 0,
+      usage: data
+        ? Number(((data.volume * 100) / storage.capacity).toFixed(2))
+        : 0,
+      products: data ? data.qtd : 0,
+      value: data ? Number(data.value.toFixed(2)) : 0,
       senderId: storage.senderId,
-      supplierId: storage.supplierId,
     };
 
     console.log('Storages Indicators: ', indicators);
