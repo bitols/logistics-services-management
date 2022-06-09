@@ -6,7 +6,7 @@ import { IStoragesRepository } from '../domain/repositories/IStoragesRepository'
 import { IGetAllStoragesBySenderIdUseCase } from '../domain/useCases/IGetAllStoragesBySenderIdUseCase';
 
 @injectable()
-export default class GetasllStoragesBySenderIdUsecase
+export default class GetAllStoragesBySenderIdUsecase
   implements IGetAllStoragesBySenderIdUseCase
 {
   constructor(
