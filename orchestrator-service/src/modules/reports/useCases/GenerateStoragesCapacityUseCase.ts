@@ -3,6 +3,7 @@ import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGat
 import { IGetStoragesRequest } from '@shared-types/storages/domain/models/requests/IGetStoragesRequest';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
+import { IReportsGateway } from '../domain/gateways/IReportsGateway';
 import { IGenerateStoragesCapacitysUseCase } from '../domain/useCases/IGenerateStoragesCapacityUseCase';
 @injectable()
 export default class GenerateStoragesCapacitysUseCase
@@ -13,6 +14,8 @@ export default class GenerateStoragesCapacitysUseCase
     private storagesGateway: IStoragesGateway,
     @inject('ProductsGateway')
     private productsGateway: IProductsGateway,
+    @inject('ReportsGateway')
+    private reportsGateway: IReportsGateway,
   ) {}
 
   public async execute(request: IGetStoragesRequest): Promise<void> {
@@ -53,6 +56,7 @@ export default class GenerateStoragesCapacitysUseCase
       value: data ? Number(data.value.toFixed(2)) : 0,
       senderId: storage.senderId,
     };
-    console.log(`storage capacity control: ${JSON.stringify(capacity)}`);
+
+    await this.reportsGateway.registerStoragesCapacity(capacity);
   }
 }
