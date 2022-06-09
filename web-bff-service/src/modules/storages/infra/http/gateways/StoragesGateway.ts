@@ -9,8 +9,6 @@ export class StoragesGateway implements IStoragesGateway {
   public async getAllBySender(
     request: IGetAllStoragesBySenderIdRequest,
   ): Promise<IStoragesResponse[] | undefined> {
-    console.log('request all storages by sender: ', request);
-
     try {
       const { data, status } = await axios.get<IStoragesResponse[]>(
         `${process.env.API_STORAGES_ADDRESS}/storages/senders/${request.senderId}`,
@@ -21,7 +19,11 @@ export class StoragesGateway implements IStoragesGateway {
         },
       );
 
-      console.log('response status is: ', status);
+      console.log(
+        `request all storages by sender: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
 
       return data;
     } catch (error: any) {
@@ -32,8 +34,6 @@ export class StoragesGateway implements IStoragesGateway {
   public async getAllBySupplier(
     request: IGetAllStoragesBySupplierIdRequest,
   ): Promise<IStoragesResponse[] | undefined> {
-    console.log('request all storages by supplier: ', request);
-
     try {
       const { data, status } = await axios.get<IStoragesResponse[]>(
         `${process.env.API_STORAGES_ADDRESS}/storages/suppliers/${request.supplierId}`,
@@ -44,7 +44,11 @@ export class StoragesGateway implements IStoragesGateway {
         },
       );
 
-      console.log('response status is: ', status);
+      console.log(
+        `request all storages by supplier: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
 
       return data;
     } catch (error: any) {
@@ -55,8 +59,6 @@ export class StoragesGateway implements IStoragesGateway {
   public async getById(
     request: IGetStoragesRequest,
   ): Promise<IStoragesResponse | undefined> {
-    console.log('request storage by id: ', request);
-
     try {
       const { data, status } = await axios.get<IStoragesResponse>(
         `${process.env.API_STORAGES_ADDRESS}/storages/${request.id}`,
@@ -67,7 +69,11 @@ export class StoragesGateway implements IStoragesGateway {
         },
       );
 
-      console.log('response status is: ', status);
+      console.log(
+        `request storage: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
 
       return data;
     } catch (error: any) {

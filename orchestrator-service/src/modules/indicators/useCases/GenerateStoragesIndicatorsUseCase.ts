@@ -53,7 +53,6 @@ export default class GenerateStoragesIndicatorsUseCase
       value: data ? Number(data.value.toFixed(2)) : 0,
       senderId: storage.senderId,
     };
-
-    console.log('Storages Indicators: ', indicators);
+    console.log(`storages Indicators: ${JSON.stringify(indicators)}`);
   }
 }

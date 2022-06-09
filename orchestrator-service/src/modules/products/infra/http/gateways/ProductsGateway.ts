@@ -7,7 +7,6 @@ export class ProductsGateway implements IProductsGateway {
   public async getAllByStorage(
     request: IGetAllProductsByStorageIdRequest,
   ): Promise<IProductsResponse[] | undefined> {
-    console.log('request all products by storage', request);
     try {
       const { data, status } = await axios.get<IProductsResponse[]>(
         `${process.env.API_PRODUCTS_ADDRESS}/products/storage/${request.storageId}`,
@@ -18,7 +17,12 @@ export class ProductsGateway implements IProductsGateway {
         },
       );
 
-      console.log('response status is: ', status);
+      console.log(
+        `request all products by storage: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
+
       return data;
     } catch (error: any) {
       console.error(error.message);
