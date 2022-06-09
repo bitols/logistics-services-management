@@ -60,6 +60,20 @@ services:
     ports:
       - '3333:3333'
 
+  reports:
+    build: ./reports-service
+    container_name: reports_service
+    environment:
+      - APP_API_PORT=3336
+      - DB_NAME=reports
+      - DB_USERNAME=reports
+      - DB_PASSWORD=lmRX0EHEKaf4Xuu2
+      - DB_HOST=cluster0.j2lwq.mongodb.net
+    networks:
+      - logistics-management-network
+    ports:
+      - '3336:3336'
+
   receivers:
     build: ./receivers-service
     container_name: receivers_service
