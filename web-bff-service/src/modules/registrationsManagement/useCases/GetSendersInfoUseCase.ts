@@ -1,8 +1,7 @@
-import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
 import { IGetSendersRequest } from '@shared-types/senders/domain/models/requests/IGetSendersRequest';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { ISendersGateway } from '../domain/gateways/ISendersGateway';
+import { ISendersGateway } from '@modules/senders/domain/gateways/ISendersGateway';
 import { IGetSendersInfoUseCase } from '../domain/useCases/IGetSendersInfoUseCase';
 
 @injectable()
