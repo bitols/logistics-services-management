@@ -10,7 +10,7 @@ export default class Storage implements IStorage {
   name: string;
 
   @Column()
-  capacity: string;
+  capacity: number;
 
   @Column()
   email: string;

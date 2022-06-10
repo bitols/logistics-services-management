@@ -1,5 +1,5 @@
 import { GetSenderInfoUseCase } from '@modules/senders/useCases/GetSendersInfoUseCase';
-import { GetSendersStoragesInfoUseCase } from '@modules/senders/useCases/GetSendersStoragesInfoUseCase';
+import { GetSendersStoragesCapacityUseCase } from '@modules/senders/useCases/GetSendersStoragesCapacityUseCase';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -22,7 +22,9 @@ export default class SendersController {
   ): Promise<Response> {
     const { id } = request.params;
 
-    const getSendersStorages = container.resolve(GetSendersStoragesInfoUseCase);
+    const getSendersStorages = container.resolve(
+      GetSendersStoragesCapacityUseCase,
+    );
     const productsInfo = await getSendersStorages.execute({ id });
 
     return response.json(productsInfo);

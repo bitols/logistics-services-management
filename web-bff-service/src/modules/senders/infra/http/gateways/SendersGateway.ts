@@ -5,8 +5,6 @@ import axios from 'axios';
 
 export class SendersGateway implements ISendersGateway {
   public async getAll(): Promise<ISendersResponse[] | undefined> {
-    console.log('request all senders');
-
     try {
       const { data, status } = await axios.get<ISendersResponse[]>(
         `${process.env.API_SENDERS_ADDRESS}/senders/`,
@@ -17,7 +15,7 @@ export class SendersGateway implements ISendersGateway {
         },
       );
 
-      console.log('response status is: ', status);
+      console.log(`request all senders, response status is: ${status}`);
 
       return data;
     } catch (error: any) {
@@ -28,7 +26,6 @@ export class SendersGateway implements ISendersGateway {
   public async getById(
     request: IGetSendersRequest,
   ): Promise<ISendersResponse | undefined> {
-    console.log('request sender: ', request);
     try {
       const { data, status } = await axios.get<ISendersResponse>(
         `${process.env.API_SENDERS_ADDRESS}/senders/${request.id}`,
@@ -39,7 +36,11 @@ export class SendersGateway implements ISendersGateway {
         },
       );
 
-      console.log('response status is: ', status);
+      console.log(
+        `request sender: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
 
       return data;
     } catch (error: any) {
