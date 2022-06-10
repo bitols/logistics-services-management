@@ -1,6 +1,6 @@
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
-import ReceiversController from '../controllers/ReceiversController';
+import ReceiversController from '../../../../registrationsManagement/infra/http/controllers/ReceiversRegistrationController';
 
 const receiversRouter = Router();
 const receiversController = new ReceiversController();
@@ -12,7 +12,7 @@ receiversRouter.get(
       id: Joi.string().hex().required(),
     },
   }),
-  receiversController.getById,
+  receiversController.getInfoById,
 );
 
 export default receiversRouter;
