@@ -1,3 +1,4 @@
+import gatewayConfig from '@config/gatewayConfig';
 import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
 import { IGetAllProductsByStorageIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsByStoragedRequest';
 import { IProductsResponse } from '@shared-types/products/domain/models/responses/IProductsResponse';
@@ -9,7 +10,7 @@ export class ProductsGateway implements IProductsGateway {
   ): Promise<IProductsResponse[] | undefined> {
     try {
       const { data, status } = await axios.get<IProductsResponse[]>(
-        `${process.env.API_PRODUCTS_ADDRESS}/products/storage/${request.storageId}`,
+        `${gatewayConfig.productsService.address}/products/storage/${request.storageId}`,
         {
           headers: {
             Accept: 'application/json',

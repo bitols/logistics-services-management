@@ -1,3 +1,4 @@
+import gatewayConfig from '@config/gatewayConfig';
 import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
 import { IGetStoragesRequest } from '@shared-types/storages/domain/models/requests/IGetStoragesRequest';
 import { IStoragesResponse } from '@shared-types/storages/domain/models/responses/IStoragesResponse';
@@ -9,7 +10,7 @@ export class StoragesGateway implements IStoragesGateway {
   ): Promise<IStoragesResponse | undefined> {
     try {
       const { data, status } = await axios.get<IStoragesResponse>(
-        `${process.env.API_STORAGES_ADDRESS}/storages/${request.id}`,
+        `${gatewayConfig.storagesService.address}/storages/${request.id}`,
         {
           headers: {
             Accept: 'application/json',
