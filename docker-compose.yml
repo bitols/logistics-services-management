@@ -93,6 +93,7 @@ services:
     container_name: web-bff-service
     environment:
       - APP_API_PORT=3000
+      - API_REPORTS_ADDRESS=http://reports:3336
       - API_RECEIVERS_ADDRESS=http://receivers:3334
       - API_PRODUCTS_ADDRESS=http://products:3333
       - API_SENDERS_ADDRESS=http://senders:3330
