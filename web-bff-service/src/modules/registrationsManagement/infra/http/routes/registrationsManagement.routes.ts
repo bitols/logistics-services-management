@@ -2,10 +2,13 @@ import { Router } from 'express';
 import ProductsRegistrationController from '../controllers/ProductsRegistrationController';
 import { celebrate, Joi, Segments } from 'celebrate';
 import SendersRegistrationController from '../controllers/SendersRegistrationController';
+import ReceiversController from '../controllers/ReceiversRegistrationController';
 
 const registrationsManamenteRouter = Router();
+
 const productsRegistrationController = new ProductsRegistrationController();
 const sendersRegistrationController = new SendersRegistrationController();
+const receiversRegistrationController = new ReceiversController();
 
 registrationsManamenteRouter.post(
   '/products',
@@ -31,6 +34,16 @@ registrationsManamenteRouter.get(
     },
   }),
   sendersRegistrationController.getInfoById,
+);
+
+registrationsManamenteRouter.get(
+  '/receivers/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().hex().required(),
+    },
+  }),
+  receiversRegistrationController.getInfoById,
 );
 
 export default registrationsManamenteRouter;
