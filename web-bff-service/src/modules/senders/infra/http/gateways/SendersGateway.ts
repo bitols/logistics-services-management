@@ -1,3 +1,4 @@
+import gatewayConfig from '@config/gatewayConfig';
 import { ISendersGateway } from '@modules/senders/domain/gateways/ISendersGateway';
 import { IGetSendersRequest } from '@shared-types/senders/domain/models/requests/IGetSendersRequest';
 import { ISendersResponse } from '@shared-types/senders/domain/models/responses/ISendersResponse';
@@ -7,7 +8,7 @@ export class SendersGateway implements ISendersGateway {
   public async getAll(): Promise<ISendersResponse[] | undefined> {
     try {
       const { data, status } = await axios.get<ISendersResponse[]>(
-        `${process.env.API_SENDERS_ADDRESS}/senders/`,
+        `${gatewayConfig.sendersService.address}/senders/`,
         {
           headers: {
             Accept: 'application/json',
@@ -28,7 +29,7 @@ export class SendersGateway implements ISendersGateway {
   ): Promise<ISendersResponse | undefined> {
     try {
       const { data, status } = await axios.get<ISendersResponse>(
-        `${process.env.API_SENDERS_ADDRESS}/senders/${request.id}`,
+        `${gatewayConfig.sendersService.address}/senders/${request.id}`,
         {
           headers: {
             Accept: 'application/json',

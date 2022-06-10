@@ -1,3 +1,4 @@
+import gatewayConfig from '@config/gatewayConfig';
 import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
 import { IGetAllStoragesBySenderIdRequest } from '@shared-types/storages/domain/models/requests/IGetAllStoragesBySenderIdRequests';
 import { IGetAllStoragesBySupplierIdRequest } from '@shared-types/storages/domain/models/requests/IGetAllStoragesBySupplierIdRequest';
@@ -11,7 +12,7 @@ export class StoragesGateway implements IStoragesGateway {
   ): Promise<IStoragesResponse[] | undefined> {
     try {
       const { data, status } = await axios.get<IStoragesResponse[]>(
-        `${process.env.API_STORAGES_ADDRESS}/storages/senders/${request.senderId}`,
+        `${gatewayConfig.storagesService.address}/storages/senders/${request.senderId}`,
         {
           headers: {
             Accept: 'application/json',
@@ -36,7 +37,7 @@ export class StoragesGateway implements IStoragesGateway {
   ): Promise<IStoragesResponse[] | undefined> {
     try {
       const { data, status } = await axios.get<IStoragesResponse[]>(
-        `${process.env.API_STORAGES_ADDRESS}/storages/suppliers/${request.supplierId}`,
+        `${gatewayConfig.storagesService.address}/storages/suppliers/${request.supplierId}`,
         {
           headers: {
             Accept: 'application/json',
@@ -61,7 +62,7 @@ export class StoragesGateway implements IStoragesGateway {
   ): Promise<IStoragesResponse | undefined> {
     try {
       const { data, status } = await axios.get<IStoragesResponse>(
-        `${process.env.API_STORAGES_ADDRESS}/storages/${request.id}`,
+        `${gatewayConfig.storagesService.address}/storages/${request.id}`,
         {
           headers: {
             Accept: 'application/json',

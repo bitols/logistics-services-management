@@ -1,3 +1,4 @@
+import gatewayConfig from '@config/gatewayConfig';
 import { IReportsGateway } from '@modules/reports/domain/gateways/IReportsGateway';
 import { IGetAllStoragesCapacityBySenderIdRequest } from '@shared-types/reports/domain/models/requests/IGetAllStoragesCapacityBySenderIdRequest';
 import { IStoragesCapacityResponse } from '@shared-types/reports/domain/models/responses/IStoragesCapacityResponse';
@@ -9,7 +10,7 @@ export class ReportsGateway implements IReportsGateway {
   ): Promise<IStoragesCapacityResponse[] | undefined> {
     try {
       const { data, status } = await axios.get<IStoragesCapacityResponse[]>(
-        `${process.env.API_REPORTS_ADDRESS}/reports/${request.senderId}/storages-capacity`,
+        `${gatewayConfig.reportsService.address}/reports/${request.senderId}/storages-capacity`,
         {
           headers: {
             Accept: 'application/json',
