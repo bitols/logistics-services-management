@@ -3,16 +3,19 @@ import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGat
 import { IGetStoragesRequest } from '@shared-types/storages/domain/models/requests/IGetStoragesRequest';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IGenerateStoragesIndicatorsUseCase } from '../domain/useCases/IGenerateStoragesIndicatorsUseCase';
+import { IReportsGateway } from '../domain/gateways/IReportsGateway';
+import { IGenerateStoragesCapacitysUseCase } from '../domain/useCases/IGenerateStoragesCapacityUseCase';
 @injectable()
-export default class GenerateStoragesIndicatorsUseCase
-  implements IGenerateStoragesIndicatorsUseCase
+export default class GenerateStoragesCapacitysUseCase
+  implements IGenerateStoragesCapacitysUseCase
 {
   constructor(
     @inject('StoragesGateway')
     private storagesGateway: IStoragesGateway,
     @inject('ProductsGateway')
     private productsGateway: IProductsGateway,
+    @inject('ReportsGateway')
+    private reportsGateway: IReportsGateway,
   ) {}
 
   public async execute(request: IGetStoragesRequest): Promise<void> {
@@ -42,7 +45,7 @@ export default class GenerateStoragesIndicatorsUseCase
         };
       });
 
-    const indicators = {
+    const capacity = {
       storageId: storage.id,
       capacity: storage.capacity,
       stored: data ? Number(data.volume.toFixed(3)) : 0,
@@ -53,6 +56,7 @@ export default class GenerateStoragesIndicatorsUseCase
       value: data ? Number(data.value.toFixed(2)) : 0,
       senderId: storage.senderId,
     };
-    console.log(`storages Indicators: ${JSON.stringify(indicators)}`);
+
+    await this.reportsGateway.registerStoragesCapacity(capacity);
   }
 }

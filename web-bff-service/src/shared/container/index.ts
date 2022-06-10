@@ -2,6 +2,8 @@ import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGat
 import { ProductsGateway } from '@modules/products/infra/http/gateways/ProductsGateway';
 import { IReceiversGateway } from '@modules/receivers/domain/gateways/IReceiversGateway';
 import { ReceiversGateway } from '@modules/receivers/infra/http/gateways/ReceiversGateway';
+import { IReportsGateway } from '@modules/reports/domain/gateways/IReportsGateway';
+import { ReportsGateway } from '@modules/reports/infra/http/gateways/ReportsGateway';
 import { ISendersGateway } from '@modules/senders/domain/gateways/ISendersGateway';
 import { SendersGateway } from '@modules/senders/infra/http/gateways/SendersGateway';
 import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
@@ -31,3 +33,5 @@ container.registerSingleton<IStoragesGateway>(
   'StoragesGateway',
   StoragesGateway,
 );
+
+container.registerSingleton<IReportsGateway>('ReportsGateway', ReportsGateway);
