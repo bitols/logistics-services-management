@@ -1,13 +1,13 @@
 import { IGetSendersRequest } from '@shared-types/senders/domain/models/requests/IGetSendersRequest';
-import { IGetSendersStoragesCapacityUseCase } from '../domain/useCases/IGetSendersStoragesCapacityUseCase';
+import { IGetStoragesCapacityBySenderUseCase } from '../domain/useCases/IGetStoragesCapacityBySenderUseCase';
 import { IReportsGateway } from '@modules/reports/domain/gateways/IReportsGateway';
 import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
 import { inject, injectable } from 'tsyringe';
 import AppErrors from '@shared/errors/AppErrors';
 
 @injectable()
-export class GetSendersStoragesCapacityUseCase
-  implements IGetSendersStoragesCapacityUseCase
+export class GetStoragesCapacityBySenderUseCase
+  implements IGetStoragesCapacityBySenderUseCase
 {
   constructor(
     @inject('StoragesGateway')
