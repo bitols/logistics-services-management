@@ -8,8 +8,9 @@ import routes from './routes';
 import AppErrors from '@shared/errors/AppErrors';
 import '@shared/infra/typeorm';
 import '@shared/container';
+import appApiConfig from '@config/appApiConfig';
 
-const port = process.env.APP_API_PORT;
+const port = appApiConfig.port;
 
 const app = express();
 
