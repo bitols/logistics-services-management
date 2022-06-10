@@ -25,6 +25,9 @@ export default class UpdateProductsUseCase implements IUpdateProducstUseCase {
       throw new AppErrors('Product not found');
     }
 
+    const oldStorageId =
+      product.storageId !== data.storageId ? product.storageId : undefined;
+
     product.name = data.name;
     product.price = data.price;
     product.height = data.height;
@@ -39,6 +42,13 @@ export default class UpdateProductsUseCase implements IUpdateProducstUseCase {
       kafkaConfig.storageControlTopic,
       JSON.stringify({ id: product.storageId }),
     );
+
+    if (oldStorageId) {
+      await this.kafkaQueue.send(
+        kafkaConfig.storageControlTopic,
+        JSON.stringify({ id: oldStorageId }),
+      );
+    }
 
     return product as IProductsResponse;
   }
