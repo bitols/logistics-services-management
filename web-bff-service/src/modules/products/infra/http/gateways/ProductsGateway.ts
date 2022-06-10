@@ -1,3 +1,4 @@
+import gatewayConfig from '@config/gatewayConfig';
 import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
 import { ICreateProductsRequest } from '@shared-types/products/domain/models/requests/ICreateProductsRequest';
 import { IGetAllProductsBySenderIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsBySenderIdRequest';
@@ -12,7 +13,7 @@ export class ProductsGateway implements IProductsGateway {
   ): Promise<IProductsResponse | undefined> {
     try {
       const { data, status } = await axios.post<IProductsResponse>(
-        `${process.env.API_PRODUCTS_ADDRESS}/products/`,
+        `${gatewayConfig.productsService.address}/products/`,
         request,
         {
           headers: {
@@ -37,7 +38,7 @@ export class ProductsGateway implements IProductsGateway {
   ): Promise<IProductsResponse | undefined> {
     try {
       const { data, status } = await axios.get<IProductsResponse>(
-        `${process.env.API_PRODUCTS_ADDRESS}/products/${request.id}`,
+        `${gatewayConfig.productsService.address}/products/${request.id}`,
         {
           headers: {
             Accept: 'application/json',
@@ -62,7 +63,7 @@ export class ProductsGateway implements IProductsGateway {
   ): Promise<IProductsResponse[] | undefined> {
     try {
       const { data, status } = await axios.get<IProductsResponse[]>(
-        `${process.env.API_PRODUCTS_ADDRESS}/products/sender/${request.senderId}`,
+        `${gatewayConfig.productsService.address}/products/sender/${request.senderId}`,
         {
           headers: {
             Accept: 'application/json',
@@ -87,7 +88,7 @@ export class ProductsGateway implements IProductsGateway {
   ): Promise<IProductsResponse[] | undefined> {
     try {
       const { data, status } = await axios.get<IProductsResponse[]>(
-        `${process.env.API_PRODUCTS_ADDRESS}/products/storage/${request.storageId}`,
+        `${gatewayConfig.productsService.address}/products/storage/${request.storageId}`,
         {
           headers: {
             Accept: 'application/json',

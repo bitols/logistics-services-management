@@ -1,3 +1,4 @@
+import gatewayConfig from '@config/gatewayConfig';
 import { IReceiversGateway } from '@modules/receivers/domain/gateways/IReceiversGateway';
 import { IGetReceiversRequest } from '@shared-types/receivers/domain/models/requests/IGetReceiversRequest';
 import { IReceiversResponse } from '@shared-types/receivers/domain/models/responses/IReceiversResponse';
@@ -11,7 +12,7 @@ export class ReceiversGateway implements IReceiversGateway {
 
     try {
       const { data, status } = await axios.get<IReceiversResponse>(
-        `${process.env.API_RECEIVERS_ADDRESS}/receivers/${request.id}`,
+        `${gatewayConfig.receiversService.address}/receivers/${request.id}`,
         {
           headers: {
             Accept: 'application/json',
