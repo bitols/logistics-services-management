@@ -1,11 +1,11 @@
 import receiversRouter from '@modules/receivers/infra/http/routes/receivers.routes';
-import sendersRouter from '@modules/senders/infra/http/routes/senders.router';
-import productsRouter from '@modules/products/infra/http/routes/products.routes';
-import { Router } from 'express';
+import strategiesManagementRouter from '@modules/strategiesManagement/infra/http/routes/strategiesManagement.routes';
+import registrationsManagementRouter from '@modules/registrationsManagement/infra/http/routes/registrationsManagement.routes';
 
+import { Router } from 'express';
 const routes = Router();
 
 routes.use('/receivers', receiversRouter);
-routes.use('/senders', sendersRouter);
-routes.use('/products', productsRouter);
+routes.use('/strategies-management', strategiesManagementRouter);
+routes.use('/registrations-management', registrationsManagementRouter);
 export default routes;

@@ -1,4 +1,4 @@
-import { CreateProductsUseCase } from '@modules/products/useCases/CreateProductsUseCase';
+import { CreateProductsUseCase } from '@modules/registrationsManagement/useCases/CreateProductsUseCase';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 

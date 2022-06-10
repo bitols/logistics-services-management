@@ -3,7 +3,7 @@ import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGat
 import { ICreateProductsRequest } from '@shared-types/products/domain/models/requests/ICreateProductsRequest';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IProductsGateway } from '../domain/gateways/IProductsGateway';
+import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
 import { ICreateProductUseCase } from '../domain/useCases/ICreateProductsUseCase';
 
 @injectable()
