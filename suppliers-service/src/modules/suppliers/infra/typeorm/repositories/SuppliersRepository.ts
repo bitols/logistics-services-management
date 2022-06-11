@@ -1,14 +1,15 @@
 import { ISupplier } from '@shared-types/suppliers/domain/models/entities/ISupplier';
 import { ICreateSuppliersRequest } from '@shared-types/suppliers/domain/models/requests/ICreateSuppliersRequest';
 import { ISuppliersRepository } from '@modules/suppliers/domain/repositories/ISuppliersRepository';
-import { getRepository, Repository } from 'typeorm';
+import { ObjectID, Repository } from 'typeorm';
 import Supplier from '../entities/Supplier';
+import { dataSource } from '@shared/infra/typeorm';
 
 export class SuppliersRepository implements ISuppliersRepository {
   private ormRepository: Repository<Supplier>;
 
   constructor() {
-    this.ormRepository = getRepository(Supplier);
+    this.ormRepository = dataSource.getMongoRepository(Supplier);
   }
 
   public async create(data: ICreateSuppliersRequest): Promise<ISupplier> {
@@ -27,9 +28,8 @@ export class SuppliersRepository implements ISuppliersRepository {
     await this.ormRepository.remove(supplier);
   }
 
-  public async getById(id: string): Promise<ISupplier | undefined> {
-    const supplier = await this.ormRepository.findOne(id);
-
+  public async getById(id: string): Promise<ISupplier | null | undefined> {
+    const supplier = await this.ormRepository.findOneById(id);
     return supplier;
   }
 

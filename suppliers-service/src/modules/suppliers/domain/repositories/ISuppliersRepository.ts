@@ -5,6 +5,6 @@ export interface ISuppliersRepository {
   create(data: ICreateSuppliersRequest): Promise<ISupplier>;
   save(supplier: ISupplier): Promise<ISupplier>;
   remove(supplier: ISupplier): Promise<void>;
-  getById(id: string): Promise<ISupplier | undefined>;
+  getById(id: string): Promise<ISupplier | null | undefined>;
   getAll(): Promise<ISupplier[]>;
 }
