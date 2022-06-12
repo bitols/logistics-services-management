@@ -1,14 +1,15 @@
 import { ISender } from '@shared-types/senders/domain/models/entities/ISender';
 import { ICreateSendersRequest } from '@shared-types/senders/domain/models/requests/ICreateSendersRequest';
 import { ISendersRepository } from '@modules/senders/domain/repositories/ISendersRepository';
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import Supplier from '../entities/Sender';
+import { dataSource } from '@shared/infra/typeorm';
 
 export class SendersRepository implements ISendersRepository {
   private ormRepository: Repository<Supplier>;
 
   constructor() {
-    this.ormRepository = getRepository(Supplier);
+    this.ormRepository = dataSource.getRepository(Supplier);
   }
 
   public async create(data: ICreateSendersRequest): Promise<ISender> {
@@ -33,10 +34,10 @@ export class SendersRepository implements ISendersRepository {
     await this.ormRepository.remove(sender);
   }
 
-  public async getById(id: string): Promise<ISender | undefined> {
+  public async getById(id: string): Promise<ISender | null | undefined> {
     console.log(`get sender by id: ${id}`);
 
-    const sender = await this.ormRepository.findOne(id);
+    const sender = await this.ormRepository.findOneById(id);
 
     return sender;
   }
