@@ -5,6 +5,6 @@ export interface ISendersRepository {
   create(data: ICreateSendersRequest): Promise<ISender>;
   save(sender: ISender): Promise<ISender>;
   remove(sender: ISender): Promise<void>;
-  getById(id: string): Promise<ISender | undefined>;
+  getById(id: string): Promise<ISender | null | undefined>;
   getAll(): Promise<ISender[]>;
 }
