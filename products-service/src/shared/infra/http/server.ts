@@ -3,6 +3,7 @@ import 'dotenv/config';
 import appApiConfig from '@config/appApiConfig';
 import { app } from './app';
 import { dataSource } from '../typeorm';
+import '../kafka';
 
 const port = appApiConfig.port;
 

@@ -4,16 +4,16 @@ import { IUpdateProductsRequest } from '@shared-types/products/domain/models/req
 import { IProductsResponse } from '@shared-types/products/domain/models/responses/IProductsResponse';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 import { IUpdateProducstUseCase } from '../domain/useCases/IUpdateProductsUseCase';
-import { KafkaQueue } from '@shared/infra/queue/KafkaQueue';
 import kafkaConfig from '@config/kafkaConfig';
+import { ProductsQueue } from '../infra/kafka/queues/ProductsQueue';
 
 @injectable()
 export default class UpdateProductsUseCase implements IUpdateProducstUseCase {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
-    @inject('KafkaQueue')
-    private kafkaQueue: KafkaQueue,
+    @inject('ProductsQueue')
+    private productsQueue: ProductsQueue,
   ) {}
 
   public async execute(
@@ -38,16 +38,10 @@ export default class UpdateProductsUseCase implements IUpdateProducstUseCase {
 
     await this.productsRepository.save(product);
 
-    await this.kafkaQueue.send(
-      kafkaConfig.storageControlTopic,
-      JSON.stringify({ id: product.storageId }),
-    );
+    await this.productsQueue.produceStoragesCapacity(product.storageId);
 
     if (oldStorageId) {
-      await this.kafkaQueue.send(
-        kafkaConfig.storageControlTopic,
-        JSON.stringify({ id: oldStorageId }),
-      );
+      await this.productsQueue.produceStoragesCapacity(oldStorageId);
     }
 
     return product as IProductsResponse;
