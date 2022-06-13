@@ -1,14 +1,14 @@
 import { IReceiver } from '@shared-types/receivers/domain/models/entities/IReceiver';
 import { ICreateReceiversRequest } from '@shared-types/receivers/domain/models/requests/ICreateReceiversRequest';
 import { IReceiversRepository } from '@modules/receivers/domain/repositories/IReceiverRepository';
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import Receiver from '../entities/Receiver';
-
+import { dataSource } from '@shared/infra/typeorm';
 export class ReceiversRepository implements IReceiversRepository {
   private ormRepository: Repository<Receiver>;
 
   constructor() {
-    this.ormRepository = getRepository(Receiver);
+    this.ormRepository = dataSource.getRepository(Receiver);
   }
 
   public async create(data: ICreateReceiversRequest): Promise<IReceiver> {
@@ -27,8 +27,8 @@ export class ReceiversRepository implements IReceiversRepository {
     await this.ormRepository.remove(receiver);
   }
 
-  public async getById(id: string): Promise<IReceiver | undefined> {
-    const receiver = await this.ormRepository.findOne(id);
+  public async getById(id: string): Promise<IReceiver | null | undefined> {
+    const receiver = await this.ormRepository.findOneById(id);
 
     return receiver;
   }
