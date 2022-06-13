@@ -1,14 +1,15 @@
 import { IStorage } from '@shared-types/storages/domain/models/entities/IStorage';
 import { ICreateStoragesRequest } from '@shared-types/storages/domain/models/requests/ICreateStoragesRequest';
 import { IStoragesRepository } from '@modules/storages/domain/repositories/IStoragesRepository';
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import Storage from '../entities/Storage';
+import { dataSource } from '@shared/infra/typeorm';
 
 export class StoragesRepository implements IStoragesRepository {
   private ormRepository: Repository<Storage>;
 
   constructor() {
-    this.ormRepository = getRepository(Storage);
+    this.ormRepository = dataSource.getRepository(Storage);
   }
 
   public async create(data: ICreateStoragesRequest): Promise<IStorage> {
@@ -33,10 +34,10 @@ export class StoragesRepository implements IStoragesRepository {
     await this.ormRepository.remove(storage);
   }
 
-  public async getById(id: string): Promise<IStorage | undefined> {
+  public async getById(id: string): Promise<IStorage | null | undefined> {
     console.log(`get storage by id: ${id}`);
 
-    const storage = await this.ormRepository.findOne(id);
+    const storage = await this.ormRepository.findOneById(id);
 
     return storage;
   }
@@ -44,10 +45,8 @@ export class StoragesRepository implements IStoragesRepository {
   public async getAllBySupplier(supplier: string): Promise<IStorage[]> {
     console.log(`get all storages by supplier id: ${supplier}`);
 
-    const storages = await this.ormRepository.find({
-      where: {
-        supplierId: { $eq: supplier },
-      },
+    const storages = await this.ormRepository.findBy({
+      supplierId: supplier,
     });
 
     return storages;
@@ -56,10 +55,8 @@ export class StoragesRepository implements IStoragesRepository {
   public async getAllBySender(sender: string): Promise<IStorage[]> {
     console.log(`get all storages by sender id: ${sender}`);
 
-    const storages = await this.ormRepository.find({
-      where: {
-        senderId: { $eq: sender },
-      },
+    const storages = await this.ormRepository.findBy({
+      senderId: sender,
     });
 
     return storages;
