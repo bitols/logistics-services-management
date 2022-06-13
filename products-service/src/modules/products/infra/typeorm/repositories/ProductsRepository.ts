@@ -1,14 +1,14 @@
 import { IProduct } from '@shared-types/products/domain/models/entities/IProduct';
 import { ICreateProductsRequest } from '@shared-types/products/domain/models/requests/ICreateProductsRequest';
 import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import Product from '../entities/Product';
-
+import { dataSource } from '@shared/infra/typeorm';
 export class ProductsRepository implements IProductsRepository {
   private ormRepository: Repository<Product>;
 
   constructor() {
-    this.ormRepository = getRepository(Product);
+    this.ormRepository = dataSource.getRepository(Product);
   }
 
   public async create(data: ICreateProductsRequest): Promise<IProduct> {
@@ -33,10 +33,10 @@ export class ProductsRepository implements IProductsRepository {
     await this.ormRepository.remove(product);
   }
 
-  public async getById(id: string): Promise<IProduct | undefined> {
+  public async getById(id: string): Promise<IProduct | null | undefined> {
     console.log(`get product by id: ${id}`);
 
-    const product = await this.ormRepository.findOne(id);
+    const product = await this.ormRepository.findOneById(id);
 
     return product;
   }
@@ -44,10 +44,8 @@ export class ProductsRepository implements IProductsRepository {
   public async getAllBySender(sender: string): Promise<IProduct[]> {
     console.log(`get all products by sender id: ${sender}`);
 
-    const products = await this.ormRepository.find({
-      where: {
-        senderId: { $eq: sender },
-      },
+    const products = await this.ormRepository.findBy({
+      senderId: sender,
     });
 
     return products;
@@ -55,10 +53,8 @@ export class ProductsRepository implements IProductsRepository {
 
   public async getAllByStorage(storage: string): Promise<IProduct[]> {
     console.log(`get all products by storage id: ${storage}`);
-    const products = await this.ormRepository.find({
-      where: {
-        storageId: { $eq: storage },
-      },
+    const products = await this.ormRepository.findBy({
+      storageId: storage,
     });
 
     return products;
