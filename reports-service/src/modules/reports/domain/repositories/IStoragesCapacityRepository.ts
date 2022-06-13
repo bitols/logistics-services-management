@@ -4,6 +4,6 @@ import { IRegisterStoragesCapacityRequest } from '@shared-types/reports/domain/m
 export interface IStoragesCapacityRepository {
   create(data: IRegisterStoragesCapacityRequest): Promise<IStorageCapacity>;
   save(storageCapacity: IStorageCapacity): Promise<IStorageCapacity>;
-  getByStorageId(storage: string): Promise<IStorageCapacity | undefined>;
+  getByStorageId(storage: string): Promise<IStorageCapacity | null | undefined>;
   getAllBySender(sender: string): Promise<IStorageCapacity[]>;
 }
