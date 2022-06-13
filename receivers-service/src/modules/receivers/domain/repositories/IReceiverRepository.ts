@@ -5,6 +5,6 @@ export interface IReceiversRepository {
   create(data: ICreateReceiversRequest): Promise<IReceiver>;
   save(receiver: IReceiver): Promise<IReceiver>;
   remove(receiver: IReceiver): Promise<void>;
-  getById(id: string): Promise<IReceiver | undefined>;
+  getById(id: string): Promise<IReceiver | null | undefined>;
   getAll(): Promise<IReceiver[]>;
 }
