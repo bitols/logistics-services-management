@@ -4,4 +4,5 @@ export default {
   clientId: process.env.KAFKA_CLIENT_ID as string,
   storageControlTopic: process.env.STORAGE_CONTROL_TOPIC as string,
   groupId: process.env.KAFKA_GROUP_ID as string,
+  maxWaitTimeInMs: process.env.KAFKA_CONSUMER_WAIT_TIME as unknown as number,
 };
