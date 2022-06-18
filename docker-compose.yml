@@ -38,6 +38,9 @@ services:
       - DB_USERNAME=storages
       - DB_PASSWORD=8p0cYL2ODepNmt4K
       - DB_HOST=cluster0.ymx1e.mongodb.net
+      - KAFKA_HOST=kafka:29092
+      - KAFKA_CLIENT_ID=logistics-services-management
+      - STORAGE_LOCATION_TOPIC=storage-location
     networks:
       - logistics-management-network
     ports:
