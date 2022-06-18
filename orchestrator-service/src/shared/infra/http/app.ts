@@ -5,7 +5,6 @@ import { errors } from 'celebrate';
 import routes from './routes';
 import AppErrors from '@shared/errors/AppErrors';
 import '@shared/container';
-import '../kafka';
 
 const app = express();
 
