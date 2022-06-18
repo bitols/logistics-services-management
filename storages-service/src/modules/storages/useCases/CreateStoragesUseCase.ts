@@ -24,7 +24,10 @@ export default class CreateStoragesUseCase implements ICreateStoragesUseCase {
 
     await this.kafkaQueue.startProducer(
       kafkaConfig.storageLocationTopic,
-      JSON.stringify({ id: storage.id }),
+      JSON.stringify({
+        id: storage.id,
+        address: storage.address,
+      }),
     );
 
     return storage as IStoragesResponse;
