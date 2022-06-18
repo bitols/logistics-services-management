@@ -11,6 +11,8 @@ export class KafkaQueue implements IKafkaQueue {
   // eslint-disable-next-line @typescript-eslint/ban-types
   public async startConsumer(topic: string, callback: Function): Promise<void> {
     try {
+      console.log(`KafkaQueue.startConsumer: ${topic}`);
+
       await this.consumer.connect();
       await this.consumer.subscribe({ topic });
 
