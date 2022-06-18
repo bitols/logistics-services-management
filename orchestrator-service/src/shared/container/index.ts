@@ -7,6 +7,8 @@ import { StoragesGateway } from '@modules/storages/infra/http/gateways/StoragesG
 import { IKafkaQueue } from '@shared/infra/kafka/queue/IKafkaQueue';
 import { KafkaQueue } from '@shared/infra/kafka/KafkaQueue';
 import { container } from 'tsyringe';
+import { IGeolocationsGateway } from '@modules/geolocation/domain/gateways/IGeolocationsGateway';
+import { GeolocationsGateway } from '@modules/geolocation/infra/http/GeolocationsGateway';
 
 container.registerSingleton<IProductsGateway>(
   'ProductsGateway',
@@ -19,3 +21,8 @@ container.registerSingleton<IStoragesGateway>(
 );
 
 container.registerSingleton<IReportsGateway>('ReportsGateway', ReportsGateway);
+
+container.registerSingleton<IGeolocationsGateway>(
+  'GeolocationsGateway',
+  GeolocationsGateway,
+);

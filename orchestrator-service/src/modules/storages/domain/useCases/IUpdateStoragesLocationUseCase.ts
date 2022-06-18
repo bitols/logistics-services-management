@@ -1,3 +1,3 @@
 export interface IUpdateStorageLocationUseCase {
-  execute(request: { id: string; message: string }): Promise<void>;
+  execute(request: { id: string; address: string }): Promise<void>;
 }
