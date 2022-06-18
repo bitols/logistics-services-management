@@ -19,5 +19,3 @@ container.registerSingleton<IStoragesGateway>(
 );
 
 container.registerSingleton<IReportsGateway>('ReportsGateway', ReportsGateway);
-
-container.register<IKafkaQueue>('KafkaQueue', KafkaQueue);
