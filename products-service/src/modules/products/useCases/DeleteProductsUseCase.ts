@@ -24,7 +24,7 @@ export default class DeleteProductsUseCase implements IDeleteProductsUseCase {
     await this.productsRepository.remove(product);
 
     await this.kafkaQueue.startProducer(
-      kafkaConfig.storageControlTopic,
+      kafkaConfig.storageCapacityTopic,
       JSON.stringify({ id: product.storageId }),
     );
   }

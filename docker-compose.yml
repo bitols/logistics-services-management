@@ -54,7 +54,7 @@ services:
       - DB_HOST=cluster0.bw7lb.mongodb.net
       - KAFKA_HOST=kafka:29092
       - KAFKA_CLIENT_ID=logistics-services-management
-      - STORAGE_CONTROL_TOPIC=storage-control
+      - STORAGE_CAPACITY_TOPIC=storage-capacity
     networks:
       - logistics-management-network
     ports:
@@ -117,7 +117,7 @@ services:
       - API_SUPPLIERS_ADDRESS=http://suppliers:3331
       - KAFKA_HOST=kafka:29092
       - KAFKA_CLIENT_ID=logistics-services-management
-      - STORAGE_CONTROL_TOPIC=storage-control 
+      - STORAGE_CAPACITY_TOPIC=storage-capacity 
       - KAFKA_GROUP_ID=logistics-services     
     networks:
       - logistics-management-network
