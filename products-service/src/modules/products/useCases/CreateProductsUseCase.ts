@@ -23,7 +23,7 @@ export default class CreateProductsUseCase implements ICreateProductUseCase {
     await this.productsRepository.save(product);
 
     await this.kafkaQueue.startProducer(
-      kafkaConfig.storageControlTopic,
+      kafkaConfig.storageCapacityTopic,
       JSON.stringify({ id: product.storageId }),
     );
 

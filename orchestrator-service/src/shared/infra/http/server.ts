@@ -16,7 +16,7 @@ app.listen(port, async () => {
 
   const queue = container.resolve(KafkaQueue);
   await queue.startConsumer(
-    kafkaConfig.storageControlTopic,
+    kafkaConfig.storageCapacityTopic,
     storageCapacityControl,
   );
 });

@@ -39,13 +39,13 @@ export default class UpdateProductsUseCase implements IUpdateProducstUseCase {
     await this.productsRepository.save(product);
 
     await this.kafkaQueue.startProducer(
-      kafkaConfig.storageControlTopic,
+      kafkaConfig.storageCapacityTopic,
       JSON.stringify({ id: product.storageId }),
     );
 
     if (oldStorageId) {
       await this.kafkaQueue.startProducer(
-        kafkaConfig.storageControlTopic,
+        kafkaConfig.storageCapacityTopic,
         JSON.stringify({ id: oldStorageId }),
       );
     }
