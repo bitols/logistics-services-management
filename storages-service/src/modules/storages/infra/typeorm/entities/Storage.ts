@@ -26,4 +26,7 @@ export default class Storage implements IStorage {
 
   @Column()
   senderId: string;
+
+  @Column()
+  location: any;
 }

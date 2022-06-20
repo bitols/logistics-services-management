@@ -3,6 +3,7 @@ import DeleteStoragesUseCase from '@modules/storages/useCases/DeleteStoragesUseC
 import GetAllStoragesBySenderIdUseCase from '@modules/storages/useCases/GetAllStoragesBySenderIdUseCase';
 import GetAllStoragesBySupplierIdUseCase from '@modules/storages/useCases/GetAllStoragesBySupplierIdUseCase';
 import GetStoragesUseCase from '@modules/storages/useCases/GetStoragesUseCase';
+import { UpdateLocationUseCase } from '@modules/storages/useCases/UpdateLocationUseCase';
 import UpdateStoragesUseCase from '@modules/storages/useCases/UpdateStoragesUseCase';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
@@ -78,6 +79,22 @@ export default class StoragesController {
       email,
       phone,
       address,
+    });
+
+    return response.json(storage);
+  }
+
+  public async updateLocation(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { id } = request.params;
+    const { location } = request.body;
+
+    const updateLocation = container.resolve(UpdateLocationUseCase);
+    const storage = await updateLocation.execute({
+      id,
+      location,
     });
 
     return response.json(storage);

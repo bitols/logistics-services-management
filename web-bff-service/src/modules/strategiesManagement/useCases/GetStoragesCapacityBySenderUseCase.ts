@@ -30,6 +30,8 @@ export class GetStoragesCapacityBySenderUseCase
         senderId: data.id,
       });
 
+    console.log(capacityReports);
+
     return storages.map(storage => {
       return {
         id: storage.id,
@@ -37,6 +39,7 @@ export class GetStoragesCapacityBySenderUseCase
         email: storage.email,
         phone: storage.phone,
         address: storage.address,
+        location: storage.location,
         indicators: capacityReports
           ?.filter(capacity => capacity.storageId === storage.id)
           .map(indicator => {
@@ -48,9 +51,7 @@ export class GetStoragesCapacityBySenderUseCase
               value: indicator.value,
             };
           })
-          .reduce(capacityindicator => {
-            return capacityindicator;
-          }),
+          .reduce(capacityindicator => capacityindicator),
       };
     });
   }

@@ -1,5 +1,6 @@
 import { IGeolocationsGateway } from '@modules/geolocation/domain/gateways/IGeolocationsGateway';
 import { inject, injectable } from 'tsyringe';
+import { IStoragesGateway } from '../domain/gateways/IStoragesGateway';
 import { IUpdateStorageLocationUseCase } from '../domain/useCases/IUpdateStoragesLocationUseCase';
 @injectable()
 export class UpdateStoragesLocationUseCase
@@ -8,18 +9,21 @@ export class UpdateStoragesLocationUseCase
   constructor(
     @inject('GeolocationsGateway')
     private geolocationsGateway: IGeolocationsGateway,
+    @inject('StoragesGateway')
+    private storagesGateway: IStoragesGateway,
   ) {}
 
   public async execute(request: {
     id: string;
     address: string;
   }): Promise<void> {
-    const location = await this.geolocationsGateway.getLocationFromAddress(
+    const response = await this.geolocationsGateway.getLocationFromAddress(
       request.address,
     );
 
-    if (location) {
-      console.log({ id: request.id, location: location });
-    }
+    await this.storagesGateway.updateLocation({
+      id: request.id,
+      location: response.results[0].geometry.location,
+    });
   }
 }

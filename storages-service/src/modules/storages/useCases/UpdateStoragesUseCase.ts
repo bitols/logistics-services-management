@@ -26,6 +26,7 @@ export default class UpdateStoragesUseCase implements IUpdateStoragesUseCase {
     }
 
     const changedAddress = storage.address !== data.address;
+    const changeCapacity = storage.capacity !== data.capacity;
 
     storage.name = data.name;
     storage.email = data.email;
@@ -42,6 +43,13 @@ export default class UpdateStoragesUseCase implements IUpdateStoragesUseCase {
           id: storage.id,
           address: storage.address,
         }),
+      );
+    }
+
+    if (changeCapacity) {
+      await this.kafkaQueue.startProducer(
+        kafkaConfig.storageCapacityTopic,
+        JSON.stringify({ id: storage.id }),
       );
     }
 
