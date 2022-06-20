@@ -7,4 +7,8 @@ export interface IStoragesResponse {
   address: string;
   supplierId: string;
   senderId: string;
+  location?: {
+    lat: number;
+    lng: number;
+  };
 }

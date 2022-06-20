@@ -30,6 +30,11 @@ export default class CreateStoragesUseCase implements ICreateStoragesUseCase {
       }),
     );
 
+    await this.kafkaQueue.startProducer(
+      kafkaConfig.storageCapacityTopic,
+      JSON.stringify({ id: storage.id }),
+    );
+
     return storage as IStoragesResponse;
   }
 }
