@@ -52,6 +52,19 @@ storagesRouter.post(
   storagesController.create,
 );
 
+storagesRouter.patch(
+  '/:id/location',
+  celebrate({
+    [Segments.BODY]: {
+      location: Joi.object().required(),
+    },
+    [Segments.PARAMS]: {
+      id: Joi.string().hex().required(),
+    },
+  }),
+  storagesController.updateLocation,
+);
+
 storagesRouter.put(
   '/:id',
   celebrate({
