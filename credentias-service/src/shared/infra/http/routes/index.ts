@@ -1,5 +1,5 @@
-import credentialsRouter from '@modules/users/infra/http/routes/credentials.routes';
-import sessionsRouter from '@modules/users/infra/http/routes/sessions.routes';
+import credentialsRouter from '@modules/credentials/infra/http/routes/credentials.routes';
+import sessionsRouter from '@modules/credentials/infra/http/routes/sessions.routes';
 import { Request, Response, Router } from 'express';
 const routes = Router();
 

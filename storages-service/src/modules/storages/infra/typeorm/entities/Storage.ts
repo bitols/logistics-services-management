@@ -1,4 +1,7 @@
-import { IStorage } from '@shared-types/storages/domain/models/entities/IStorage';
+import {
+  ILocation,
+  IStorage,
+} from '@shared-types/storages/domain/models/entities/IStorage';
 import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 
 @Entity('storage')
@@ -28,5 +31,5 @@ export default class Storage implements IStorage {
   senderId: string;
 
   @Column()
-  location: any;
+  location?: ILocation;
 }

@@ -1,9 +1,12 @@
+import { isAutenticated } from '@shared/infra/http/middlewares/isAuthenticated';
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
 import ReceiversController from '../../../../registrationsManagement/infra/http/controllers/ReceiversRegistrationController';
 
 const receiversRouter = Router();
 const receiversController = new ReceiversController();
+
+receiversRouter.use(isAutenticated);
 
 receiversRouter.get(
   '/:id',
