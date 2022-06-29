@@ -30,8 +30,6 @@ export class GetStoragesCapacityBySenderUseCase
         senderId: data.id,
       });
 
-    console.log(capacityReports);
-
     return storages.map(storage => {
       return {
         id: storage.id,

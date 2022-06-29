@@ -1,3 +1,5 @@
+import { ICredentialsGateway } from '@modules/credentials/domain/gateways/ICredentialsGateway';
+import CredentialsGateway from '@modules/credentials/infra/http/gateways/CredentialsGateway';
 import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
 import { ProductsGateway } from '@modules/products/infra/http/gateways/ProductsGateway';
 import { IReceiversGateway } from '@modules/receivers/domain/gateways/IReceiversGateway';
@@ -35,3 +37,8 @@ container.registerSingleton<IStoragesGateway>(
 );
 
 container.registerSingleton<IReportsGateway>('ReportsGateway', ReportsGateway);
+
+container.registerSingleton<ICredentialsGateway>(
+  'CredentialsGateway',
+  CredentialsGateway,
+);
