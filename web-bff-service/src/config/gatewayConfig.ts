@@ -19,4 +19,7 @@ export default {
   suppliersService: {
     address: process.env.API_SUPPLIERS_ADDRESS as string,
   },
+  credentialsService: {
+    address: process.env.API_CREDENTIALS_ADDRESS as string,
+  },
 };

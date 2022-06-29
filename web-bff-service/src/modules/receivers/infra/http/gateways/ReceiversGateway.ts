@@ -20,11 +20,11 @@ export class ReceiversGateway implements IReceiversGateway {
         },
       );
 
-      console.log('response data: ', JSON.stringify(data, null, 4));
-
-      // 👇️ "response status is: 200"
-      console.log('response status: ', status);
-
+      console.log(
+        `request create product: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
       return data;
     } catch (error: any) {
       console.error(error.message);

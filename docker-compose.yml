@@ -1,6 +1,22 @@
 version: '3'
 
 services:
+  credentials:
+    build: ./credentials-service
+    container_name: credentials_service
+    environment:
+      - APP_API_PORT=3337
+      - APP_SECRET=7d6978b89ec900c6157e3974c4851e32s
+      - APP_TOKEN_EXPIRE=1h
+      - DB_NAME=credentials
+      - DB_USERNAME=credentials
+      - DB_PASSWORD=QOzUIsocAsfCvEJW
+      - DB_HOST=cluster0.ftdfw.mongodb.net
+    networks:
+      - logistics-management-network
+    ports:
+      - '3337:3337'
+
   senders:
     build: ./senders-service
     container_name: senders_service
@@ -97,6 +113,7 @@ services:
     container_name: web-bff-service
     environment:
       - APP_API_PORT=3000
+      - API_CREDENTIALS_ADDRESS=http://credentials:3337
       - API_REPORTS_ADDRESS=http://reports:3336
       - API_RECEIVERS_ADDRESS=http://receivers:3334
       - API_PRODUCTS_ADDRESS=http://products:3333

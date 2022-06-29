@@ -1,3 +1,7 @@
+export interface ILocation {
+  lat: number;
+  lng: number;
+}
 export interface IStorage {
   id: any;
   name: string;
@@ -7,8 +11,5 @@ export interface IStorage {
   address: string;
   supplierId: string;
   senderId: string;
-  location?: {
-    lat: number;
-    lng: number;
-  };
+  location?: ILocation;
 }
