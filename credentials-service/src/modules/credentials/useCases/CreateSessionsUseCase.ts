@@ -1,10 +1,10 @@
 import AppError from '@shared/errors/AppErrors';
 import { compare } from 'bcryptjs';
-import { ICreateSessions } from '@shared-types/credentials/domain/models/requests/ICreateSessions';
+import { ICreateSessions } from '@modules/credentials/domain/models/requests/ICreateSessions';
 import { inject, injectable } from 'tsyringe';
 import { ISessionsRepository } from '../domain/repositories/ISessionsRepository';
-import { ITokenSession } from '@shared-types/credentials/domain/models/entities/ITokenSession';
 import { ICredentialsRepository } from '../domain/repositories/ICredentialsRepository';
+import { ISessions } from '../domain/models/responses/ISessions';
 
 @injectable()
 export default class CreateSessionsUseCase {
@@ -14,24 +14,24 @@ export default class CreateSessionsUseCase {
     @inject('CredentialsRepository')
     private credentialsRepository: ICredentialsRepository,
   ) {}
-  public async execute(data: ICreateSessions): Promise<ITokenSession> {
-    const credentials = await this.credentialsRepository.getByEmail(data.email);
+  public async execute(data: ICreateSessions): Promise<ISessions> {
+    const credential = await this.credentialsRepository.getByEmail(data.email);
 
-    if (!credentials) {
+    if (!credential) {
       throw new AppError('Incorrect email/password credentials.', 401);
     }
-    const passwordConfirmed = await compare(
-      data.password,
-      credentials.password,
-    );
+    const passwordConfirmed = await compare(data.password, credential.password);
 
     if (!passwordConfirmed) {
       throw new AppError('Incorrect email/password credentials.', 401);
     }
 
-    return await this.sessionsRepository.create({
-      email: credentials.email,
-      senderId: credentials.senderId,
-    });
+    const token = await this.sessionsRepository.create(
+      credential.id,
+      credential.email,
+      credential.senderId,
+    );
+
+    return { token };
   }
 }

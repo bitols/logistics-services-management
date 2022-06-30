@@ -1,9 +1,9 @@
 import { ICredentialsRepository } from '@modules/credentials/domain/repositories/ICredentialsRepository';
-import { ICreateCredentials } from '@shared-types/credentials/domain/models/requests/ICreateCredentials';
+import { ICreateCredentials } from '@modules/credentials/domain/models/requests/ICreateCredentials';
 import { Repository } from 'typeorm';
-import { dataSource } from '@shared/infra/typeorm';
+import { dataSource } from '@shared/infra/orm';
 import Credential from '../entities/Credential';
-import { ICredential } from '@shared-types/credentials/domain/models/entities/ICredential';
+import { ICredential } from '@modules/credentials/domain/models/entities/ICredential';
 
 export default class CreadentialsRepository implements ICredentialsRepository {
   private ormRepository: Repository<Credential>;
