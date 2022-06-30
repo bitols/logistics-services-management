@@ -1,9 +1,8 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
+import { IValidationSessions } from '../domain/models/requests/IValidationSessions';
+import { ICredentials } from '../domain/models/responses/ICredentials';
 import { ISessionsRepository } from '../domain/repositories/ISessionsRepository';
-import { IValidToken } from '@shared-types/credentials/domain/models/requests/IValidToken';
-import { ISession } from '@shared-types/credentials/domain/models/entities/ISession';
-
 @injectable()
 export default class ValidationSessionsUseCase {
   constructor(
@@ -11,12 +10,9 @@ export default class ValidationSessionsUseCase {
     private sessionsRepository: ISessionsRepository,
   ) {}
 
-  public async execute(data: IValidToken): Promise<ISession> {
+  public async execute({ token }: IValidationSessions): Promise<ICredentials> {
     try {
-      console.log(data);
-      return await this.sessionsRepository.validation({
-        token: data.token,
-      });
+      return await this.sessionsRepository.validation(token);
     } catch (error: any) {
       throw new AppErrors(error.message, 401);
     }

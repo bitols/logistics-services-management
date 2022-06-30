@@ -1,4 +1,4 @@
-import { ICredential } from '@shared-types/credentials/domain/models/entities/ICredential';
+import { ICredential } from '@modules/credentials/domain/models/entities/ICredential';
 import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 
 @Entity('credential')

@@ -7,7 +7,7 @@ export default class SendersStrastegyController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-    const { senderId: id } = request.session;
+    const { id } = request.params;
 
     const getStoragesCapacity = container.resolve(
       GetStoragesCapacityBySenderUseCase,

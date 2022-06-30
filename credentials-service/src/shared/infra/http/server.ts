@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import 'dotenv/config';
-import appApiConfig from '@config/appApiConfig';
+import appConfig from '@config/appConfig';
 import { app } from './app';
-import { dataSource } from '../typeorm';
-const port = appApiConfig.port;
+import { dataSource } from '../orm';
+const port = appConfig.port;
 
 dataSource
   .initialize()
