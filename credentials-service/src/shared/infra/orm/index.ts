@@ -1,5 +1,5 @@
 import ormConfig from '@config/ormConfig';
-import Credential from '@modules/credentials/infra/typeorm/entities/Credential';
+import Credential from '@modules/credentials/infra/orm/entities/Credential';
 import { DataSource } from 'typeorm';
 
 export const dataSource = new DataSource({

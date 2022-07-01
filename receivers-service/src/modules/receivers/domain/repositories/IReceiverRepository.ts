@@ -1,8 +1,8 @@
-import { IReceiver } from '@shared-types/receivers/domain/models/entities/IReceiver';
-import { ICreateReceiversRequest } from '@shared-types/receivers/domain/models/requests/ICreateReceiversRequest';
+import { IReceiver } from '../models/entities/IReceiver';
+import { ICreateReceivers } from '../models/requests/ICreateReceivers';
 
 export interface IReceiversRepository {
-  create(data: ICreateReceiversRequest): Promise<IReceiver>;
+  create(data: ICreateReceivers): Promise<IReceiver>;
   save(receiver: IReceiver): Promise<IReceiver>;
   remove(receiver: IReceiver): Promise<void>;
   getById(id: string): Promise<IReceiver | null | undefined>;

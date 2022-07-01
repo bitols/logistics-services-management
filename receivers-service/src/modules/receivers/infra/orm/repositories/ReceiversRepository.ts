@@ -3,7 +3,7 @@ import { ICreateReceiversRequest } from '@shared-types/receivers/domain/models/r
 import { IReceiversRepository } from '@modules/receivers/domain/repositories/IReceiverRepository';
 import { Repository } from 'typeorm';
 import Receiver from '../entities/Receiver';
-import { dataSource } from '@shared/infra/typeorm';
+import { dataSource } from '@shared/infra/orm';
 export class ReceiversRepository implements IReceiversRepository {
   private ormRepository: Repository<Receiver>;
 
