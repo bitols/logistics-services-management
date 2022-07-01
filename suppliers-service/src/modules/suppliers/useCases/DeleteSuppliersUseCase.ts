@@ -1,17 +1,16 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IDeleteSuppliersRequest } from '@shared-types/suppliers/domain/models/requests/IDeleteSuppliersRequests';
+import { IDeleteSuppliers } from '../domain/models/requests/IDeleteSuppliers';
 import { ISuppliersRepository } from '../domain/repositories/ISuppliersRepository';
-import { IDeleteSuppliersUseCase } from '../domain/useCases/IDeleteSuppliersUseCase';
 
 @injectable()
-export default class DeleteSuppliersUseCase implements IDeleteSuppliersUseCase {
+export default class DeleteSuppliersUseCase {
   constructor(
     @inject('SuppliersRepository')
     private suppliersRepository: ISuppliersRepository,
   ) {}
 
-  public async execute(data: IDeleteSuppliersRequest): Promise<void> {
+  public async execute(data: IDeleteSuppliers): Promise<void> {
     const supplier = await this.suppliersRepository.getById(data.id);
 
     if (!supplier) {

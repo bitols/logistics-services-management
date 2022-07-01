@@ -1,8 +1,8 @@
-import { ISupplier } from '@shared-types/suppliers/domain/models/entities/ISupplier';
-import { ICreateSuppliersRequest } from '@shared-types/suppliers/domain/models/requests/ICreateSuppliersRequest';
+import { ISupplier } from '../models/entities/ISupplier';
+import { ICreateSuppliers } from '../models/requests/ICreateSuppliers';
 
 export interface ISuppliersRepository {
-  create(data: ICreateSuppliersRequest): Promise<ISupplier>;
+  create(data: ICreateSuppliers): Promise<ISupplier>;
   save(supplier: ISupplier): Promise<ISupplier>;
   remove(supplier: ISupplier): Promise<void>;
   getById(id: string): Promise<ISupplier | null | undefined>;

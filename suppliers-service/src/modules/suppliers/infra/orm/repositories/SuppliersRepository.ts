@@ -1,9 +1,9 @@
-import { ISupplier } from '@shared-types/suppliers/domain/models/entities/ISupplier';
-import { ICreateSuppliersRequest } from '@shared-types/suppliers/domain/models/requests/ICreateSuppliersRequest';
 import { ISuppliersRepository } from '@modules/suppliers/domain/repositories/ISuppliersRepository';
 import { Repository } from 'typeorm';
 import Supplier from '../entities/Supplier';
-import { dataSource } from '@shared/infra/typeorm';
+import { dataSource } from '@shared/infra/orm';
+import { ICreateSuppliers } from '@modules/suppliers/domain/models/requests/ICreateSuppliers';
+import { ISupplier } from '@modules/suppliers/domain/models/entities/ISupplier';
 
 export class SuppliersRepository implements ISuppliersRepository {
   private ormRepository: Repository<Supplier>;
@@ -12,7 +12,7 @@ export class SuppliersRepository implements ISuppliersRepository {
     this.ormRepository = dataSource.getMongoRepository(Supplier);
   }
 
-  public async create(data: ICreateSuppliersRequest): Promise<ISupplier> {
+  public async create(data: ICreateSuppliers): Promise<ISupplier> {
     const supplier = this.ormRepository.create(data);
 
     return supplier;

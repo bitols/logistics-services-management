@@ -1,5 +1,5 @@
 import ormConfig from '@config/ormConfig';
-import Credential from '@modules/credentials/infra/orm/entities/Credential';
+import Receivers from '@modules/receivers/infra/orm/entities/Receiver';
 import { DataSource } from 'typeorm';
 
 export const dataSource = new DataSource({
@@ -8,5 +8,5 @@ export const dataSource = new DataSource({
   useNewUrlParser: ormConfig.useNewUrlParser,
   synchronize: ormConfig.synchronize,
   logging: ormConfig.logging,
-  entities: [Credential],
+  entities: [Receivers],
 });

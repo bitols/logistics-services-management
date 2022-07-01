@@ -1,4 +1,4 @@
-import { IReceiver } from '@shared-types/receivers/domain/models/entities/IReceiver';
+import { IReceiver } from '@modules/receivers/domain/models/entities/IReceiver';
 import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 
 @Entity('receiver')
