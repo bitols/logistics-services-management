@@ -1,22 +1,30 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { ISuppliersResponse } from '@shared-types/suppliers/domain/models/responses/ISuppliersResponse';
+import { ISuppliers } from '../domain/models/responses/ISuppliers';
 import { ISuppliersRepository } from '../domain/repositories/ISuppliersRepository';
-import { IGetAllSuppliersUseCase } from '../domain/useCases/IGetAllSuppliersUseCase';
 
 @injectable()
-export default class GetAllSuppliersUseCase implements IGetAllSuppliersUseCase {
+export default class GetAllSuppliersUseCase {
   constructor(
     @inject('SuppliersRepository')
     private suppliersRepository: ISuppliersRepository,
   ) {}
 
-  public async execute(): Promise<ISuppliersResponse[]> {
+  public async execute(): Promise<ISuppliers[]> {
     const suppliers = await this.suppliersRepository.getAll();
     if (!suppliers.length) {
       throw new AppErrors('Suppliers not found');
     }
 
-    return suppliers.map(supplier => supplier as ISuppliersResponse);
+    return suppliers.map(supplier => {
+      const dados: ISuppliers = {
+        id: supplier.id,
+        email: supplier.email,
+        name: supplier.name,
+        phone: supplier.phone,
+      };
+
+      return dados;
+    });
   }
 }
