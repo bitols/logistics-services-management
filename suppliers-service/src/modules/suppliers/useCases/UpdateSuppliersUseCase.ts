@@ -1,20 +1,17 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IUpdateSuppliersRequest } from '@shared-types/suppliers/domain/models/requests/IUpdateSuppliersRequest';
-import { ISuppliersResponse } from '@shared-types/suppliers/domain/models/responses/ISuppliersResponse';
+import { IUpdateSuppliers } from '../domain/models/requests/IUpdateSuppliers';
+import { ISuppliers } from '../domain/models/responses/ISuppliers';
 import { ISuppliersRepository } from '../domain/repositories/ISuppliersRepository';
-import { IUpdateSuppliersUseCase } from '../domain/useCases/IUpdateSuppliersUseCase';
 
 @injectable()
-export default class UpdateSuppliersUseCase implements IUpdateSuppliersUseCase {
+export default class UpdateSuppliersUseCase {
   constructor(
     @inject('SuppliersRepository')
     private suppliersRepository: ISuppliersRepository,
   ) {}
 
-  public async execute(
-    data: IUpdateSuppliersRequest,
-  ): Promise<ISuppliersResponse> {
+  public async execute(data: IUpdateSuppliers): Promise<ISuppliers> {
     const supplier = await this.suppliersRepository.getById(data.id);
 
     if (!supplier) {
@@ -27,6 +24,11 @@ export default class UpdateSuppliersUseCase implements IUpdateSuppliersUseCase {
 
     await this.suppliersRepository.save(supplier);
 
-    return supplier as ISuppliersResponse;
+    return {
+      id: supplier.id,
+      email: supplier.email,
+      name: supplier.name,
+      phone: supplier.phone,
+    };
   }
 }
