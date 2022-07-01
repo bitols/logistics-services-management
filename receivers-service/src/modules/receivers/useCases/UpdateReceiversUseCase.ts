@@ -1,20 +1,16 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IUpdateReceiversrequest } from '@shared-types/receivers/domain/models/requests/IUpdateReceiversRequest';
-import { IReceiversResponse } from '@shared-types/receivers/domain/models/responses/IReceiversResponse';
 import { IReceiversRepository } from '../domain/repositories/IReceiverRepository';
-import { IUpdateReceiversUseCase } from '../domain/useCases/IUpdateReceiversUseCase';
-
+import { IReceivers } from '../domain/models/responses/IReceivers';
+import { IUpdateReceivers } from '../domain/models/requests/IUpdateReceivers';
 @injectable()
-export default class UpdateReceiversUseCase implements IUpdateReceiversUseCase {
+export default class UpdateReceiversUseCase {
   constructor(
     @inject('ReceiversRepository')
     private receiversRepository: IReceiversRepository,
   ) {}
 
-  public async execute(
-    data: IUpdateReceiversrequest,
-  ): Promise<IReceiversResponse> {
+  public async execute(data: IUpdateReceivers): Promise<IReceivers> {
     const receiver = await this.receiversRepository.getById(data.id);
 
     if (!receiver) {
@@ -28,6 +24,12 @@ export default class UpdateReceiversUseCase implements IUpdateReceiversUseCase {
 
     await this.receiversRepository.save(receiver);
 
-    return receiver as IReceiversResponse;
+    return {
+      id: receiver.id,
+      name: receiver.name,
+      email: receiver.email,
+      phone: receiver.phone,
+      address: receiver.address,
+    };
   }
 }

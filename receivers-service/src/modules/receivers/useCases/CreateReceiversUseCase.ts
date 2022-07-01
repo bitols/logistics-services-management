@@ -1,23 +1,26 @@
 import { inject, injectable } from 'tsyringe';
-import { ICreateReceiversRequest } from '@shared-types/receivers/domain/models/requests/ICreateReceiversRequest';
-import { IReceiversResponse } from '@shared-types/receivers/domain/models/responses/IReceiversResponse';
+import { IReceivers } from '@modules/receivers/domain/models/responses/IReceivers';
 import { IReceiversRepository } from '../domain/repositories/IReceiverRepository';
-import { ICreateReceiversUseCase } from '../domain/useCases/ICreateReceiversUseCase';
+import { ICreateReceivers } from '../domain/models/requests/ICreateReceivers';
 
 @injectable()
-export default class CreateReceiversUseCase implements ICreateReceiversUseCase {
+export default class CreateReceiversUseCase {
   constructor(
     @inject('ReceiversRepository')
     private receiversRepository: IReceiversRepository,
   ) {}
 
-  public async execute(
-    data: ICreateReceiversRequest,
-  ): Promise<IReceiversResponse> {
+  public async execute(data: ICreateReceivers): Promise<IReceivers> {
     const receiver = await this.receiversRepository.create(data);
 
     await this.receiversRepository.save(receiver);
 
-    return receiver as IReceiversResponse;
+    return {
+      id: receiver.id,
+      name: receiver.name,
+      email: receiver.email,
+      phone: receiver.phone,
+      address: receiver.address,
+    };
   }
 }

@@ -1,25 +1,21 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IGetReceiversRequest } from '@shared-types/receivers/domain/models/requests/IGetReceiversRequest';
-import { IReceiversResponse } from '@shared-types/receivers/domain/models/responses/IReceiversResponse';
 import { IReceiversRepository } from '../domain/repositories/IReceiverRepository';
-import { IGetReceiversUseCase } from '../domain/useCases/IGetReceiversUseCase';
-
+import { IReceivers } from '../domain/models/responses/IReceivers';
+import { IGetReceivers } from '../domain/models/requests/IGetReceivers';
 @injectable()
-export default class GetReceiversUseCase implements IGetReceiversUseCase {
+export default class GetReceiversUseCase {
   constructor(
     @inject('ReceiversRepository')
     private receiversRepository: IReceiversRepository,
   ) {}
 
-  public async execute(
-    data: IGetReceiversRequest,
-  ): Promise<IReceiversResponse> {
+  public async execute(data: IGetReceivers): Promise<IReceivers> {
     const receiver = await this.receiversRepository.getById(data.id);
     if (!receiver) {
       throw new AppErrors('Receiver not found');
     }
 
-    return receiver as IReceiversResponse;
+    return receiver;
   }
 }

@@ -1,5 +1,5 @@
-import typeOrmConfig from '@config/typeOrmConfig';
-import Receivers from '@modules/receivers/infra/typeorm/entities/Receiver';
+import typeOrmConfig from '@config/ormConfig';
+import Receivers from '@modules/receivers/infra/orm/entities/Receiver';
 import { DataSource } from 'typeorm';
 
 export const dataSource = new DataSource({
