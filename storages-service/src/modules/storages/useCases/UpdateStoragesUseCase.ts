@@ -1,14 +1,13 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IUpdateStoragesRequest } from '@shared-types/storages/domain/models/requests/IUpdateStoragesRequest';
-import { IStoragesResponse } from '@shared-types/storages/domain/models/responses/IStoragesResponse';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
-import { IUpdateStoragesUseCase } from '../domain/useCases/IUpdateStoragesUseCase';
 import { KafkaQueue } from '@shared/infra/kafka/KafkaQueue';
 import kafkaConfig from '@config/kafkaConfig';
+import { IUpdateStorages } from '../domain/models/requests/IUpdateStorages';
+import { IStorages } from '../domain/models/responses/IStorages';
 
 @injectable()
-export default class UpdateStoragesUseCase implements IUpdateStoragesUseCase {
+export default class UpdateStoragesUseCase {
   constructor(
     @inject('StoragesRepository')
     private storagesRepository: IStoragesRepository,
@@ -16,9 +15,7 @@ export default class UpdateStoragesUseCase implements IUpdateStoragesUseCase {
     private kafkaQueue: KafkaQueue,
   ) {}
 
-  public async execute(
-    data: IUpdateStoragesRequest,
-  ): Promise<IStoragesResponse> {
+  public async execute(data: IUpdateStorages): Promise<IStorages> {
     const storage = await this.storagesRepository.getById(data.id);
 
     if (!storage) {
@@ -53,6 +50,16 @@ export default class UpdateStoragesUseCase implements IUpdateStoragesUseCase {
       );
     }
 
-    return storage as IStoragesResponse;
+    return {
+      id: storage.id,
+      name: storage.name,
+      email: storage.email,
+      address: storage.address,
+      capacity: storage.capacity,
+      phone: storage.phone,
+      supplierId: storage.supplierId,
+      senderId: storage.senderId,
+      location: storage.location,
+    };
   }
 }

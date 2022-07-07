@@ -1,9 +1,9 @@
-import { IStorage } from '@shared-types/storages/domain/models/entities/IStorage';
-import { ICreateStoragesRequest } from '@shared-types/storages/domain/models/requests/ICreateStoragesRequest';
 import { IStoragesRepository } from '@modules/storages/domain/repositories/IStoragesRepository';
 import { Repository } from 'typeorm';
 import Storage from '../entities/Storage';
-import { dataSource } from '@shared/infra/typeorm';
+import { dataSource } from '@shared/infra/orm';
+import { ICreateStorages } from '@modules/storages/domain/models/requests/ICreateStorages';
+import { IStorage } from '@modules/storages/domain/models/entities/IStorage';
 
 export class StoragesRepository implements IStoragesRepository {
   private ormRepository: Repository<Storage>;
@@ -12,7 +12,7 @@ export class StoragesRepository implements IStoragesRepository {
     this.ormRepository = dataSource.getRepository(Storage);
   }
 
-  public async create(data: ICreateStoragesRequest): Promise<IStorage> {
+  public async create(data: ICreateStorages): Promise<IStorage> {
     console.log(`create storage: ${JSON.stringify(data)}`);
 
     const storage = this.ormRepository.create(data);
