@@ -1,21 +1,18 @@
-import { IRegisterStoragesCapacityRequest } from '@shared-types/reports/domain/models/requests/IRegisterStoragesCapacityRequest';
-import { IStoragesCapacityResponse } from '@shared-types/reports/domain/models/responses/IStoragesCapacityResponse';
 import { inject, injectable } from 'tsyringe';
+import { IRegisterStoragesCapacity } from '../domain/models/requests/IRegisterStoragesCapacity';
+import { IStoragesCapacity } from '../domain/models/responses/IStoragesCapacity';
 import { IStoragesCapacityRepository } from '../domain/repositories/IStoragesCapacityRepository';
-import { IRegisterStoragesCapacityUseCase } from '../domain/useCases/IRegisterStoragesCapacityUseCase';
 
 @injectable()
-export default class RegisterStoragesCapacityUseCase
-  implements IRegisterStoragesCapacityUseCase
-{
+export default class RegisterStoragesCapacityUseCase {
   constructor(
     @inject('StoragesCapacityRepository')
     private storagesCapacityRepository: IStoragesCapacityRepository,
   ) {}
 
   public async execute(
-    data: IRegisterStoragesCapacityRequest,
-  ): Promise<IStoragesCapacityResponse> {
+    data: IRegisterStoragesCapacity,
+  ): Promise<IStoragesCapacity> {
     let storageCapacity = await this.storagesCapacityRepository.getByStorageId(
       data.storageId,
     );
@@ -32,6 +29,6 @@ export default class RegisterStoragesCapacityUseCase
 
     await this.storagesCapacityRepository.save(storageCapacity);
 
-    return storageCapacity as IStoragesCapacityResponse;
+    return storageCapacity as IStoragesCapacity;
   }
 }
