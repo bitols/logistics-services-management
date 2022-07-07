@@ -1,9 +1,9 @@
-import { ISender } from '@shared-types/senders/domain/models/entities/ISender';
-import { ICreateSendersRequest } from '@shared-types/senders/domain/models/requests/ICreateSendersRequest';
 import { ISendersRepository } from '@modules/senders/domain/repositories/ISendersRepository';
 import { Repository } from 'typeorm';
 import Supplier from '../entities/Sender';
-import { dataSource } from '@shared/infra/typeorm';
+import { dataSource } from '@shared/infra/orm';
+import { ICreateSenders } from '@modules/senders/domain/models/requests/ICreateSenders';
+import { ISender } from '@modules/senders/domain/models/entities/ISender';
 
 export class SendersRepository implements ISendersRepository {
   private ormRepository: Repository<Supplier>;
@@ -12,7 +12,7 @@ export class SendersRepository implements ISendersRepository {
     this.ormRepository = dataSource.getRepository(Supplier);
   }
 
-  public async create(data: ICreateSendersRequest): Promise<ISender> {
+  public async create(data: ICreateSenders): Promise<ISender> {
     console.log(`create sender: ${JSON.stringify(data)}`);
 
     const sender = this.ormRepository.create(data);
