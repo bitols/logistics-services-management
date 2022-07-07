@@ -1,13 +1,13 @@
 import { inject, injectable } from 'tsyringe';
-import { ICreateStoragesRequest } from '@shared-types/storages/domain/models/requests/ICreateStoragesRequest';
-import { IStoragesResponse } from '@shared-types/storages/domain/models/responses/IStoragesResponse';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
-import { ICreateStoragesUseCase } from '../domain/useCases/ICreateStoragesUseCase';
 import { KafkaQueue } from '@shared/infra/kafka/KafkaQueue';
 import kafkaConfig from '@config/kafkaConfig';
+import { ICreateStorages } from '../domain/models/requests/ICreateStorages';
+import { IStorages } from '../domain/models/responses/IStorages';
+import Storage from '../infra/orm/entities/Storage';
 
 @injectable()
-export default class CreateStoragesUseCase implements ICreateStoragesUseCase {
+export default class CreateStoragesUseCase {
   constructor(
     @inject('StoragesRepository')
     private storagesRepository: IStoragesRepository,
@@ -15,9 +15,7 @@ export default class CreateStoragesUseCase implements ICreateStoragesUseCase {
     private kafkaQueue: KafkaQueue,
   ) {}
 
-  public async execute(
-    data: ICreateStoragesRequest,
-  ): Promise<IStoragesResponse> {
+  public async execute(data: ICreateStorages): Promise<IStorages> {
     const storage = await this.storagesRepository.create(data);
 
     await this.storagesRepository.save(storage);
@@ -35,6 +33,15 @@ export default class CreateStoragesUseCase implements ICreateStoragesUseCase {
       JSON.stringify({ id: storage.id }),
     );
 
-    return storage as IStoragesResponse;
+    return {
+      id: storage.id,
+      name: storage.name,
+      email: storage.email,
+      address: storage.address,
+      capacity: storage.capacity,
+      phone: storage.phone,
+      supplierId: storage.supplierId,
+      senderId: storage.senderId,
+    };
   }
 }

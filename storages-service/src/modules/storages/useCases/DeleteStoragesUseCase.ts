@@ -1,17 +1,15 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IDeleteStoragesRequest } from '@shared-types/storages/domain/models/requests/IDeleteStoragesRequest';
+import { IDeleteStorages } from '../domain/models/requests/IDeleteStorages';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
-import { IDeleteStoragesUseCase } from '../domain/useCases/IDeleteStoragesUseCase';
-
 @injectable()
-export default class DeleteStoragesUseCase implements IDeleteStoragesUseCase {
+export default class DeleteStoragesUseCase {
   constructor(
     @inject('StoragesRepository')
     private storagesRepository: IStoragesRepository,
   ) {}
 
-  public async execute(data: IDeleteStoragesRequest): Promise<void> {
+  public async execute(data: IDeleteStorages): Promise<void> {
     const storage = await this.storagesRepository.getById(data.id);
 
     if (!storage) {

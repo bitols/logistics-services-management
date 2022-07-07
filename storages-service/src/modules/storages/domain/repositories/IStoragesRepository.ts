@@ -1,8 +1,8 @@
-import { IStorage } from '@shared-types/storages/domain/models/entities/IStorage';
-import { ICreateStoragesRequest } from '@shared-types/storages/domain/models/requests/ICreateStoragesRequest';
+import { IStorage } from '../models/entities/IStorage';
+import { ICreateStorages } from '../models/requests/ICreateStorages';
 
 export interface IStoragesRepository {
-  create(data: ICreateStoragesRequest): Promise<IStorage>;
+  create(data: ICreateStorages): Promise<IStorage>;
   save(storage: IStorage): Promise<IStorage>;
   remove(storage: IStorage): Promise<void>;
   getById(id: string): Promise<IStorage | null | undefined>;
