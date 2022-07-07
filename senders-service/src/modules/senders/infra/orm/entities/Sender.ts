@@ -1,4 +1,4 @@
-import { ISender } from '@shared-types/senders/domain/models/entities/ISender';
+import { ISender } from '@modules/senders/domain/models/entities/ISender';
 import { Column, Entity, ObjectIdColumn, ObjectID } from 'typeorm';
 
 @Entity('supplier')

@@ -1,17 +1,16 @@
 import { inject, injectable } from 'tsyringe';
-import { ICreateSendersRequest } from '@shared-types/senders/domain/models/requests/ICreateSendersRequest';
-import { ISendersResponse } from '@shared-types/senders/domain/models/responses/ISendersResponse';
+import { ICreateSenders } from '../domain/models/requests/ICreateSenders';
+import { ISendersResponse } from '../domain/models/responses/ISenders';
 import { ISendersRepository } from '../domain/repositories/ISendersRepository';
-import { ICreateSendersUseCase } from '../domain/useCases/ICreateSendersUseCase';
 
 @injectable()
-export default class CreateSendersUseCase implements ICreateSendersUseCase {
+export default class CreateSendersUseCase {
   constructor(
     @inject('SendersRepository')
     private sendersRepository: ISendersRepository,
   ) {}
 
-  public async execute(data: ICreateSendersRequest): Promise<ISendersResponse> {
+  public async execute(data: ICreateSenders): Promise<ISendersResponse> {
     const sender = await this.sendersRepository.create(data);
 
     await this.sendersRepository.save(sender);

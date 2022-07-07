@@ -1,11 +1,9 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { ISendersResponse } from '@shared-types/senders/domain/models/responses/ISendersResponse';
+import { ISendersResponse } from '../domain/models/responses/ISenders';
 import { ISendersRepository } from '../domain/repositories/ISendersRepository';
-import { IGetAllSendersUseCase } from '../domain/useCases/IGetAllSendersUseCase';
-
 @injectable()
-export default class GetAllSendersUseCase implements IGetAllSendersUseCase {
+export default class GetAllSendersUseCase {
   constructor(
     @inject('SendersRepository')
     private sendersRepository: ISendersRepository,
