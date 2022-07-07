@@ -1,9 +1,9 @@
 import { IStoragesCapacityRepository } from '@modules/reports/domain/repositories/IStoragesCapacityRepository';
-import { IStorageCapacity } from '@shared-types/reports/domain/models/entities/IStorageCapacity';
-import { IRegisterStoragesCapacityRequest } from '@shared-types/reports/domain/models/requests/IRegisterStoragesCapacityRequest';
 import { Repository } from 'typeorm';
 import StorageCapacity from '../entities/StorageCapacity';
-import { dataSource } from '@shared/infra/typeorm';
+import { dataSource } from '@shared/infra/orm';
+import { IRegisterStoragesCapacity } from '@modules/reports/domain/models/requests/IRegisterStoragesCapacity';
+import { IStorageCapacity } from '@modules/reports/domain/models/entities/IStorageCapacity';
 
 export class StoragesCapacityRepository implements IStoragesCapacityRepository {
   private ormRepository: Repository<StorageCapacity>;
@@ -13,7 +13,7 @@ export class StoragesCapacityRepository implements IStoragesCapacityRepository {
   }
 
   public async create(
-    data: IRegisterStoragesCapacityRequest,
+    data: IRegisterStoragesCapacity,
   ): Promise<IStorageCapacity> {
     console.log(`create storage capacity reports: ${JSON.stringify(data)}`);
 
