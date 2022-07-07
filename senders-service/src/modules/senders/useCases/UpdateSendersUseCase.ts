@@ -1,18 +1,16 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IUpdateSendersRequest } from '@shared-types/senders/domain/models/requests/IUpdateSendersRequest';
-import { ISendersResponse } from '@shared-types/senders/domain/models/responses/ISendersResponse';
+import { IUpdateSenders } from '../domain/models/requests/IUpdateSenders';
+import { ISendersResponse } from '../domain/models/responses/ISenders';
 import { ISendersRepository } from '../domain/repositories/ISendersRepository';
-import { IUpdateSendersUseCase } from '../domain/useCases/IUpdateSendersUseCase';
-
 @injectable()
-export default class UpdateSendersUseCase implements IUpdateSendersUseCase {
+export default class UpdateSendersUseCase {
   constructor(
     @inject('SendersRepository')
     private sendersRepository: ISendersRepository,
   ) {}
 
-  public async execute(data: IUpdateSendersRequest): Promise<ISendersResponse> {
+  public async execute(data: IUpdateSenders): Promise<ISendersResponse> {
     const sender = await this.sendersRepository.getById(data.id);
 
     if (!sender) {

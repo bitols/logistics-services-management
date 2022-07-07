@@ -1,8 +1,8 @@
-import { IStorageCapacity } from '@shared-types/reports/domain/models/entities/IStorageCapacity';
-import { IRegisterStoragesCapacityRequest } from '@shared-types/reports/domain/models/requests/IRegisterStoragesCapacityRequest';
+import { IStorageCapacity } from '../models/entities/IStorageCapacity';
+import { IRegisterStoragesCapacity } from '../models/requests/IRegisterStoragesCapacity';
 
 export interface IStoragesCapacityRepository {
-  create(data: IRegisterStoragesCapacityRequest): Promise<IStorageCapacity>;
+  create(data: IRegisterStoragesCapacity): Promise<IStorageCapacity>;
   save(storageCapacity: IStorageCapacity): Promise<IStorageCapacity>;
   getByStorageId(storage: string): Promise<IStorageCapacity | null | undefined>;
   getAllBySender(sender: string): Promise<IStorageCapacity[]>;

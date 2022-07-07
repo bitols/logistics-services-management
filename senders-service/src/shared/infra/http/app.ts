@@ -4,7 +4,7 @@ import cors from 'cors';
 import { errors } from 'celebrate';
 import routes from './routes';
 import AppErrors from '@shared/errors/AppErrors';
-import '@shared/infra/typeorm';
+import '@shared/infra/orm';
 import '@shared/container';
 
 const app = express();

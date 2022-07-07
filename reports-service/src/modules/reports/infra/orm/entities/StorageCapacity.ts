@@ -1,4 +1,4 @@
-import { IStorageCapacity } from '@shared-types/reports/domain/models/entities/IStorageCapacity';
+import { IStorageCapacity } from '@modules/reports/domain/models/entities/IStorageCapacity';
 import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 
 @Entity('storageCapacity')
