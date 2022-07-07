@@ -1,22 +1,17 @@
-import { IGetAllStoragesBySenderIdRequest } from '@shared-types/storages/domain/models/requests/IGetAllStoragesBySenderIdRequests';
-import { IStoragesResponse } from '@shared-types/storages/domain/models/responses/IStoragesResponse';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
+import { IGetAllStoragesBySenderId } from '../domain/models/requests/IGetAllStoragesBySenderId';
+import { IStorages } from '../domain/models/responses/IStorages';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
-import { IGetAllStoragesBySenderIdUseCase } from '../domain/useCases/IGetAllStoragesBySenderIdUseCase';
 
 @injectable()
-export default class GetAllStoragesBySenderIdUsecase
-  implements IGetAllStoragesBySenderIdUseCase
-{
+export default class GetAllStoragesBySenderIdUsecase {
   constructor(
     @inject('StoragesRepository')
     private storagesRepository: IStoragesRepository,
   ) {}
 
-  public async execute(
-    data: IGetAllStoragesBySenderIdRequest,
-  ): Promise<IStoragesResponse[]> {
+  public async execute(data: IGetAllStoragesBySenderId): Promise<IStorages[]> {
     const storages = await this.storagesRepository.getAllBySender(
       data.senderId,
     );
@@ -25,6 +20,18 @@ export default class GetAllStoragesBySenderIdUsecase
       throw new AppErrors('Storages not found');
     }
 
-    return storages.map(storage => storage as IStoragesResponse);
+    return storages.map(storage => {
+      return {
+        id: storage.id,
+        name: storage.name,
+        email: storage.email,
+        address: storage.address,
+        capacity: storage.capacity,
+        phone: storage.phone,
+        supplierId: storage.supplierId,
+        senderId: storage.senderId,
+        location: storage.location,
+      };
+    });
   }
 }

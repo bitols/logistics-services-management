@@ -1,5 +1,5 @@
-import typeOrmConfig from '@config/typeOrmConfig';
-import Storage from '@modules/storages/infra/typeorm/entities/Storage';
+import typeOrmConfig from '@config/ormConfig';
+import Storage from '@modules/storages/infra/orm/entities/Storage';
 import { DataSource } from 'typeorm';
 
 export const dataSource = new DataSource({

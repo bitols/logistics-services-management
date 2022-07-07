@@ -1,20 +1,16 @@
-import { IUpdateStoragesLocationRequest } from '@shared-types/storages/domain/models/requests/IUpdateStoragesLocationRequest';
-import { IStoragesResponse } from '@shared-types/storages/domain/models/responses/IStoragesResponse';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
+import { IUpdateStoragesLocation } from '../domain/models/requests/IUpdateStoragesLocation';
+import { IStorages } from '../domain/models/responses/IStorages';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
-import { IUpdateLocationUseCase } from '../domain/useCases/IUpdateLocationUseCase';
-
 @injectable()
-export class UpdateLocationUseCase implements IUpdateLocationUseCase {
+export class UpdateLocationUseCase {
   constructor(
     @inject('StoragesRepository')
     private storagesRepository: IStoragesRepository,
   ) {}
 
-  public async execute(
-    data: IUpdateStoragesLocationRequest,
-  ): Promise<IStoragesResponse> {
+  public async execute(data: IUpdateStoragesLocation): Promise<IStorages> {
     const storage = await this.storagesRepository.getById(data.id);
 
     if (!storage) {
@@ -24,6 +20,16 @@ export class UpdateLocationUseCase implements IUpdateLocationUseCase {
     storage.location = data.location;
 
     await this.storagesRepository.save(storage);
-    return storage as IStoragesResponse;
+    return {
+      id: storage.id,
+      name: storage.name,
+      email: storage.email,
+      address: storage.address,
+      capacity: storage.capacity,
+      phone: storage.phone,
+      supplierId: storage.supplierId,
+      senderId: storage.senderId,
+      location: storage.location,
+    };
   }
 }
