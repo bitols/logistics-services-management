@@ -1,9 +1,9 @@
-import { IProduct } from '@shared-types/products/domain/models/entities/IProduct';
-import { ICreateProductsRequest } from '@shared-types/products/domain/models/requests/ICreateProductsRequest';
 import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
 import { Repository } from 'typeorm';
 import Product from '../entities/Product';
-import { dataSource } from '@shared/infra/typeorm';
+import { dataSource } from '@shared/infra/orm';
+import { ICreateProducts } from '@modules/products/domain/models/requests/ICreateProducts';
+import { IProduct } from '@modules/products/domain/models/entities/IProduct';
 export class ProductsRepository implements IProductsRepository {
   private ormRepository: Repository<Product>;
 
@@ -11,7 +11,7 @@ export class ProductsRepository implements IProductsRepository {
     this.ormRepository = dataSource.getRepository(Product);
   }
 
-  public async create(data: ICreateProductsRequest): Promise<IProduct> {
+  public async create(data: ICreateProducts): Promise<IProduct> {
     console.log(`create product: ${JSON.stringify(data)}`);
 
     const product = this.ormRepository.create(data);

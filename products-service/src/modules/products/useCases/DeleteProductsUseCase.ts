@@ -1,20 +1,19 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IDeleteProductsRequest } from '@shared-types/products/domain/models/requests/IDeleteProductsRequest';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
-import { IDeleteProductsUseCase } from '../domain/useCases/IDeleteProductsUseCase';
 import kafkaConfig from '@config/kafkaConfig';
 import { KafkaQueue } from '@shared/infra/kafka/KafkaQueue';
+import { IDeleteProducts } from '../domain/models/requests/IDeleteProducts';
 
 @injectable()
-export default class DeleteProductsUseCase implements IDeleteProductsUseCase {
+export default class DeleteProductsUseCase {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
     @inject('KafkaQueue')
     private kafkaQueue: KafkaQueue,
   ) {}
-  public async execute(data: IDeleteProductsRequest): Promise<void> {
+  public async execute(data: IDeleteProducts): Promise<void> {
     const product = await this.productsRepository.getById(data.id);
 
     if (!product) {
