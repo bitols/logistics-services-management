@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 import 'dotenv/config';
-import appApiConfig from '@config/appApiConfig';
+import appConfig from '@config/appConfig';
 import { app } from './app';
-import { dataSource } from '../typeorm';
+import { dataSource } from '../orm';
 import '../kafka';
 
-const port = appApiConfig.port;
+const port = appConfig.port;
 
 dataSource
   .initialize()
