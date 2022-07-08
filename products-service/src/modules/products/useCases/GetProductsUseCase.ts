@@ -1,22 +1,30 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IGetProductsRequest } from '@shared-types/products/domain/models/requests/IGetProductsRequest';
-import { IProductsResponse } from '@shared-types/products/domain/models/responses/IProductsResponse';
+import { IGetProducts } from '../domain/models/requests/IGetProducts';
+import { IProductsResponse } from '../domain/models/responses/IProductsResponse';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
-import { IGetProductsUseCase } from '../domain/useCases/IGetProductsUseCase';
 
 @injectable()
-export default class GetProductsUseCase implements IGetProductsUseCase {
+export default class GetProductsUseCase {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
   ) {}
 
-  public async execute(data: IGetProductsRequest): Promise<IProductsResponse> {
+  public async execute(data: IGetProducts): Promise<IProductsResponse> {
     const product = await this.productsRepository.getById(data.id);
     if (!product) {
       throw new AppErrors('Product not found');
     }
-    return product as IProductsResponse;
+    return {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      height: product.height,
+      lenght: product.lenght,
+      width: product.width,
+      senderId: product.senderId,
+      storageId: product.storageId,
+    };
   }
 }

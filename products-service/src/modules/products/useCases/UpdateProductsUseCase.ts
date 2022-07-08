@@ -1,14 +1,13 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IUpdateProductsRequest } from '@shared-types/products/domain/models/requests/IUpdateProductsRequest';
-import { IProductsResponse } from '@shared-types/products/domain/models/responses/IProductsResponse';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
-import { IUpdateProducstUseCase } from '../domain/useCases/IUpdateProductsUseCase';
 import { KafkaQueue } from '@shared/infra/kafka/KafkaQueue';
 import kafkaConfig from '@config/kafkaConfig';
+import { IUpdateProducts } from '../domain/models/requests/IUpdateProducts';
+import { IProductsResponse } from '../domain/models/responses/IProductsResponse';
 
 @injectable()
-export default class UpdateProductsUseCase implements IUpdateProducstUseCase {
+export default class UpdateProductsUseCase {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
@@ -16,9 +15,7 @@ export default class UpdateProductsUseCase implements IUpdateProducstUseCase {
     private kafkaQueue: KafkaQueue,
   ) {}
 
-  public async execute(
-    data: IUpdateProductsRequest,
-  ): Promise<IProductsResponse> {
+  public async execute(data: IUpdateProducts): Promise<IProductsResponse> {
     const product = await this.productsRepository.getById(data.id);
 
     if (!product) {
@@ -50,6 +47,15 @@ export default class UpdateProductsUseCase implements IUpdateProducstUseCase {
       );
     }
 
-    return product as IProductsResponse;
+    return {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      height: product.height,
+      lenght: product.lenght,
+      width: product.width,
+      senderId: product.senderId,
+      storageId: product.storageId,
+    };
   }
 }

@@ -1,4 +1,4 @@
-import { IProduct } from '@shared-types/products/domain/models/entities/IProduct';
+import { IProduct } from '@modules/products/domain/models/entities/IProduct';
 import { Entity, ObjectID, ObjectIdColumn, Column } from 'typeorm';
 
 @Entity('product')
