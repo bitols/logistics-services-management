@@ -1,9 +1,12 @@
 import { IGeolocationsGateway } from '@modules/geolocation/domain/gateways/IGeolocationsGateway';
 import axios from 'axios';
 import gatewayConfig from '@config/gatewayConfig';
+import { IGeometry } from '@modules/geolocation/domain/models/entities/IGeometry';
 
 export class GeolocationsGateway implements IGeolocationsGateway {
-  public async getLocationFromAddress(address: string): Promise<any> {
+  public async getGeometryFromAddress(
+    address: string,
+  ): Promise<IGeometry | undefined> {
     try {
       const { data, status } = await axios.get<any>(
         `${
@@ -22,7 +25,33 @@ export class GeolocationsGateway implements IGeolocationsGateway {
         `request location from address: ${address}, response status is: ${status}`,
       );
 
-      return data;
+      return {
+        bounds: {
+          northeast: {
+            lat: data.results[0].geometry.bounds.northeast.lat,
+            lng: data.results[0].geometry.bounds.northeast.lng,
+          },
+          southwest: {
+            lat: data.results[0].geometry.bounds.southwest.lat,
+            lng: data.results[0].geometry.bounds.southwest.lng,
+          },
+        },
+        location: {
+          lat: data.results[0].geometry.location.lat,
+          lng: data.results[0].geometry.location.lng,
+        },
+        type: data.results[0].geometry.location_type,
+        viewport: {
+          northeast: {
+            lat: data.results[0].geometry.viewport.northeast.lat,
+            lng: data.results[0].geometry.viewport.northeast.lng,
+          },
+          southwest: {
+            lat: data.results[0].geometry.viewport.southwest.lat,
+            lng: data.results[0].geometry.viewport.southwest.lng,
+          },
+        },
+      };
     } catch (error: any) {
       console.error(error);
     }
