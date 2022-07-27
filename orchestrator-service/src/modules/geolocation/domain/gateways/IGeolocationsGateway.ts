@@ -1,3 +1,5 @@
+import { IGeometry } from '../models/entities/IGeometry';
+
 export interface IGeolocationsGateway {
-  getLocationFromAddress(address: string): Promise<any | undefined>;
+  getGeometryFromAddress(address: string): Promise<IGeometry | undefined>;
 }
