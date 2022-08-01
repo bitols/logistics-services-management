@@ -1,60 +1,39 @@
-import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
-import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
-import { IGetStoragesRequest } from '@shared-types/storages/domain/models/requests/IGetStoragesRequest';
-import AppErrors from '@shared/errors/AppErrors';
+import { x } from 'joi';
 import { inject, injectable } from 'tsyringe';
 import { IReportsGateway } from '../domain/gateways/IReportsGateway';
-import { IGenerateStoragesCapacitysUseCase } from '../domain/useCases/IGenerateStoragesCapacityUseCase';
+import { IGenerateStoragesReport } from '../domain/models/requests/IGenerateStoragesReport';
 @injectable()
-export default class GenerateStoragesCapacitysUseCase
-  implements IGenerateStoragesCapacitysUseCase
-{
+export default class GenerateStoragesCapacitysUseCase {
   constructor(
-    @inject('StoragesGateway')
-    private storagesGateway: IStoragesGateway,
-    @inject('ProductsGateway')
-    private productsGateway: IProductsGateway,
     @inject('ReportsGateway')
     private reportsGateway: IReportsGateway,
   ) {}
 
-  public async execute(request: IGetStoragesRequest): Promise<void> {
-    const storage = await this.storagesGateway.getById({ id: request.id });
-
-    if (!storage) {
-      throw new AppErrors('Storage not found');
-    }
-
-    const products = await this.productsGateway.getAllByStorage({
-      storageId: storage.id,
-    });
-
-    const data = products
-      ?.map(x => {
+  public async execute(request: IGenerateStoragesReport): Promise<void> {
+    const data = request.products
+      ?.map(attribute => {
         return {
-          volume: x.height * x.width * x.lenght,
-          value: x.price,
-          qtd: 1,
+          volume: attribute.height * attribute.width * attribute.lenght,
+          value: attribute.price,
         };
       })
       .reduce((pre, cur) => {
         return {
           volume: pre.volume + cur.volume,
           value: pre.value + cur.value,
-          qtd: pre.qtd + cur.qtd,
         };
       });
 
     const capacity = {
-      storageId: storage.id,
-      capacity: storage.capacity,
+      storageId: request.storageId,
+      capacity: request.capacity,
       stored: data ? Number(data.volume.toFixed(3)) : 0,
       usage: data
-        ? Number(((data.volume * 100) / storage.capacity).toFixed(2))
+        ? Number(((data.volume * 100) / request.capacity).toFixed(2))
         : 0,
-      products: data ? data.qtd : 0,
+      products: request.products.length,
       value: data ? Number(data.value.toFixed(2)) : 0,
-      senderId: storage.senderId,
+      senderId: request.senderId,
     };
 
     await this.reportsGateway.registerStoragesCapacity(capacity);

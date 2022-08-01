@@ -1,9 +1,9 @@
-import { IStoragesResponse } from '@shared-types/storages/domain/models/responses/IStoragesResponse';
-import { IGetStoragesRequest } from '@shared-types/storages/domain/models/requests/IGetStoragesRequest';
-import { IUpdateStoragesLocationRequest } from '@shared-types/storages/domain/models/requests/IUpdateStoragesLocationRequest';
+import { IGetStorages } from '../models/requests/IGetStorages';
+import { IUpdateStoragesLocation } from '../models/requests/IUpdateStoragesLocation';
+import { IStorages } from '../models/responses/IStorages';
 export interface IStoragesGateway {
-  getById(request: IGetStoragesRequest): Promise<IStoragesResponse | undefined>;
+  getById(request: IGetStorages): Promise<IStorages | undefined>;
   updateLocation(
-    request: IUpdateStoragesLocationRequest,
-  ): Promise<IStoragesResponse | undefined>;
+    request: IUpdateStoragesLocation,
+  ): Promise<IStorages | undefined>;
 }

@@ -1,8 +1,7 @@
-import { IProductsResponse } from '@shared-types/products/domain/models/responses/IProductsResponse';
-import { IGetAllProductsByStorageIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsByStoragedRequest';
-
+import { IGetAllProductsByStorageId } from '../models/requests/IGetAllProductsByStorageId';
+import { IProducts } from '../models/responses/IProducts';
 export interface IProductsGateway {
   getAllByStorage(
-    request: IGetAllProductsByStorageIdRequest,
-  ): Promise<IProductsResponse[] | undefined>;
+    request: IGetAllProductsByStorageId,
+  ): Promise<IProducts[] | undefined>;
 }
