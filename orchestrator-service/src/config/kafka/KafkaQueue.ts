@@ -1,23 +1,29 @@
 import { Kafka } from 'kafkajs';
-import { IKafkaQueue } from './queue/IKafkaQueue';
-import kafkaConfig from '@config/kafkaConfig';
-export class KafkaQueue implements IKafkaQueue {
+import config from './config';
+
+export class KafkaQueue {
+  public storageCapacityTopic: string;
+  public storageLocationTopic: string;
   private kafka: Kafka;
 
   constructor() {
     this.kafka = new Kafka({
-      clientId: kafkaConfig.clientId,
-      brokers: kafkaConfig.brokers,
+      clientId: config.clientId,
+      brokers: config.brokers,
     });
+    this.storageCapacityTopic = config.storageCapacityTopic;
+    this.storageLocationTopic = config.storageLocationTopic;
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  public async startConsumer(topic: string, callback: Function): Promise<void> {
+  public async startConsumer(
+    topic: string,
+    callback: CallableFunction,
+  ): Promise<void> {
     try {
       console.log(`KafkaQueue.startConsumer: ${topic}`);
       const consumer = this.kafka.consumer({
         groupId: topic,
-        maxWaitTimeInMs: kafkaConfig.maxWaitTimeInMs,
+        maxWaitTimeInMs: config.maxWaitTimeInMs,
       });
 
       await consumer.connect();
