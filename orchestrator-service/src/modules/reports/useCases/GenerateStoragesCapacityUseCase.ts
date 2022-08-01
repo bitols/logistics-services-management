@@ -1,4 +1,3 @@
-import { x } from 'joi';
 import { inject, injectable } from 'tsyringe';
 import { IReportsGateway } from '../domain/gateways/IReportsGateway';
 import { IGenerateStoragesReport } from '../domain/models/requests/IGenerateStoragesReport';
