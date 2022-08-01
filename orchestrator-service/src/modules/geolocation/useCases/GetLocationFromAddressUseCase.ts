@@ -1,3 +1,4 @@
+import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
 import { IGeolocationsGateway } from '../domain/gateways/IGeolocationsGateway';
 import { ILocations } from '../domain/models/responses/ILocations';
@@ -9,13 +10,15 @@ export class GetLocationFromAddressUseCase {
   ) {}
 
   public async execute(address: string): Promise<ILocations> {
-    const response = await this.geolocationsGateway.getLocationFromAddress(
+    const response = await this.geolocationsGateway.getGeometryFromAddress(
       address,
     );
-
+    if (!response) {
+      throw new AppErrors('Location not found');
+    }
     return {
-      lat: response.results[0].geometry.location.lat,
-      lng: response.results[0].geometry.location.lng,
+      lat: response.location.lat,
+      lng: response.location.lng,
     };
   }
 }

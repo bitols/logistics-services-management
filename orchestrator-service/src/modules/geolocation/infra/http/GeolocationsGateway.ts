@@ -1,9 +1,11 @@
 import { IGeolocationsGateway } from '@modules/geolocation/domain/gateways/IGeolocationsGateway';
 import axios from 'axios';
 import gatewayConfig from '@config/gatewayConfig';
-
+import { IGeometry } from '@modules/geolocation/domain/models/entities/IGeometry';
 export class GeolocationsGateway implements IGeolocationsGateway {
-  public async getLocationFromAddress(address: string): Promise<any> {
+  public async getGeometryFromAddress(
+    address: string,
+  ): Promise<IGeometry | undefined> {
     try {
       const { data, status } = await axios.get<any>(
         `${
@@ -21,10 +23,11 @@ export class GeolocationsGateway implements IGeolocationsGateway {
       console.log(
         `request location from address: ${address}, response status is: ${status}`,
       );
-
-      return data;
+      if (data.results.length) {
+        return data.results[0].geometry;
+      }
     } catch (error: any) {
-      console.error(error);
+      console.log(error.message);
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Consumer, Kafka } from 'kafkajs';
+import { Kafka } from 'kafkajs';
 import { IKafkaQueue } from './queue/IKafkaQueue';
 import kafkaConfig from '@config/kafkaConfig';
 export class KafkaQueue implements IKafkaQueue {
