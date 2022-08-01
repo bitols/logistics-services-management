@@ -1,8 +1,8 @@
-import gatewayConfig from '@config/gatewayConfig';
+import { productsService } from '@config/gateway/config';
 import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
 import { IGetAllProductsByStorageId } from '@modules/products/domain/models/requests/IGetAllProductsByStorageId';
 import { IProducts } from '@modules/products/domain/models/responses/IProducts';
-import axios from 'axios';
+import axios from '@config/axios/AxiosClient';
 
 export class ProductsGateway implements IProductsGateway {
   public async getAllByStorage(
@@ -10,7 +10,7 @@ export class ProductsGateway implements IProductsGateway {
   ): Promise<IProducts[] | undefined> {
     try {
       const { data, status } = await axios.get<IProducts[]>(
-        `${gatewayConfig.productsService.address}/products/storage/${request.storageId}`,
+        `${productsService.address}/products/storage/${request.storageId}`,
         {
           headers: {
             Accept: 'application/json',
