@@ -1,16 +1,16 @@
-import gatewayConfig from '@config/gatewayConfig';
+import { reportsService } from '@config/gateway/config';
 import { IReportsGateway } from '@modules/reports/domain/gateways/IReportsGateway';
-import { IRegisterStoragesCapacityRequest } from '@shared-types/reports/domain/models/requests/IRegisterStoragesCapacityRequest';
-import { IStoragesCapacityResponse } from '@shared-types/reports/domain/models/responses/IStoragesCapacityResponse';
-import axios from 'axios';
+import axios from '@config/axios/AxiosClient';
+import { IRegisterStoragesReport } from '@modules/reports/domain/models/requests/IRegisterStoragesReport';
+import { IStoragesReport } from '@modules/reports/domain/models/responses/IStoragesReport';
 
 export class ReportsGateway implements IReportsGateway {
   public async registerStoragesCapacity(
-    request: IRegisterStoragesCapacityRequest,
-  ): Promise<IStoragesCapacityResponse | undefined> {
+    request: IRegisterStoragesReport,
+  ): Promise<IStoragesReport | undefined> {
     try {
-      const { data, status } = await axios.post<IStoragesCapacityResponse>(
-        `${gatewayConfig.reportsService.address}/reports/storages-capacity`,
+      const { data, status } = await axios.post<IStoragesReport>(
+        `${reportsService.address}/reports/storages-capacity`,
         request,
         {
           headers: {

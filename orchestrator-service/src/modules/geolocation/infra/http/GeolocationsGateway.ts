@@ -1,6 +1,6 @@
 import { IGeolocationsGateway } from '@modules/geolocation/domain/gateways/IGeolocationsGateway';
-import axios from 'axios';
-import gatewayConfig from '@config/gatewayConfig';
+import axios from '@config/axios/AxiosClient';
+import { geocodeService } from '@config/gateway/config';
 import { IGeometry } from '@modules/geolocation/domain/models/entities/IGeometry';
 export class GeolocationsGateway implements IGeolocationsGateway {
   public async getGeometryFromAddress(
@@ -8,11 +8,9 @@ export class GeolocationsGateway implements IGeolocationsGateway {
   ): Promise<IGeometry | undefined> {
     try {
       const { data, status } = await axios.get<any>(
-        `${
-          gatewayConfig.geocodeService.address
-        }/json?address=${encodeURIComponent(address)}&key=${
-          gatewayConfig.geocodeService.key
-        }`,
+        `${geocodeService.address}/json?address=${encodeURIComponent(
+          address,
+        )}&key=${geocodeService.key}`,
         {
           headers: {
             Accept: 'application/json',

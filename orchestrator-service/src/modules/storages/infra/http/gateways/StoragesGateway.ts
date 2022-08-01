@@ -1,9 +1,9 @@
-import gatewayConfig from '@config/gatewayConfig';
+import { storagesService } from '@config/gateway/config';
 import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
 import { IGetStorages } from '@modules/storages/domain/models/requests/IGetStorages';
 import { IUpdateStoragesLocation } from '@modules/storages/domain/models/requests/IUpdateStoragesLocation';
 import { IStorages } from '@modules/storages/domain/models/responses/IStorages';
-import axios from 'axios';
+import axios from '@config/axios/AxiosClient';
 
 export class StoragesGateway implements IStoragesGateway {
   public async updateLocation(
@@ -11,7 +11,7 @@ export class StoragesGateway implements IStoragesGateway {
   ): Promise<IStorages | undefined> {
     try {
       const { data, status } = await axios.patch<IStorages>(
-        `${gatewayConfig.storagesService.address}/storages/${request.id}/location`,
+        `${storagesService.address}/storages/${request.id}/location`,
         { location: request.location },
         {
           headers: {
@@ -35,7 +35,7 @@ export class StoragesGateway implements IStoragesGateway {
   public async getById(request: IGetStorages): Promise<IStorages | undefined> {
     try {
       const { data, status } = await axios.get<IStorages>(
-        `${gatewayConfig.storagesService.address}/storages/${request.id}`,
+        `${storagesService.address}/storages/${request.id}`,
         {
           headers: {
             Accept: 'application/json',
