@@ -4,7 +4,7 @@ import { IProductsRepository } from '../domain/repositories/IProductsRepository'
 import { KafkaQueue } from '@shared/infra/kafka/KafkaQueue';
 import kafkaConfig from '@config/kafkaConfig';
 import { IUpdateProducts } from '../domain/models/requests/IUpdateProducts';
-import { IProductsResponse } from '../domain/models/responses/IProductsResponse';
+import { IProducts } from '../domain/models/responses/IProducts';
 
 @injectable()
 export default class UpdateProductsUseCase {
@@ -15,7 +15,7 @@ export default class UpdateProductsUseCase {
     private kafkaQueue: KafkaQueue,
   ) {}
 
-  public async execute(data: IUpdateProducts): Promise<IProductsResponse> {
+  public async execute(data: IUpdateProducts): Promise<IProducts> {
     const product = await this.productsRepository.getById(data.id);
 
     if (!product) {

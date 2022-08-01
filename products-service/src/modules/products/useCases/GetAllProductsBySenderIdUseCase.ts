@@ -1,7 +1,7 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
 import { IGetAllProductsBySenderId } from '../domain/models/requests/IGetAllProductsBySenderIdt';
-import { IProductsResponse } from '../domain/models/responses/IProductsResponse';
+import { IProducts } from '../domain/models/responses/IProducts';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 
 @injectable()
@@ -13,7 +13,7 @@ export default class GetAllProductsBySenderIdUseCase {
 
   public async execute(
     data: IGetAllProductsBySenderId,
-  ): Promise<IProductsResponse[]> {
+  ): Promise<IProducts[]> {
     const products = await this.productsRepository.getAllBySender(
       data.senderId,
     );
