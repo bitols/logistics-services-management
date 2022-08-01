@@ -1,7 +1,7 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { injectable, inject } from 'tsyringe';
 import { IGetAllProductsByStorageId } from '../domain/models/requests/IGetAllProductsByStorageId';
-import { IProductsResponse } from '../domain/models/responses/IProductsResponse';
+import { IProducts } from '../domain/models/responses/IProducts';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 
 @injectable()
@@ -11,9 +11,7 @@ export default class GetAllProductsByStorageIdUseCase {
     private productsRepository: IProductsRepository,
   ) {}
 
-  public async execute(
-    data: IGetAllProductsByStorageId,
-  ): Promise<IProductsResponse[]> {
+  public async execute(data: IGetAllProductsByStorageId): Promise<IProducts[]> {
     const products = await this.productsRepository.getAllByStorage(
       data.storageId,
     );

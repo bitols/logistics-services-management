@@ -1,4 +1,4 @@
-export interface IProductsResponse {
+export interface IProducts {
   id: string;
   name: string;
   height: number;
