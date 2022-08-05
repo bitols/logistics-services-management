@@ -1,7 +1,7 @@
 import { ICredentialsRepository } from '@modules/credentials/domain/repositories/ICredentialsRepository';
 import { ICreateCredentials } from '@modules/credentials/domain/models/requests/ICreateCredentials';
 import { Repository } from 'typeorm';
-import { dataSource } from '@shared/infra/orm';
+import { dataSource } from '@config/orm';
 import Credential from '../entities/Credential';
 import { ICredential } from '@modules/credentials/domain/models/entities/ICredential';
 

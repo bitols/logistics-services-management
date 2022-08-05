@@ -1,5 +1,5 @@
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
-import authConfig from '@config/authConfig';
+import authConfig from '@config/auth/config';
 import { ISessionsRepository } from '@modules/credentials/domain/repositories/ISessionsRepository';
 
 declare module 'jsonwebtoken' {

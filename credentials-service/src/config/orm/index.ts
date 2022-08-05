@@ -1,8 +1,8 @@
-import ormConfig from '@config/ormConfig';
+import ormConfig from '@config/orm/config';
 import Credential from '@modules/credentials/infra/orm/entities/Credential';
-import { DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
-export const dataSource = new DataSource({
+const dataSource = new DataSource({
   type: 'mongodb',
   url: ormConfig.url,
   useNewUrlParser: ormConfig.useNewUrlParser,
@@ -10,3 +10,5 @@ export const dataSource = new DataSource({
   logging: ormConfig.logging,
   entities: [Credential],
 });
+
+export { dataSource };
