@@ -1,6 +1,6 @@
 import ormConfig from '@config/orm/config';
 import Credential from '@modules/credentials/infra/orm/entities/Credential';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 const dataSource = new DataSource({
   type: 'mongodb',
