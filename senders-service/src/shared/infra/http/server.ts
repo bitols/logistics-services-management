@@ -9,7 +9,7 @@ const port = appConfig.port;
 dataSource
   .initialize()
   .then(() => {
-    const server = app.listen(port, () => {
+    app.listen(port, () => {
       console.log(`Server started on port ${port}!`);
     });
   })
