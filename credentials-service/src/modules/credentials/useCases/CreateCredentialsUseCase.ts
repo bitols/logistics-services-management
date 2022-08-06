@@ -1,4 +1,4 @@
-import { hash } from 'bcryptjs';
+import { hashString } from '@config/encryption';
 import { ICreateCredentials } from '@modules/credentials/domain/models/requests/ICreateCredentials';
 import { ICredentials } from '@modules/credentials/domain/models/responses/ICredentials';
 import { inject, injectable } from 'tsyringe';
@@ -19,7 +19,7 @@ export default class CreateCredentialsUseCase {
       throw new AppErrors('Credentials already exists.');
     }
 
-    const hashedPassword = await hash(data.password, 8);
+    const hashedPassword = await hashString(data.password);
     data.password = hashedPassword;
 
     credential = await this.credentialsRepository.create(data);

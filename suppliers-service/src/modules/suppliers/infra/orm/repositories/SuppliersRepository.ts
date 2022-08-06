@@ -1,13 +1,11 @@
 import { ISuppliersRepository } from '@modules/suppliers/domain/repositories/ISuppliersRepository';
-import { Repository } from 'typeorm';
 import Supplier from '../entities/Supplier';
-import { dataSource } from '@shared/infra/orm';
+import { dataSource } from '@config/orm';
 import { ICreateSuppliers } from '@modules/suppliers/domain/models/requests/ICreateSuppliers';
 import { ISupplier } from '@modules/suppliers/domain/models/entities/ISupplier';
 
 export class SuppliersRepository implements ISuppliersRepository {
-  private ormRepository: Repository<Supplier>;
-
+  private ormRepository;
   constructor() {
     this.ormRepository = dataSource.getMongoRepository(Supplier);
   }

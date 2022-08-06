@@ -1,4 +1,4 @@
-import orm from '@config/ormConfig';
+import orm from '@config/orm/config';
 import Supplier from '@modules/suppliers/infra/orm/entities/Supplier';
 import { DataSource } from 'typeorm';
 
