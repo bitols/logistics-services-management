@@ -1,5 +1,5 @@
 import AppError from '@shared/errors/AppErrors';
-import { compare } from 'bcryptjs';
+import { compareHashString } from '@config/encryption';
 import { ICreateSessions } from '@modules/credentials/domain/models/requests/ICreateSessions';
 import { inject, injectable } from 'tsyringe';
 import { ISessionsRepository } from '../domain/repositories/ISessionsRepository';
@@ -16,17 +16,19 @@ export default class CreateSessionsUseCase {
   ) {}
   public async execute(data: ICreateSessions): Promise<ISessions> {
     const credential = await this.credentialsRepository.getByEmail(data.email);
-
     if (!credential) {
       throw new AppError('Incorrect email/password credentials.', 401);
     }
-    const passwordConfirmed = await compare(data.password, credential.password);
 
+    const passwordConfirmed = await compareHashString(
+      data.password,
+      credential.password,
+    );
     if (!passwordConfirmed) {
       throw new AppError('Incorrect email/password credentials.', 401);
     }
 
-    const token = await this.sessionsRepository.create(
+    const token = await this.sessionsRepository.creation(
       credential.id,
       credential.email,
       credential.senderId,

@@ -13,7 +13,7 @@ export default class SessionsRepository implements ISessionsRepository {
     };
   }
 
-  public async create(
+  public async creation(
     id: string,
     email: string,
     senderId: string,
