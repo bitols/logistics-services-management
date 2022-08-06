@@ -1,4 +1,4 @@
-import orm from '@config/ormConfig';
+import orm from '@config/orm/config';
 import StoragesCapacity from '@modules/reports/infra/orm/entities/StorageCapacity';
 import { DataSource } from 'typeorm';
 

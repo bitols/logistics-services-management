@@ -1,17 +1,15 @@
-import { IReceiver } from '@shared-types/receivers/domain/models/entities/IReceiver';
-import { ICreateReceiversRequest } from '@shared-types/receivers/domain/models/requests/ICreateReceiversRequest';
+import { IReceiver } from '@modules/receivers/domain/models/entities/IReceiver';
 import { IReceiversRepository } from '@modules/receivers/domain/repositories/IReceiverRepository';
-import { Repository } from 'typeorm';
 import Receiver from '../entities/Receiver';
-import { dataSource } from '@shared/infra/orm';
+import { dataSource } from '@config/orm';
+import { ICreateReceivers } from '@modules/receivers/domain/models/requests/ICreateReceivers';
 export class ReceiversRepository implements IReceiversRepository {
-  private ormRepository: Repository<Receiver>;
-
+  private ormRepository;
   constructor() {
     this.ormRepository = dataSource.getRepository(Receiver);
   }
 
-  public async create(data: ICreateReceiversRequest): Promise<IReceiver> {
+  public async create(data: ICreateReceivers): Promise<IReceiver> {
     const receiver = this.ormRepository.create(data);
 
     return receiver;
