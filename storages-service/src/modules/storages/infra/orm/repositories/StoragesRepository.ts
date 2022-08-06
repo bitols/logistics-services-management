@@ -1,12 +1,11 @@
 import { IStoragesRepository } from '@modules/storages/domain/repositories/IStoragesRepository';
-import { Repository } from 'typeorm';
 import Storage from '../entities/Storage';
-import { dataSource } from '@shared/infra/orm';
+import { dataSource } from '@config/orm';
 import { ICreateStorages } from '@modules/storages/domain/models/requests/ICreateStorages';
 import { IStorage } from '@modules/storages/domain/models/entities/IStorage';
 
 export class StoragesRepository implements IStoragesRepository {
-  private ormRepository: Repository<Storage>;
+  private ormRepository;
 
   constructor() {
     this.ormRepository = dataSource.getRepository(Storage);

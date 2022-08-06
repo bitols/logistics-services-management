@@ -1,18 +1,16 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
-import { KafkaQueue } from '@shared/infra/kafka/KafkaQueue';
-import kafkaConfig from '@config/kafkaConfig';
 import { IUpdateStorages } from '../domain/models/requests/IUpdateStorages';
 import { IStorages } from '../domain/models/responses/IStorages';
+import { queueProducer } from '@config/queue';
+import queueConfig from '@config/queue/config';
 
 @injectable()
 export default class UpdateStoragesUseCase {
   constructor(
     @inject('StoragesRepository')
     private storagesRepository: IStoragesRepository,
-    @inject('KafkaQueue')
-    private kafkaQueue: KafkaQueue,
   ) {}
 
   public async execute(data: IUpdateStorages): Promise<IStorages> {
@@ -34,8 +32,8 @@ export default class UpdateStoragesUseCase {
     await this.storagesRepository.save(storage);
 
     if (changedAddress) {
-      await this.kafkaQueue.startProducer(
-        kafkaConfig.storageLocationTopic,
+      await queueProducer(
+        queueConfig.storageLocationTopic,
         JSON.stringify({
           id: storage.id,
           address: storage.address,
@@ -44,8 +42,8 @@ export default class UpdateStoragesUseCase {
     }
 
     if (changeCapacity) {
-      await this.kafkaQueue.startProducer(
-        kafkaConfig.storageCapacityTopic,
+      await queueProducer(
+        queueConfig.storageCapacityTopic,
         JSON.stringify({ id: storage.id }),
       );
     }

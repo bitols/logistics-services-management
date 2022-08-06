@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import 'dotenv/config';
-import appConfig from '@config/appConfig';
+import appConfig from '@config/app/config';
 import { app } from './app';
-import { dataSource } from '../orm';
+import { dataSource } from '../../../config/orm';
 
 const port = appConfig.port;
 
