@@ -1,4 +1,4 @@
-import ormConfig from '@config/ormConfig';
+import ormConfig from '@config/orm/config';
 import Receivers from '@modules/receivers/infra/orm/entities/Receiver';
 import { DataSource } from 'typeorm';
 
