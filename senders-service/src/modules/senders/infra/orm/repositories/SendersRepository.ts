@@ -1,13 +1,11 @@
 import { ISendersRepository } from '@modules/senders/domain/repositories/ISendersRepository';
-import { Repository } from 'typeorm';
 import Supplier from '../entities/Sender';
-import { dataSource } from '@shared/infra/orm';
+import { dataSource } from '@config/orm';
 import { ICreateSenders } from '@modules/senders/domain/models/requests/ICreateSenders';
 import { ISender } from '@modules/senders/domain/models/entities/ISender';
 
 export class SendersRepository implements ISendersRepository {
-  private ormRepository: Repository<Supplier>;
-
+  private ormRepository;
   constructor() {
     this.ormRepository = dataSource.getRepository(Supplier);
   }
