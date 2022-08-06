@@ -1,13 +1,13 @@
-import ormConfig from '@config/orm/config';
+import config from '@config/orm/config';
 import Credential from '@modules/credentials/infra/orm/entities/Credential';
 import { DataSource } from 'typeorm';
 
 const dataSource = new DataSource({
   type: 'mongodb',
-  url: ormConfig.url,
-  useNewUrlParser: ormConfig.useNewUrlParser,
-  synchronize: ormConfig.synchronize,
-  logging: ormConfig.logging,
+  url: config.url,
+  useNewUrlParser: config.useNewUrlParser,
+  synchronize: config.synchronize,
+  logging: config.logging,
   entities: [Credential],
 });
 
