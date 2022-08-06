@@ -1,13 +1,11 @@
 import { IStoragesCapacityRepository } from '@modules/reports/domain/repositories/IStoragesCapacityRepository';
-import { Repository } from 'typeorm';
 import StorageCapacity from '../entities/StorageCapacity';
-import { dataSource } from '@shared/infra/orm';
+import { dataSource } from '@config/orm';
 import { IRegisterStoragesCapacity } from '@modules/reports/domain/models/requests/IRegisterStoragesCapacity';
 import { IStorageCapacity } from '@modules/reports/domain/models/entities/IStorageCapacity';
 
 export class StoragesCapacityRepository implements IStoragesCapacityRepository {
-  private ormRepository: Repository<StorageCapacity>;
-
+  private ormRepository;
   constructor() {
     this.ormRepository = dataSource.getRepository(StorageCapacity);
   }
