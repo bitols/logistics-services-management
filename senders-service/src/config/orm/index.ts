@@ -1,12 +1,12 @@
-import orm from '@config/ormConfig';
+import config from '@config/orm/config';
 import Sender from '@modules/senders/infra/orm/entities/Sender';
 import { DataSource } from 'typeorm';
 
 export const dataSource = new DataSource({
   type: 'mongodb',
-  url: orm.url,
-  useNewUrlParser: orm.useNewUrlParser,
-  synchronize: orm.synchronize,
-  logging: orm.logging,
+  url: config.url,
+  useNewUrlParser: config.useNewUrlParser,
+  synchronize: config.synchronize,
+  logging: config.logging,
   entities: [Sender],
 });
