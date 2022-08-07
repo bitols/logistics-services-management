@@ -1,21 +1,22 @@
-import { productsService } from '@config/gateway/config';
-import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
+import { productsService } from '@config/rest/config';
+import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
 import { IGetAllProductsByStorageId } from '@modules/products/domain/models/requests/IGetAllProductsByStorageId';
 import { IProducts } from '@modules/products/domain/models/responses/IProducts';
-import axios from '@config/axios/AxiosClient';
+import rest from '@config/rest';
 
-export class ProductsGateway implements IProductsGateway {
+export class ProductsRepository implements IProductsRepository {
+  private restClient;
+  constructor() {
+    this.restClient = rest.getHttpClient(productsService.address);
+  }
+
   public async getAllByStorage(
     request: IGetAllProductsByStorageId,
   ): Promise<IProducts[] | undefined> {
     try {
-      const { data, status } = await axios.get<IProducts[]>(
-        `${productsService.address}/products/storage/${request.storageId}`,
-        {
-          headers: {
-            Accept: 'application/json',
-          },
-        },
+      await this.restClient.get(`/products/storage/${request.storageId}`);
+      const { data, status } = await this.restClient.get(
+        `/products/storage/${request.storageId}`,
       );
 
       console.log(
