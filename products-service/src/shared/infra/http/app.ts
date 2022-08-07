@@ -4,9 +4,8 @@ import cors from 'cors';
 import { errors } from 'celebrate';
 import routes from './routes';
 import AppErrors from '@shared/errors/AppErrors';
-import '@shared/infra/orm';
+import '@config/orm';
 import '@shared/container';
-import '../kafka';
 const app = express();
 
 app.use(cors());
