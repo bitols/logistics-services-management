@@ -1,12 +1,10 @@
 import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
-import { Repository } from 'typeorm';
 import Product from '../entities/Product';
-import { dataSource } from '@shared/infra/orm';
+import { dataSource } from '@config/orm';
 import { ICreateProducts } from '@modules/products/domain/models/requests/ICreateProducts';
 import { IProduct } from '@modules/products/domain/models/entities/IProduct';
 export class ProductsRepository implements IProductsRepository {
-  private ormRepository: Repository<Product>;
-
+  private ormRepository;
   constructor() {
     this.ormRepository = dataSource.getRepository(Product);
   }
