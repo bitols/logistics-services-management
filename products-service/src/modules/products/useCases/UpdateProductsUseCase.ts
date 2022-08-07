@@ -1,8 +1,8 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
-import { KafkaQueue } from '@shared/infra/kafka/KafkaQueue';
-import kafkaConfig from '@config/kafkaConfig';
+import queue from '@config/queue';
+import queueConfig from '@config/queue/config';
 import { IUpdateProducts } from '../domain/models/requests/IUpdateProducts';
 import { IProducts } from '../domain/models/responses/IProducts';
 
@@ -11,8 +11,6 @@ export default class UpdateProductsUseCase {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
-    @inject('KafkaQueue')
-    private kafkaQueue: KafkaQueue,
   ) {}
 
   public async execute(data: IUpdateProducts): Promise<IProducts> {
@@ -35,14 +33,14 @@ export default class UpdateProductsUseCase {
 
     await this.productsRepository.save(product);
 
-    await this.kafkaQueue.startProducer(
-      kafkaConfig.storageCapacityTopic,
+    await queue.produce(
+      queueConfig.storageCapacityTopic,
       JSON.stringify({ id: product.storageId }),
     );
 
     if (oldStorageId) {
-      await this.kafkaQueue.startProducer(
-        kafkaConfig.storageCapacityTopic,
+      await queue.produce(
+        queueConfig.storageCapacityTopic,
         JSON.stringify({ id: oldStorageId }),
       );
     }

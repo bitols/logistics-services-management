@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
-import { KafkaQueue } from '@shared/infra/kafka/KafkaQueue';
-import kafkaConfig from '@config/kafkaConfig';
+import queue from '@config/queue';
+import queueConfig from '@config/queue/config';
 import { IProducts } from '../domain/models/responses/IProducts';
 import { ICreateProducts } from '../domain/models/requests/ICreateProducts';
 
@@ -10,8 +10,6 @@ export default class CreateProductsUseCase {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
-    @inject('KafkaQueue')
-    private kafkaQueue: KafkaQueue,
   ) {}
 
   public async execute(data: ICreateProducts): Promise<IProducts> {
@@ -19,8 +17,8 @@ export default class CreateProductsUseCase {
 
     await this.productsRepository.save(product);
 
-    await this.kafkaQueue.startProducer(
-      kafkaConfig.storageCapacityTopic,
+    await queue.produce(
+      queueConfig.storageCapacityTopic,
       JSON.stringify({ id: product.storageId }),
     );
 
