@@ -1,16 +1,16 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IGeolocationsGateway } from '../domain/gateways/IGeolocationsGateway';
+import { IGeolocationsRepository } from '../domain/repositories/IGeolocationsRepository';
 import { ILocations } from '../domain/models/responses/ILocations';
 @injectable()
 export class GetLocationFromAddressUseCase {
   constructor(
-    @inject('GeolocationsGateway')
-    private geolocationsGateway: IGeolocationsGateway,
+    @inject('GeolocationsRepository')
+    private geolocationsRepository: IGeolocationsRepository,
   ) {}
 
   public async execute(address: string): Promise<ILocations> {
-    const response = await this.geolocationsGateway.getGeometryFromAddress(
+    const response = await this.geolocationsRepository.getGeometryFromAddress(
       address,
     );
     if (!response) {

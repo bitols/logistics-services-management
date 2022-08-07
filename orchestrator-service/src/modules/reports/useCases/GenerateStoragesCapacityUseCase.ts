@@ -1,11 +1,11 @@
 import { inject, injectable } from 'tsyringe';
-import { IReportsGateway } from '../domain/gateways/IReportsGateway';
+import { IReportsRepository } from '../domain/repositories/IReportsRepository';
 import { IGenerateStoragesReport } from '../domain/models/requests/IGenerateStoragesReport';
 @injectable()
 export default class GenerateStoragesCapacitysUseCase {
   constructor(
-    @inject('ReportsGateway')
-    private reportsGateway: IReportsGateway,
+    @inject('ReportsRepository')
+    private reportsRepository: IReportsRepository,
   ) {}
 
   public async execute(request: IGenerateStoragesReport): Promise<void> {
@@ -35,6 +35,6 @@ export default class GenerateStoragesCapacitysUseCase {
       senderId: request.senderId,
     };
 
-    await this.reportsGateway.registerStoragesCapacity(capacity);
+    await this.reportsRepository.registerStoragesCapacity(capacity);
   }
 }

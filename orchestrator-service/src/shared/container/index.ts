@@ -1,28 +1,29 @@
-import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
-import { ProductsGateway } from '@modules/products/infra/http/gateways/ProductsGateway';
-import { IReportsGateway } from '@modules/reports/domain/gateways/IReportsGateway';
-import { ReportsGateway } from '@modules/reports/infra/http/gateways/ReportsGateway';
-import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
-import { StoragesGateway } from '@modules/storages/infra/http/gateways/StoragesGateway';
-import { IKafkaQueue } from '@shared/infra/kafka/queue/IKafkaQueue';
-import { KafkaQueue } from '@shared/infra/kafka/KafkaQueue';
+import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
+import { ProductsRepository } from '@modules/products/infra/rest/repositories/ProductsRepository';
+import { IReportsRepository } from '@modules/reports/domain/repositories/IReportsRepository';
+import { ReportsRepository } from '@modules/reports/infra/rest/repositories/ReportsRepository';
+import { IStoragesRepository } from '@modules/storages/domain/repositories/IStoragesRepository';
+import { StoragesRepository } from '@modules/storages/infra/http/repositories/StoragesRepository';
 import { container } from 'tsyringe';
-import { IGeolocationsGateway } from '@modules/geolocation/domain/gateways/IGeolocationsGateway';
-import { GeolocationsGateway } from '@modules/geolocation/infra/http/GeolocationsGateway';
+import { IGeolocationsRepository } from '@modules/geolocation/domain/repositories/IGeolocationsRepository';
+import { GeolocationsRepository } from '@modules/geolocation/infra/rest/repositories/GeolocationsRepository';
 
-container.registerSingleton<IProductsGateway>(
-  'ProductsGateway',
-  ProductsGateway,
+container.registerSingleton<IProductsRepository>(
+  'ProductsRepository',
+  ProductsRepository,
 );
 
-container.registerSingleton<IStoragesGateway>(
-  'StoragesGateway',
-  StoragesGateway,
+container.registerSingleton<IStoragesRepository>(
+  'StoragesRepository',
+  StoragesRepository,
 );
 
-container.registerSingleton<IReportsGateway>('ReportsGateway', ReportsGateway);
+container.registerSingleton<IReportsRepository>(
+  'ReportsRepository',
+  ReportsRepository,
+);
 
-container.registerSingleton<IGeolocationsGateway>(
-  'GeolocationsGateway',
-  GeolocationsGateway,
+container.registerSingleton<IGeolocationsRepository>(
+  'GeolocationsRepository',
+  GeolocationsRepository,
 );
