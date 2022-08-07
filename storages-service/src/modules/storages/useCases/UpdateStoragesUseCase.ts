@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
 import { IUpdateStorages } from '../domain/models/requests/IUpdateStorages';
 import { IStorages } from '../domain/models/responses/IStorages';
-import { queueProducer } from '@config/queue';
+import queue from '@config/queue';
 import queueConfig from '@config/queue/config';
 
 @injectable()
@@ -32,7 +32,7 @@ export default class UpdateStoragesUseCase {
     await this.storagesRepository.save(storage);
 
     if (changedAddress) {
-      await queueProducer(
+      await queue.produce(
         queueConfig.storageLocationTopic,
         JSON.stringify({
           id: storage.id,
@@ -42,7 +42,7 @@ export default class UpdateStoragesUseCase {
     }
 
     if (changeCapacity) {
-      await queueProducer(
+      await queue.produce(
         queueConfig.storageCapacityTopic,
         JSON.stringify({ id: storage.id }),
       );

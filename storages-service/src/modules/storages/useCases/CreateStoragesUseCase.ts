@@ -2,7 +2,7 @@ import { inject, injectable } from 'tsyringe';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
 import { ICreateStorages } from '../domain/models/requests/ICreateStorages';
 import { IStorages } from '../domain/models/responses/IStorages';
-import { queueProducer } from '@config/queue';
+import queue from '@config/queue';
 import queueConfig from '@config/queue/config';
 @injectable()
 export default class CreateStoragesUseCase {
@@ -15,8 +15,7 @@ export default class CreateStoragesUseCase {
     const storage = await this.storagesRepository.create(data);
 
     await this.storagesRepository.save(storage);
-
-    await queueProducer(
+    await queue.produce(
       queueConfig.storageLocationTopic,
       JSON.stringify({
         id: storage.id,
@@ -24,7 +23,7 @@ export default class CreateStoragesUseCase {
       }),
     );
 
-    await queueProducer(
+    await queue.produce(
       queueConfig.storageCapacityTopic,
       JSON.stringify({ id: storage.id }),
     );

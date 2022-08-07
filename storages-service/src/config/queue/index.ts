@@ -1,16 +1,25 @@
-import { Kafka } from 'kafkajs';
+import AppErrors from '@shared/errors/AppErrors';
+import { Kafka, Producer } from 'kafkajs';
 import config from './config';
+let queue: Kafka;
+let producer: Producer;
 
-const queue = new Kafka({
-  clientId: config.clientId,
-  brokers: config.brokers,
-});
+const init = async (): Promise<void> => {
+  queue = new Kafka({
+    clientId: config.clientId,
+    brokers: config.brokers,
+  });
+};
 
-export const queueProducer = async (
-  topic: string,
-  message: string,
-): Promise<void> => {
-  const producer = queue.producer();
+const produce = async (topic: string, message: string): Promise<void> => {
+  if (!queue) {
+    console.log('Queue not initialized');
+    throw new AppErrors('Queue not initialized', 500);
+  }
+
+  if (!producer) {
+    producer = queue.producer();
+  }
   await producer.connect();
 
   const result = await producer.send({
@@ -19,3 +28,5 @@ export const queueProducer = async (
   });
   console.log(`queue.produce: ${JSON.stringify(result)}`);
 };
+
+export default { init, produce };
