@@ -43,6 +43,7 @@ export default class UpdateReceiversUseCase {
       email: receiver.email,
       phone: receiver.phone,
       address: receiver.address,
+      location: receiver.location,
     };
   }
 }

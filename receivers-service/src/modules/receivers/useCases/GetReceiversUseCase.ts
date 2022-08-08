@@ -16,6 +16,15 @@ export default class GetReceiversUseCase {
       throw new AppErrors('Receiver not found');
     }
 
-    return receiver;
+    console.log(receiver);
+
+    return {
+      id: receiver.id,
+      name: receiver.name,
+      email: receiver.email,
+      address: receiver.address,
+      phone: receiver.phone,
+      location: receiver.location,
+    };
   }
 }
