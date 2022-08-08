@@ -2,6 +2,7 @@ import CreateReceiversUseCase from '@modules/receivers/useCases/CreateReceiversU
 import DeleteReceiversUseCase from '@modules/receivers/useCases/DeleteReceiversUseCase';
 import GetAllReceiversUseCase from '@modules/receivers/useCases/GetAllReceiversUseCase';
 import GetReceiversUseCase from '@modules/receivers/useCases/GetReceiversUseCase';
+import { UpdateLocationUseCase } from '@modules/receivers/useCases/UpdateLocationUseCase';
 import UpdateReceiversUseCase from '@modules/receivers/useCases/UpdateReceiversUseCase';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
@@ -63,5 +64,21 @@ export default class ReceiversController {
     await deleteReceivers.execute({ id });
 
     return response.json({});
+  }
+
+  public async updateLocation(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { id } = request.params;
+    const { location } = request.body;
+
+    const updateLocation = container.resolve(UpdateLocationUseCase);
+    const receiver = await updateLocation.execute({
+      id,
+      location,
+    });
+
+    return response.json(receiver);
   }
 }

@@ -1,4 +1,7 @@
-import { IReceiver } from '@modules/receivers/domain/models/entities/IReceiver';
+import {
+  ILocation,
+  IReceiver,
+} from '@modules/receivers/domain/models/entities/IReceiver';
 import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 
 @Entity('receiver')
@@ -17,4 +20,7 @@ export default class Receiver implements IReceiver {
 
   @Column()
   address: string;
+
+  @Column()
+  location?: ILocation;
 }

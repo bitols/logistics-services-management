@@ -23,6 +23,7 @@ export default class GetAllReceiversUseCase {
         email: receiver.email,
         phone: receiver.phone,
         address: receiver.address,
+        location: receiver.location,
       };
 
       return dados;
