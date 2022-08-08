@@ -4,4 +4,8 @@ export interface IReceivers {
   email: string;
   phone: string;
   address: string;
+  location?: {
+    lat: number;
+    lng: number;
+  };
 }
