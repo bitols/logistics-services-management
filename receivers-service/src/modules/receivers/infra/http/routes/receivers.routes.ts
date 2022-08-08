@@ -30,6 +30,19 @@ receiversRouter.post(
   receiversController.create,
 );
 
+receiversRouter.patch(
+  '/:id/location',
+  celebrate({
+    [Segments.BODY]: {
+      location: Joi.object().required(),
+    },
+    [Segments.PARAMS]: {
+      id: Joi.string().hex().required(),
+    },
+  }),
+  receiversController.updateLocation,
+);
+
 receiversRouter.put(
   '/:id',
   celebrate({
