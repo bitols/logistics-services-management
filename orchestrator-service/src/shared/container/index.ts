@@ -7,6 +7,23 @@ import { StoragesRepository } from '@modules/storages/infra/rest/repositories/St
 import { container } from 'tsyringe';
 import { IGeolocationsRepository } from '@modules/geolocation/domain/repositories/IGeolocationsRepository';
 import { GeolocationsRepository } from '@modules/geolocation/infra/rest/repositories/GeolocationsRepository';
+import { IReceiversRepository } from '@modules/receivers/domain/repositories/IReceiversRepository';
+import { ReceiversRepository } from '@modules/receivers/infra/rest/repositories/ReceiversRepository';
+
+container.registerSingleton<IGeolocationsRepository>(
+  'GeolocationsRepository',
+  GeolocationsRepository,
+);
+
+container.registerSingleton<IReceiversRepository>(
+  'ReceiversRepository',
+  ReceiversRepository,
+);
+
+container.registerSingleton<IReportsRepository>(
+  'ReportsRepository',
+  ReportsRepository,
+);
 
 container.registerSingleton<IProductsRepository>(
   'ProductsRepository',
@@ -16,14 +33,4 @@ container.registerSingleton<IProductsRepository>(
 container.registerSingleton<IStoragesRepository>(
   'StoragesRepository',
   StoragesRepository,
-);
-
-container.registerSingleton<IReportsRepository>(
-  'ReportsRepository',
-  ReportsRepository,
-);
-
-container.registerSingleton<IGeolocationsRepository>(
-  'GeolocationsRepository',
-  GeolocationsRepository,
 );
