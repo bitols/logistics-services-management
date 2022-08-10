@@ -6,6 +6,7 @@ import queue from '@config/queue';
 import queueConfig from '@config/queue/config';
 import { storageLocation } from '@shared/infra/handler/storageLocation.handler';
 import { storageCapacityControl } from '@shared/infra/handler/reportStorageCapacity.handler';
+import { receiverLocation } from '../handler/receiverLocation.handler';
 
 const port = appConfig.port;
 
@@ -19,6 +20,7 @@ queue
       storageCapacityControl,
     );
     await queue.consume(queueConfig.storageLocationTopic, storageLocation);
+    await queue.consume(queueConfig.receiverLocationTopic, receiverLocation);
 
     app.listen(port, () => {
       console.log(`Server started on port ${port}!`);
