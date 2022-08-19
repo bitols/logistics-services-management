@@ -1,44 +1,50 @@
-import { ICredentialsGateway } from '@modules/credentials/domain/gateways/ICredentialsGateway';
-import CredentialsGateway from '@modules/credentials/infra/http/gateways/CredentialsGateway';
-import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
-import { ProductsGateway } from '@modules/products/infra/http/gateways/ProductsGateway';
-import { IReceiversGateway } from '@modules/receivers/domain/gateways/IReceiversGateway';
-import { ReceiversGateway } from '@modules/receivers/infra/http/gateways/ReceiversGateway';
-import { IReportsGateway } from '@modules/reports/domain/gateways/IReportsGateway';
-import { ReportsGateway } from '@modules/reports/infra/http/gateways/ReportsGateway';
-import { ISendersGateway } from '@modules/senders/domain/gateways/ISendersGateway';
-import { SendersGateway } from '@modules/senders/infra/http/gateways/SendersGateway';
-import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
-import { StoragesGateway } from '@modules/storages/infra/http/gateways/StoragesGateway';
-import { ISuppliersGateway } from '@modules/suppliers/domain/gateways/ISuppliersGateway';
-import { SuppliersGateway } from '@modules/suppliers/infra/http/gateways/SuppliersGateway';
+import { ICredentialsRepository } from '@modules/credentials/domain/repositories/ICredentialsRepository';
+import CredentialsRepository from '@modules/credentials/infra/rest/repositories/CredentialsRepository';
+import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
+import { ProductsRepository } from '@modules/products/infra/rest/repositories/ProductsRepository';
+import { IReceiversRepository } from '@modules/receivers/domain/repositories/IReceiversRepository';
+import { ReceiversRepository } from '@modules/receivers/infra/rest/repositories/ReceiversRepository';
+import { IReportsRepository } from '@modules/reports/domain/repositories/IReportsRepository';
+import { ReportsRepository } from '@modules/reports/infra/rest/repositories/ReportsRepository';
+import { ISendersRepository } from '@modules/senders/domain/repositories/ISendersRepository';
+import { SendersRepository } from '@modules/senders/infra/rest/repositories/SendersRepository';
+import { IStoragesRepository } from '@modules/storages/domain/repositories/IStoragesRepository';
+import { StoragesRepository } from '@modules/storages/infra/rest/repositories/StoragesRepository';
+import { ISuppliersRepository } from '@modules/suppliers/domain/repositories/ISuppliersRepository';
+import { SuppliersRepository } from '@modules/suppliers/infra/rest/repositories/SuppliersRepository';
 import { container } from 'tsyringe';
 
-container.registerSingleton<IReceiversGateway>(
-  'ReceiversGateway',
-  ReceiversGateway,
+container.registerSingleton<IReceiversRepository>(
+  'ReceiversRepository',
+  ReceiversRepository,
 );
 
-container.registerSingleton<IProductsGateway>(
-  'ProductsGateway',
-  ProductsGateway,
+container.registerSingleton<IProductsRepository>(
+  'ProductsRepository',
+  ProductsRepository,
 );
 
-container.registerSingleton<ISendersGateway>('SendersGateway', SendersGateway);
-
-container.registerSingleton<ISuppliersGateway>(
-  'SuppliersGateway',
-  SuppliersGateway,
+container.registerSingleton<ISendersRepository>(
+  'SendersRepository',
+  SendersRepository,
 );
 
-container.registerSingleton<IStoragesGateway>(
-  'StoragesGateway',
-  StoragesGateway,
+container.registerSingleton<ISuppliersRepository>(
+  'SuppliersRepository',
+  SuppliersRepository,
 );
 
-container.registerSingleton<IReportsGateway>('ReportsGateway', ReportsGateway);
+container.registerSingleton<IStoragesRepository>(
+  'StoragesRepository',
+  StoragesRepository,
+);
 
-container.registerSingleton<ICredentialsGateway>(
-  'CredentialsGateway',
-  CredentialsGateway,
+container.registerSingleton<IReportsRepository>(
+  'ReportsRepository',
+  ReportsRepository,
+);
+
+container.registerSingleton<ICredentialsRepository>(
+  'CredentialsRepository',
+  CredentialsRepository,
 );

@@ -1,7 +1,7 @@
 import { IGetSendersRequest } from '@shared-types/senders/domain/models/requests/IGetSendersRequest';
 import { IGetStoragesCapacityBySenderUseCase } from '../domain/useCases/IGetStoragesCapacityBySenderUseCase';
-import { IReportsGateway } from '@modules/reports/domain/gateways/IReportsGateway';
-import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
+import { IReportsRepository } from '@modules/reports/domain/repositories/IReportsRepository';
+import { IStoragesRepository } from '@modules/storages/domain/repositories/IStoragesRepository';
 import { inject, injectable } from 'tsyringe';
 import AppErrors from '@shared/errors/AppErrors';
 
@@ -10,14 +10,14 @@ export class GetStoragesCapacityBySenderUseCase
   implements IGetStoragesCapacityBySenderUseCase
 {
   constructor(
-    @inject('StoragesGateway')
-    private storagesGateway: IStoragesGateway,
-    @inject('ReportsGateway')
-    private reportsGateway: IReportsGateway,
+    @inject('StoragesRepository')
+    private storagesRepository: IStoragesRepository,
+    @inject('ReportsRepository')
+    private reportsRepository: IReportsRepository,
   ) {}
 
   public async execute(data: IGetSendersRequest): Promise<any> {
-    const storages = await this.storagesGateway.getAllBySender({
+    const storages = await this.storagesRepository.getAllBySender({
       senderId: data.id,
     });
 
@@ -26,7 +26,7 @@ export class GetStoragesCapacityBySenderUseCase
     }
 
     const capacityReports =
-      await this.reportsGateway.getAllStoragesCapacityBySender({
+      await this.reportsRepository.getAllStoragesCapacityBySender({
         senderId: data.id,
       });
 
