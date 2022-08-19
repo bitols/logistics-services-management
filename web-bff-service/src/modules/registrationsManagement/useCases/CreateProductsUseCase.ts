@@ -1,20 +1,20 @@
-import { ISendersGateway } from '@modules/senders/domain/gateways/ISendersGateway';
-import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
+import { ISendersRepository } from '@modules/senders/domain/repositories/ISendersRepository';
+import { IStoragesRepository } from '@modules/storages/domain/repositories/IStoragesRepository';
 import { ICreateProductsRequest } from '@shared-types/products/domain/models/requests/ICreateProductsRequest';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IProductsGateway } from '@modules/products/domain/gateways/IProductsGateway';
+import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
 import { ICreateProductUseCase } from '../domain/useCases/ICreateProductsUseCase';
 
 @injectable()
 export class CreateProductsUseCase implements ICreateProductUseCase {
   constructor(
     @inject('StoragesGateway')
-    private storagesGateway: IStoragesGateway,
+    private storagesGateway: IStoragesRepository,
     @inject('SendersGateway')
-    private sendersGateway: ISendersGateway,
+    private sendersGateway: ISendersRepository,
     @inject('ProductsGateway')
-    private productsGateway: IProductsGateway,
+    private productsGateway: IProductsRepository,
   ) {}
 
   public async execute(data: ICreateProductsRequest): Promise<any> {

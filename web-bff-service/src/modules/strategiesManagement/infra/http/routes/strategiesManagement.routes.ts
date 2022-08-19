@@ -1,4 +1,4 @@
-import { isAutenticated } from '@shared/infra/http/middlewares/isAuthenticated';
+import { isAutenticated } from '@shared/infra/middlewares/isAuthenticated';
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
 import SendersStrategyController from '../controllers/SendersStrategyController';

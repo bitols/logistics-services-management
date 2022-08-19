@@ -2,7 +2,7 @@ import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
 import { IGetReceiversRequest } from '@shared-types/receivers/domain/models/requests/IGetReceiversRequest';
 import { IReceiversResponse } from '@shared-types/receivers/domain/models/responses/IReceiversResponse';
-import { IReceiversGateway } from '@modules/receivers/domain/gateways/IReceiversGateway';
+import { IReceiversRepository } from '@modules/receivers/domain/repositories/IReceiversRepository';
 import { IGetReceiversInfoUseCase } from '../domain/useCases/IGetReceiversInfoUseCase';
 
 @injectable()
@@ -11,7 +11,7 @@ export default class GetReceiverInfosUseCase
 {
   constructor(
     @inject('ReceiversGateway')
-    private receiversGateway: IReceiversGateway,
+    private receiversGateway: IReceiversRepository,
   ) {}
 
   public async execute(

@@ -3,7 +3,7 @@ import ProductsRegistrationController from '../controllers/ProductsRegistrationC
 import { celebrate, Joi, Segments } from 'celebrate';
 import SendersRegistrationController from '../controllers/SendersRegistrationController';
 import ReceiversController from '../controllers/ReceiversRegistrationController';
-import { isAutenticated } from '@shared/infra/http/middlewares/isAuthenticated';
+import { isAutenticated } from '@shared/infra/middlewares/isAuthenticated';
 
 const registrationsManamenteRouter = Router();
 

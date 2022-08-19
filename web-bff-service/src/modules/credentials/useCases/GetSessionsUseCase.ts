@@ -2,13 +2,13 @@ import { ISession } from '@shared-types/credentials/domain/models/entities/ISess
 import { IValidToken } from '@shared-types/credentials/domain/models/requests/IValidToken';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { ICredentialsGateway } from '../domain/gateways/ICredentialsGateway';
+import { ICredentialsRepository } from '../domain/repositories/ICredentialsRepository';
 
 @injectable()
 export class GetSessionsUseCase {
   constructor(
     @inject('CredentialsGateway')
-    private credentialsGateway: ICredentialsGateway,
+    private credentialsGateway: ICredentialsRepository,
   ) {}
 
   public async execute(data: IValidToken): Promise<ISession> {

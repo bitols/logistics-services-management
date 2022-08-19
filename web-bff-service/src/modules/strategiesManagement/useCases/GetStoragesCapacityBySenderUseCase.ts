@@ -1,7 +1,7 @@
 import { IGetSendersRequest } from '@shared-types/senders/domain/models/requests/IGetSendersRequest';
 import { IGetStoragesCapacityBySenderUseCase } from '../domain/useCases/IGetStoragesCapacityBySenderUseCase';
-import { IReportsGateway } from '@modules/reports/domain/gateways/IReportsGateway';
-import { IStoragesGateway } from '@modules/storages/domain/gateways/IStoragesGateway';
+import { IReportsRepository } from '@modules/reports/domain/repositories/IReportsRepository';
+import { IStoragesRepository } from '@modules/storages/domain/repositories/IStoragesRepository';
 import { inject, injectable } from 'tsyringe';
 import AppErrors from '@shared/errors/AppErrors';
 
@@ -11,9 +11,9 @@ export class GetStoragesCapacityBySenderUseCase
 {
   constructor(
     @inject('StoragesGateway')
-    private storagesGateway: IStoragesGateway,
+    private storagesGateway: IStoragesRepository,
     @inject('ReportsGateway')
-    private reportsGateway: IReportsGateway,
+    private reportsGateway: IReportsRepository,
   ) {}
 
   public async execute(data: IGetSendersRequest): Promise<any> {

@@ -1,14 +1,14 @@
 import { IGetSendersRequest } from '@shared-types/senders/domain/models/requests/IGetSendersRequest';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { ISendersGateway } from '@modules/senders/domain/gateways/ISendersGateway';
+import { ISendersRepository } from '@modules/senders/domain/repositories/ISendersRepository';
 import { IGetSendersInfoUseCase } from '../domain/useCases/IGetSendersInfoUseCase';
 
 @injectable()
 export class GetSenderInfoUseCase implements IGetSendersInfoUseCase {
   constructor(
     @inject('SendersGateway')
-    private sendersGateway: ISendersGateway,
+    private sendersGateway: ISendersRepository,
   ) {}
 
   public async execute(data: IGetSendersRequest): Promise<any> {
