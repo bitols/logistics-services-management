@@ -1,12 +1,9 @@
-import { isAutenticated } from '@shared/infra/http/middlewares/isAuthenticated';
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
 import SendersStrategyController from '../controllers/SendersStrategyController';
 
 const strategiesManagementRouter = Router();
 const sendersStrategyController = new SendersStrategyController();
-
-strategiesManagementRouter.use(isAutenticated);
 
 strategiesManagementRouter.get(
   '/senders/:id/storages-capacity',
