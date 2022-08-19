@@ -7,12 +7,12 @@ import { ICredentialsRepository } from '../domain/repositories/ICredentialsRepos
 @injectable()
 export class GetSessionsUseCase {
   constructor(
-    @inject('CredentialsGateway')
-    private credentialsGateway: ICredentialsRepository,
+    @inject('CredentialsRepository')
+    private credentialsRepository: ICredentialsRepository,
   ) {}
 
   public async execute(data: IValidToken): Promise<ISession> {
-    const session = await this.credentialsGateway.getSession(data);
+    const session = await this.credentialsRepository.getSession(data);
 
     if (!session) {
       throw new AppErrors('JWT expired.', 401);

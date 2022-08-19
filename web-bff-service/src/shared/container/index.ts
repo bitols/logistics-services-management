@@ -30,7 +30,7 @@ container.registerSingleton<ISendersRepository>(
 );
 
 container.registerSingleton<ISuppliersRepository>(
-  'SuppliersGateway',
+  'SuppliersRepository',
   SuppliersRepository,
 );
 
