@@ -10,14 +10,14 @@ export default class GetReceiverInfosUseCase
   implements IGetReceiversInfoUseCase
 {
   constructor(
-    @inject('ReceiversGateway')
-    private receiversGateway: IReceiversRepository,
+    @inject('ReceiversRepository')
+    private receiversRepository: IReceiversRepository,
   ) {}
 
   public async execute(
     data: IGetReceiversRequest,
   ): Promise<IReceiversResponse> {
-    const receiver = await this.receiversGateway.getById(data);
+    const receiver = await this.receiversRepository.getById(data);
 
     if (!receiver) {
       throw new AppErrors('Receiver not found');

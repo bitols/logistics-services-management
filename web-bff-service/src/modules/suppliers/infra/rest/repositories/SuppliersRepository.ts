@@ -1,16 +1,20 @@
-import { ISuppliersGateway } from '@modules/suppliers/domain/gateways/ISuppliersGateway';
+import rest from '@config/rest';
+import { ISuppliersRepository } from '@modules/suppliers/domain/repositories/ISuppliersRepository';
 import { IGetSuppliersRequest } from '@shared-types/suppliers/domain/models/requests/IGetSuppliersRequest';
 import { ISuppliersResponse } from '@shared-types/suppliers/domain/models/responses/ISuppliersResponse';
-import axios from 'axios';
 
-export class SuppliersGateway implements ISuppliersGateway {
+export class SuppliersRepository implements ISuppliersRepository {
+  private restClient;
+  constructor() {
+    this.restClient = rest.getHttpClient(rest.Services.Suppliers);
+  }
   public async getAll(): Promise<ISuppliersResponse[] | undefined> {
     console.log('request all suppliers');
 
     try {
-      const { data, status } = await axios.get<
+      const { data, status } = await this.restClient.get<
         ISuppliersResponse[] | undefined
-      >(`${process.env.API_SUPPLIERS_ADDRESS}/suppliers/`, {
+      >('/suppliers/', {
         headers: {
           Accept: 'application/json',
         },
@@ -32,14 +36,13 @@ export class SuppliersGateway implements ISuppliersGateway {
   ): Promise<ISuppliersResponse | undefined> {
     console.log('request supplier: ', request);
     try {
-      const { data, status } = await axios.get<ISuppliersResponse | undefined>(
-        `${process.env.API_SUPPLIERS_ADDRESS}/suppliers/${request.id}`,
-        {
-          headers: {
-            Accept: 'application/json',
-          },
+      const { data, status } = await this.restClient.get<
+        ISuppliersResponse | undefined
+      >(`/suppliers/${request.id}`, {
+        headers: {
+          Accept: 'application/json',
         },
-      );
+      });
 
       console.log(JSON.stringify(data, null, 4));
 

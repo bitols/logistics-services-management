@@ -10,14 +10,14 @@ export class GetStoragesCapacityBySenderUseCase
   implements IGetStoragesCapacityBySenderUseCase
 {
   constructor(
-    @inject('StoragesGateway')
-    private storagesGateway: IStoragesRepository,
-    @inject('ReportsGateway')
-    private reportsGateway: IReportsRepository,
+    @inject('StoragesRepository')
+    private storagesRepository: IStoragesRepository,
+    @inject('ReportsRepository')
+    private reportsRepository: IReportsRepository,
   ) {}
 
   public async execute(data: IGetSendersRequest): Promise<any> {
-    const storages = await this.storagesGateway.getAllBySender({
+    const storages = await this.storagesRepository.getAllBySender({
       senderId: data.id,
     });
 
@@ -26,7 +26,7 @@ export class GetStoragesCapacityBySenderUseCase
     }
 
     const capacityReports =
-      await this.reportsGateway.getAllStoragesCapacityBySender({
+      await this.reportsRepository.getAllStoragesCapacityBySender({
         senderId: data.id,
       });
 

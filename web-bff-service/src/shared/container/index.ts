@@ -10,35 +10,41 @@ import { ISendersRepository } from '@modules/senders/domain/repositories/ISender
 import { SendersRepository } from '@modules/senders/infra/rest/repositories/SendersRepository';
 import { IStoragesRepository } from '@modules/storages/domain/repositories/IStoragesRepository';
 import { StoragesRepository } from '@modules/storages/infra/rest/repositories/StoragesRepository';
-import { ISuppliersGateway } from '@modules/suppliers/domain/gateways/ISuppliersGateway';
-import { SuppliersGateway } from '@modules/suppliers/infra/http/gateways/SuppliersGateway';
+import { ISuppliersRepository } from '@modules/suppliers/domain/repositories/ISuppliersRepository';
+import { SuppliersRepository } from '@modules/suppliers/infra/rest/repositories/SuppliersRepository';
 import { container } from 'tsyringe';
 
 container.registerSingleton<IReceiversRepository>(
-  'ReceiversGateway',
+  'ReceiversRepository',
   ReceiversRepository,
 );
 
 container.registerSingleton<IProductsRepository>(
-  'ProductsGateway',
+  'ProductsRepository',
   ProductsRepository,
 );
 
-container.registerSingleton<ISendersRepository>('SendersGateway', SendersRepository);
+container.registerSingleton<ISendersRepository>(
+  'SendersRepository',
+  SendersRepository,
+);
 
-container.registerSingleton<ISuppliersGateway>(
+container.registerSingleton<ISuppliersRepository>(
   'SuppliersGateway',
-  SuppliersGateway,
+  SuppliersRepository,
 );
 
 container.registerSingleton<IStoragesRepository>(
-  'StoragesGateway',
+  'StoragesRepository',
   StoragesRepository,
 );
 
-container.registerSingleton<IReportsRepository>('ReportsGateway', ReportsRepository);
+container.registerSingleton<IReportsRepository>(
+  'ReportsRepository',
+  ReportsRepository,
+);
 
 container.registerSingleton<ICredentialsRepository>(
-  'CredentialsGateway',
+  'CredentialsRepository',
   CredentialsRepository,
 );

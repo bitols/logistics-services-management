@@ -3,15 +3,11 @@ import ProductsRegistrationController from '../controllers/ProductsRegistrationC
 import { celebrate, Joi, Segments } from 'celebrate';
 import SendersRegistrationController from '../controllers/SendersRegistrationController';
 import ReceiversController from '../controllers/ReceiversRegistrationController';
-import { isAutenticated } from '@shared/infra/middlewares/isAuthenticated';
-
 const registrationsManamenteRouter = Router();
 
 const productsRegistrationController = new ProductsRegistrationController();
 const sendersRegistrationController = new SendersRegistrationController();
 const receiversRegistrationController = new ReceiversController();
-
-registrationsManamenteRouter.use(isAutenticated);
 
 registrationsManamenteRouter.post(
   '/products',

@@ -7,12 +7,12 @@ import { IGetSendersInfoUseCase } from '../domain/useCases/IGetSendersInfoUseCas
 @injectable()
 export class GetSenderInfoUseCase implements IGetSendersInfoUseCase {
   constructor(
-    @inject('SendersGateway')
-    private sendersGateway: ISendersRepository,
+    @inject('SendersRepository')
+    private sendersRepository: ISendersRepository,
   ) {}
 
   public async execute(data: IGetSendersRequest): Promise<any> {
-    const sender = await this.sendersGateway.getById(data);
+    const sender = await this.sendersRepository.getById(data);
     if (!sender) {
       throw new AppErrors('Sender not found');
     }

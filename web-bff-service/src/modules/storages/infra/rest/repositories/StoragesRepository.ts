@@ -7,7 +7,7 @@ import { IStoragesResponse } from '@shared-types/storages/domain/models/response
 export class StoragesRepository implements IStoragesRepository {
   private restClient;
   constructor() {
-    this.restClient = rest.getHttpClient(rest.Services.Senders);
+    this.restClient = rest.getHttpClient(rest.Services.Storages);
   }
   public async getAllBySender(
     request: IGetAllStoragesBySenderIdRequest,
