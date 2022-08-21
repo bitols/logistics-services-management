@@ -1,7 +1,8 @@
-import { IGetAllStoragesCapacityBySenderIdRequest } from '@shared-types/reports/domain/models/requests/IGetAllStoragesCapacityBySenderIdRequest';
-import { IStoragesCapacityResponse } from '@shared-types/reports/domain/models/responses/IStoragesCapacityResponse';
+import { IGetStoragesCapacityBySender } from '../models/requests/IGetStoragesCapacityBySender';
+import { IStoragesCapacity } from '../models/responses/IStoragesCapacity';
+
 export interface IReportsRepository {
   getAllStoragesCapacityBySender(
-    request: IGetAllStoragesCapacityBySenderIdRequest,
-  ): Promise<IStoragesCapacityResponse[] | undefined>;
+    request: IGetStoragesCapacityBySender,
+  ): Promise<IStoragesCapacity[] | undefined>;
 }

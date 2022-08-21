@@ -1,9 +1,7 @@
-import { IReceiversResponse } from '@shared-types/receivers/domain/models/responses/IReceiversResponse';
-import { IGetReceiversRequest } from '@shared-types/receivers/domain/models/requests/IGetReceiversRequest';
+import { IGetReceivers } from '../models/requests/IGetReceivers';
+import { IReceivers } from '../models/responses/IReceivers';
 
 export interface IReceiversRepository {
-  getById(
-    request: IGetReceiversRequest,
-  ): Promise<IReceiversResponse | undefined>;
-  getAll(): Promise<IReceiversResponse[] | undefined>;
+  getById(request: IGetReceivers): Promise<IReceivers | undefined>;
+  getAll(): Promise<IReceivers[] | undefined>;
 }

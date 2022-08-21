@@ -1,13 +1,14 @@
-import { IStoragesResponse } from '@shared-types/storages/domain/models/responses/IStoragesResponse';
-import { IGetStoragesRequest } from '@shared-types/storages/domain/models/requests/IGetStoragesRequest';
-import { IGetAllStoragesBySupplierIdRequest } from '@shared-types/storages/domain/models/requests/IGetAllStoragesBySupplierIdRequest';
-import { IGetAllStoragesBySenderIdRequest } from '@shared-types/storages/domain/models/requests/IGetAllStoragesBySenderIdRequests';
+import { IGetStorages } from '../models/requests/IGetStorages';
+import { IGetStoragesBySender } from '../models/requests/IGetStoragesBySender';
+import { IGetStoragesBySupplier } from '../models/requests/IGetStoragesBySupplier';
+import { IStorages } from '../models/responses/IStorages';
+
 export interface IStoragesRepository {
   getAllBySupplier(
-    request: IGetAllStoragesBySupplierIdRequest,
-  ): Promise<IStoragesResponse[] | undefined>;
-  getById(request: IGetStoragesRequest): Promise<IStoragesResponse | undefined>;
+    request: IGetStoragesBySupplier,
+  ): Promise<IStorages[] | undefined>;
+  getById(request: IGetStorages): Promise<IStorages | undefined>;
   getAllBySender(
-    request: IGetAllStoragesBySenderIdRequest,
-  ): Promise<IStoragesResponse[] | undefined>;
+    request: IGetStoragesBySender,
+  ): Promise<IStorages[] | undefined>;
 }

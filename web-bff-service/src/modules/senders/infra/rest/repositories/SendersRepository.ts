@@ -1,16 +1,17 @@
 import rest from '@config/rest';
+import { IGetSenders } from '@modules/senders/domain/models/requests/IGetSenders';
+import { ISenders } from '@modules/senders/domain/models/responses/ISenders';
 import { ISendersRepository } from '@modules/senders/domain/repositories/ISendersRepository';
-import { IGetSendersRequest } from '@shared-types/senders/domain/models/requests/IGetSendersRequest';
-import { ISendersResponse } from '@shared-types/senders/domain/models/responses/ISendersResponse';
+
 export class SendersRepository implements ISendersRepository {
   private restClient;
   constructor() {
     this.restClient = rest.getHttpClient(rest.Services.Senders);
   }
 
-  public async getAll(): Promise<ISendersResponse[] | undefined> {
+  public async getAll(): Promise<ISenders[] | undefined> {
     try {
-      const { data, status } = await this.restClient.get<ISendersResponse[]>(
+      const { data, status } = await this.restClient.get<ISenders[]>(
         '/senders/',
         {
           headers: {
@@ -27,11 +28,9 @@ export class SendersRepository implements ISendersRepository {
     }
   }
 
-  public async getById(
-    request: IGetSendersRequest,
-  ): Promise<ISendersResponse | undefined> {
+  public async getById(request: IGetSenders): Promise<ISenders | undefined> {
     try {
-      const { data, status } = await this.restClient.get<ISendersResponse>(
+      const { data, status } = await this.restClient.get<ISenders>(
         `/senders/${request.id}`,
         {
           headers: {
