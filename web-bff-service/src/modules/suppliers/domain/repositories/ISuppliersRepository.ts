@@ -1,9 +1,7 @@
-import { ISuppliersResponse } from '@shared-types/suppliers/domain/models/responses/ISuppliersResponse';
-import { IGetSuppliersRequest } from '@shared-types/suppliers/domain/models/requests/IGetSuppliersRequest';
+import { IGetSuppliers } from '../models/requests/IGetSuppliers';
+import { ISuppliers } from '../models/responses/ISuppliers';
 
 export interface ISuppliersRepository {
-  getAll(): Promise<ISuppliersResponse[] | undefined>;
-  getById(
-    request: IGetSuppliersRequest,
-  ): Promise<ISuppliersResponse | undefined>;
+  getAll(): Promise<ISuppliers[] | undefined>;
+  getById(request: IGetSuppliers): Promise<ISuppliers | undefined>;
 }
