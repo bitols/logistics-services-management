@@ -1,10 +1,10 @@
 import rest from '@config/rest';
+import { ICreateProducts } from '@modules/products/domain/models/requests/ICreateProducts';
+import { IGetProductsBySender } from '@modules/products/domain/models/requests/IGetProductsBySender';
+import { IGetProductsByStorage } from '@modules/products/domain/models/requests/IGetProductsByStorage';
+import { IGetProducts } from '@modules/products/domain/models/requests/IGetProducts';
+import { IProducts } from '@modules/products/domain/models/responses/IProducts';
 import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
-import { ICreateProductsRequest } from '@shared-types/products/domain/models/requests/ICreateProductsRequest';
-import { IGetAllProductsBySenderIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsBySenderIdRequest';
-import { IGetAllProductsByStorageIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsByStoragedRequest';
-import { IGetProductsRequest } from '@shared-types/products/domain/models/requests/IGetProductsRequest';
-import { IProductsResponse } from '@shared-types/products/domain/models/responses/IProductsResponse';
 export class ProductsRepository implements IProductsRepository {
   private restClient;
   constructor() {
@@ -12,10 +12,10 @@ export class ProductsRepository implements IProductsRepository {
   }
 
   public async create(
-    request: ICreateProductsRequest,
-  ): Promise<IProductsResponse | undefined> {
+    request: ICreateProducts,
+  ): Promise<IProducts | undefined> {
     try {
-      const { data, status } = await this.restClient.post<IProductsResponse>(
+      const { data, status } = await this.restClient.post<IProducts>(
         '/products/',
         request,
         {
@@ -36,11 +36,9 @@ export class ProductsRepository implements IProductsRepository {
     }
   }
 
-  public async getById(
-    request: IGetProductsRequest,
-  ): Promise<IProductsResponse | undefined> {
+  public async getById(request: IGetProducts): Promise<IProducts | undefined> {
     try {
-      const { data, status } = await this.restClient.get<IProductsResponse>(
+      const { data, status } = await this.restClient.get<IProducts>(
         `/products/${request.id}`,
         {
           headers: {
@@ -62,10 +60,10 @@ export class ProductsRepository implements IProductsRepository {
   }
 
   public async getAllBySender(
-    request: IGetAllProductsBySenderIdRequest,
-  ): Promise<IProductsResponse[] | undefined> {
+    request: IGetProductsBySender,
+  ): Promise<IProducts[] | undefined> {
     try {
-      const { data, status } = await this.restClient.get<IProductsResponse[]>(
+      const { data, status } = await this.restClient.get<IProducts[]>(
         `/products/sender/${request.senderId}`,
         {
           headers: {
@@ -87,10 +85,10 @@ export class ProductsRepository implements IProductsRepository {
   }
 
   public async getAllByStorage(
-    request: IGetAllProductsByStorageIdRequest,
-  ): Promise<IProductsResponse[] | undefined> {
+    request: IGetProductsByStorage,
+  ): Promise<IProducts[] | undefined> {
     try {
-      const { data, status } = await this.restClient.get<IProductsResponse[]>(
+      const { data, status } = await this.restClient.get<IProducts[]>(
         `/products/storage/${request.storageId}`,
         {
           headers: {

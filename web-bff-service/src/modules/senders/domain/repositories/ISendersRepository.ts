@@ -1,7 +1,7 @@
-import { ISendersResponse } from '@shared-types/senders/domain/models/responses/ISendersResponse';
-import { IGetSendersRequest } from '@shared-types/senders/domain/models/requests/IGetSendersRequest';
+import { IGetSenders } from '../models/requests/IGetSenders';
+import { ISenders } from '../models/responses/ISenders';
 
 export interface ISendersRepository {
-  getAll(): Promise<ISendersResponse[] | undefined>;
-  getById(request: IGetSendersRequest): Promise<ISendersResponse | undefined>;
+  getAll(): Promise<ISenders[] | undefined>;
+  getById(request: IGetSenders): Promise<ISenders | undefined>;
 }

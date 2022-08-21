@@ -1,14 +1,15 @@
 import { isAutenticated } from '@shared/infra/middlewares/isAuthenticated';
-import receiversRouter from '@modules/receivers/infra/rest/routes/receivers.routes';
-import strategiesManagementRouter from '@modules/strategiesManagement/infra/http/routes/strategiesManagement.routes';
-import registrationsManagementRouter from '@modules/registrationsManagement/infra/http/routes/registrationsManagement.routes';
-
+import productsRouter from '@modules/products/infra/http/routes/products.routes';
+import sendersRouter from '@modules/senders/infra/http/routes/senders.routes';
+import receiversRouter from '@modules/receivers/infra/http/routes/receivers.routes';
 import { Router } from 'express';
+
 const routes = Router();
 
 routes.use(isAutenticated);
 
+routes.use('/products', productsRouter);
+routes.use('/senders', sendersRouter);
 routes.use('/receivers', receiversRouter);
-routes.use('/strategies-management', strategiesManagementRouter);
-routes.use('/registrations-management', registrationsManagementRouter);
+
 export default routes;
