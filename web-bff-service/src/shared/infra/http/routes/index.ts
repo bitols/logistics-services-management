@@ -1,7 +1,9 @@
 import { isAutenticated } from '@shared/infra/middlewares/isAuthenticated';
 import productsRouter from '@modules/products/infra/http/routes/products.routes';
-import sendersRouter from '@modules/senders/infra/http/routes/senders.routes';
 import receiversRouter from '@modules/receivers/infra/http/routes/receivers.routes';
+import sendersRouter from '@modules/senders/infra/http/routes/senders.routes';
+import storagesRouter from '@modules/storages/infra/http/routes/storages.routes';
+
 import { Router } from 'express';
 
 const routes = Router();
@@ -9,7 +11,8 @@ const routes = Router();
 routes.use(isAutenticated);
 
 routes.use('/products', productsRouter);
-routes.use('/senders', sendersRouter);
 routes.use('/receivers', receiversRouter);
+routes.use('/senders', sendersRouter);
+routes.use('/storages', storagesRouter);
 
 export default routes;

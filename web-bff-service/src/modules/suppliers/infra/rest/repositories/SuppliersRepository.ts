@@ -1,19 +1,19 @@
 import rest from '@config/rest';
+import { IGetSuppliers } from '@modules/suppliers/domain/models/requests/IGetSuppliers';
+import { ISuppliers } from '@modules/suppliers/domain/models/responses/ISuppliers';
 import { ISuppliersRepository } from '@modules/suppliers/domain/repositories/ISuppliersRepository';
-import { IGetSuppliersRequest } from '@shared-types/suppliers/domain/models/requests/IGetSuppliersRequest';
-import { ISuppliersResponse } from '@shared-types/suppliers/domain/models/responses/ISuppliersResponse';
 
 export class SuppliersRepository implements ISuppliersRepository {
   private restClient;
   constructor() {
     this.restClient = rest.getHttpClient(rest.Services.Suppliers);
   }
-  public async getAll(): Promise<ISuppliersResponse[] | undefined> {
+  public async getAll(): Promise<ISuppliers[] | undefined> {
     console.log('request all suppliers');
 
     try {
       const { data, status } = await this.restClient.get<
-        ISuppliersResponse[] | undefined
+        ISuppliers[] | undefined
       >('/suppliers/', {
         headers: {
           Accept: 'application/json',
@@ -32,12 +32,12 @@ export class SuppliersRepository implements ISuppliersRepository {
   }
 
   public async getById(
-    request: IGetSuppliersRequest,
-  ): Promise<ISuppliersResponse | undefined> {
+    request: IGetSuppliers,
+  ): Promise<ISuppliers | undefined> {
     console.log('request supplier: ', request);
     try {
       const { data, status } = await this.restClient.get<
-        ISuppliersResponse | undefined
+        ISuppliers | undefined
       >(`/suppliers/${request.id}`, {
         headers: {
           Accept: 'application/json',
