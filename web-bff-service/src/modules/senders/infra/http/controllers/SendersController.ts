@@ -37,9 +37,6 @@ export default class SendersController {
         return {
           id: storage.id,
           name: storage.name,
-          email: storage.email,
-          phone: storage.phone,
-          address: storage.address,
           location: storage.location,
           indicators: capacityReports
             ?.filter(capacity => capacity.storageId === storage.id)
