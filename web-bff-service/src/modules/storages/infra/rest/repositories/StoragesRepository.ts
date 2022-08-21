@@ -1,19 +1,20 @@
 import rest from '@config/rest';
+import { IGetStorages } from '@modules/storages/domain/models/requests/IGetStorages';
+import { IGetStoragesBySender } from '@modules/storages/domain/models/requests/IGetStoragesBySender';
+import { IGetStoragesBySupplier } from '@modules/storages/domain/models/requests/IGetStoragesBySupplier';
+import { IStorages } from '@modules/storages/domain/models/responses/IStorages';
 import { IStoragesRepository } from '@modules/storages/domain/repositories/IStoragesRepository';
-import { IGetAllStoragesBySenderIdRequest } from '@shared-types/storages/domain/models/requests/IGetAllStoragesBySenderIdRequests';
-import { IGetAllStoragesBySupplierIdRequest } from '@shared-types/storages/domain/models/requests/IGetAllStoragesBySupplierIdRequest';
-import { IGetStoragesRequest } from '@shared-types/storages/domain/models/requests/IGetStoragesRequest';
-import { IStoragesResponse } from '@shared-types/storages/domain/models/responses/IStoragesResponse';
+
 export class StoragesRepository implements IStoragesRepository {
   private restClient;
   constructor() {
     this.restClient = rest.getHttpClient(rest.Services.Storages);
   }
   public async getAllBySender(
-    request: IGetAllStoragesBySenderIdRequest,
-  ): Promise<IStoragesResponse[] | undefined> {
+    request: IGetStoragesBySender,
+  ): Promise<IStorages[] | undefined> {
     try {
-      const { data, status } = await this.restClient.get<IStoragesResponse[]>(
+      const { data, status } = await this.restClient.get<IStorages[]>(
         `/storages/senders/${request.senderId}`,
         {
           headers: {
@@ -35,10 +36,10 @@ export class StoragesRepository implements IStoragesRepository {
   }
 
   public async getAllBySupplier(
-    request: IGetAllStoragesBySupplierIdRequest,
-  ): Promise<IStoragesResponse[] | undefined> {
+    request: IGetStoragesBySupplier,
+  ): Promise<IStorages[] | undefined> {
     try {
-      const { data, status } = await this.restClient.get<IStoragesResponse[]>(
+      const { data, status } = await this.restClient.get<IStorages[]>(
         `/storages/suppliers/${request.supplierId}`,
         {
           headers: {
@@ -59,11 +60,9 @@ export class StoragesRepository implements IStoragesRepository {
     }
   }
 
-  public async getById(
-    request: IGetStoragesRequest,
-  ): Promise<IStoragesResponse | undefined> {
+  public async getById(request: IGetStorages): Promise<IStorages | undefined> {
     try {
-      const { data, status } = await this.restClient.get<IStoragesResponse>(
+      const { data, status } = await this.restClient.get<IStorages>(
         `/storages/${request.id}`,
         {
           headers: {

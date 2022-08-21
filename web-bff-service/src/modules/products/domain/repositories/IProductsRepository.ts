@@ -1,15 +1,16 @@
-import { IProductsResponse } from '@shared-types/products/domain/models/responses/IProductsResponse';
-import { IGetProductsRequest } from '@shared-types/products/domain/models/requests/IGetProductsRequest';
-import { IGetAllProductsBySenderIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsBySenderIdRequest';
-import { IGetAllProductsByStorageIdRequest } from '@shared-types/products/domain/models/requests/IGetAllProductsByStoragedRequest';
-import { ICreateProductsRequest } from '@shared-types/products/domain/models/requests/ICreateProductsRequest';
+import { ICreateProducts } from '../models/requests/ICreateProducts';
+import { IGetProductsBySender } from '../models/requests/IGetProductsBySender';
+import { IGetProductsByStorage } from '../models/requests/IGetProductsByStorage';
+import { IGetProducts } from '../models/requests/IGetProducts';
+import { IProducts } from '../models/responses/IProducts';
+
 export interface IProductsRepository {
-  getById(request: IGetProductsRequest): Promise<IProductsResponse | undefined>;
+  getById(request: IGetProducts): Promise<IProducts | undefined>;
   getAllBySender(
-    request: IGetAllProductsBySenderIdRequest,
-  ): Promise<IProductsResponse[] | undefined>;
+    request: IGetProductsBySender,
+  ): Promise<IProducts[] | undefined>;
   getAllByStorage(
-    request: IGetAllProductsByStorageIdRequest,
-  ): Promise<IProductsResponse[] | undefined>;
-  create(data: ICreateProductsRequest): Promise<IProductsResponse | undefined>;
+    request: IGetProductsByStorage,
+  ): Promise<IProducts[] | undefined>;
+  create(data: ICreateProducts): Promise<IProducts | undefined>;
 }

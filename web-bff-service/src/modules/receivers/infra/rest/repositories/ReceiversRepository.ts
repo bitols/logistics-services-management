@@ -1,8 +1,7 @@
 import rest from '@config/rest';
+import { IGetReceivers } from '@modules/receivers/domain/models/requests/IGetReceivers';
+import { IReceivers } from '@modules/receivers/domain/models/responses/IReceivers';
 import { IReceiversRepository } from '@modules/receivers/domain/repositories/IReceiversRepository';
-import { IGetReceiversRequest } from '@shared-types/receivers/domain/models/requests/IGetReceiversRequest';
-import { IReceiversResponse } from '@shared-types/receivers/domain/models/responses/IReceiversResponse';
-
 export class ReceiversRepository implements IReceiversRepository {
   private restClient;
   constructor() {
@@ -10,12 +9,10 @@ export class ReceiversRepository implements IReceiversRepository {
   }
 
   public async getById(
-    request: IGetReceiversRequest,
-  ): Promise<IReceiversResponse | undefined> {
-    console.log('request receiver: ', request);
-
+    request: IGetReceivers,
+  ): Promise<IReceivers | undefined> {
     try {
-      const { data, status } = await this.restClient.get<IReceiversResponse>(
+      const { data, status } = await this.restClient.get<IReceivers>(
         `/receivers/${request.id}`,
         {
           headers: {
@@ -25,7 +22,7 @@ export class ReceiversRepository implements IReceiversRepository {
       );
 
       console.log(
-        `request create product: ${JSON.stringify(
+        `request receiver ${JSON.stringify(
           request,
         )}, response status is: ${status}`,
       );
@@ -35,11 +32,9 @@ export class ReceiversRepository implements IReceiversRepository {
     }
   }
 
-  public async getAll(): Promise<IReceiversResponse[] | undefined> {
-    console.log('request all receivers');
-
+  public async getAll(): Promise<IReceivers[] | undefined> {
     try {
-      const { data, status } = await this.restClient.get<IReceiversResponse[]>(
+      const { data, status } = await this.restClient.get<IReceivers[]>(
         `/receivers/`,
         {
           headers: {
@@ -48,10 +43,7 @@ export class ReceiversRepository implements IReceiversRepository {
         },
       );
 
-      console.log(JSON.stringify(data, null, 4));
-
-      // 👇️ "response status is: 200"
-      console.log('response status is: ', status);
+      console.log(`request all receivers, response status is: ${status}`);
 
       return data;
     } catch (error: any) {
