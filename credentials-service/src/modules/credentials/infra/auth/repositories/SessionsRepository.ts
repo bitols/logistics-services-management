@@ -4,8 +4,8 @@ import { create, validate } from '@config/auth';
 
 export default class SessionsRepository implements ISessionsRepository {
   public async validation(token: string): Promise<IJwtPayload> {
+    console.log(`token session validation: ${token}`);
     const payload = await validate(token);
-
     return {
       id: payload.id,
       email: payload.email,
@@ -18,6 +18,7 @@ export default class SessionsRepository implements ISessionsRepository {
     email: string,
     senderId: string,
   ): Promise<string> {
+    console.log(`create session for email: ${email}`);
     const JWTToken = await create({ id, email, senderId });
 
     return JWTToken;
