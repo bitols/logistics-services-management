@@ -1,3 +1,4 @@
+import { ICreateStorages } from '../models/requests/ICreateStorages';
 import { IGetStorages } from '../models/requests/IGetStorages';
 import { IGetStoragesBySender } from '../models/requests/IGetStoragesBySender';
 import { IGetStoragesBySupplier } from '../models/requests/IGetStoragesBySupplier';
@@ -11,4 +12,5 @@ export interface IStoragesRepository {
   getAllBySender(
     request: IGetStoragesBySender,
   ): Promise<IStorages[] | undefined>;
+  create(request: ICreateStorages): Promise<IStorages | undefined>;
 }

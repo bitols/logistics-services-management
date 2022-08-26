@@ -37,19 +37,30 @@ export default class SendersController {
         return {
           id: storage.id,
           name: storage.name,
-          location: storage.location,
+          capacity: storage.capacity,
           indicators: capacityReports
             ?.filter(capacity => capacity.storageId === storage.id)
             .map(indicator => {
               return {
-                capacity: indicator.capacity,
                 stored: indicator.stored,
                 usage: indicator.usage,
                 products: indicator.products,
                 value: indicator.value,
               };
             })
-            .reduce(capacityindicator => capacityindicator),
+            .reduce(
+              (obj, item) => {
+                obj = item;
+                return obj;
+              },
+              {
+                stored: 0,
+                usage: 0,
+                products: 0,
+                value: 0,
+              },
+            ),
+          location: storage.location,
         };
       }),
     );

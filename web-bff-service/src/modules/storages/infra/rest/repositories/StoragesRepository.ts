@@ -1,4 +1,5 @@
 import rest from '@config/rest';
+import { ICreateStorages } from '@modules/storages/domain/models/requests/ICreateStorages';
 import { IGetStorages } from '@modules/storages/domain/models/requests/IGetStorages';
 import { IGetStoragesBySender } from '@modules/storages/domain/models/requests/IGetStoragesBySender';
 import { IGetStoragesBySupplier } from '@modules/storages/domain/models/requests/IGetStoragesBySupplier';
@@ -9,6 +10,32 @@ export class StoragesRepository implements IStoragesRepository {
   private restClient;
   constructor() {
     this.restClient = rest.getHttpClient(rest.Services.Storages);
+  }
+
+  public async create(
+    request: ICreateStorages,
+  ): Promise<IStorages | undefined> {
+    try {
+      const { data, status } = await this.restClient.post<IStorages>(
+        '/storages/',
+        request,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      console.log(
+        `request all storages by sender: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
+
+      return data;
+    } catch (error: any) {
+      console.error(error.message);
+    }
   }
   public async getAllBySender(
     request: IGetStoragesBySender,
