@@ -4,6 +4,9 @@ import GetSendersUseCase from '@modules/senders/useCases/GetSendersUseCase';
 import GetSuppliersUseCase from '@modules/suppliers/useCases/GetSuppliersUseCase';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import CreateStoragesUseCase from '@modules/storages/useCases/CreateStoragesUseCase';
+import AppErrors from '@shared/errors/AppErrors';
+import GetStoragesBySenderUsecase from '@modules/storages/useCases/GetStoragesBySenderUseCase';
 
 export default class StoragesController {
   public async getById(
@@ -29,6 +32,46 @@ export default class StoragesController {
         id: supplier.id,
         name: supplier.name,
       },
+    });
+  }
+
+  public async create(request: Request, response: Response): Promise<Response> {
+    const { name, capacity, email, phone, address, supplierId, senderId } =
+      request.body;
+
+    const getSuppliers = container.resolve(GetSuppliersUseCase);
+    const getSender = container.resolve(GetSendersUseCase);
+    const createStorage = container.resolve(CreateStoragesUseCase);
+    const getStoragesBySender = container.resolve(GetStoragesBySenderUsecase);
+
+    const sender = await getSender.execute({ id: senderId });
+    if (sender.id !== senderId) {
+      throw new AppErrors('Data integrity violation');
+    }
+
+    const supplier = await getSuppliers.execute({ id: supplierId });
+    if (!supplier) {
+      throw new AppErrors('Data integrity violation');
+    }
+
+    const storages = await getStoragesBySender.execute({ senderId });
+    const filterStorages = storages.filter(storage => storage.name === name);
+    if (filterStorages.length) {
+      throw new AppErrors('Storage already exists');
+    }
+
+    const storage = await createStorage.execute({
+      name,
+      capacity,
+      email,
+      phone,
+      address,
+      supplierId,
+      senderId,
+    });
+
+    return response.json({
+      id: storage.id,
     });
   }
 
