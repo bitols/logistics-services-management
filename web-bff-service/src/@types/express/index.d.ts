@@ -1,6 +1,6 @@
 declare namespace Express {
   export interface Request {
-    session: {
+    credential: {
       email: string;
       senderId: string;
     };

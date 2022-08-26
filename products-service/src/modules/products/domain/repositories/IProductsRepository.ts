@@ -1,8 +1,8 @@
-import { ICreateProductsRequest } from '@shared-types/products/domain/models/requests/ICreateProductsRequest';
-import { IProduct } from '@shared-types/products/domain/models/entities/IProduct';
+import { IProduct } from '../models/entities/IProduct';
+import { ICreateProducts } from '../models/requests/ICreateProducts';
 
 export interface IProductsRepository {
-  create(data: ICreateProductsRequest): Promise<IProduct>;
+  create(data: ICreateProducts): Promise<IProduct>;
   save(product: IProduct): Promise<IProduct>;
   remove(product: IProduct): Promise<void>;
   getById(id: string): Promise<IProduct | null | undefined>;
