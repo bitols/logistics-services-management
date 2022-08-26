@@ -2,6 +2,7 @@ import CreateProductsUseCase from '@modules/products/useCases/CreateProductsUseC
 import GetProductsUseCase from '@modules/products/useCases/GetProductsUseCase';
 import GetSendersUseCase from '@modules/senders/useCases/GetSendersUseCase';
 import GetStoragesUseCase from '@modules/storages/useCases/GetStoragesUseCase';
+import AppErrors from '@shared/errors/AppErrors';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 export default class ProductsController {
@@ -48,6 +49,10 @@ export default class ProductsController {
 
     const sender = await getSender.execute({ id: senderId });
     const storage = await getStorage.execute({ id: storageId });
+
+    if (sender.id !== storage.senderId) {
+      throw new AppErrors('Data integrity violation');
+    }
     const product = await createProduct.execute({
       name,
       height,
@@ -60,21 +65,6 @@ export default class ProductsController {
 
     return response.json({
       id: product.id,
-      name: product.name,
-      height: product.height,
-      width: product.width,
-      lenght: product.lenght,
-      price: product.price,
-      storage: {
-        id: storage.id,
-        name: storage.name,
-        address: storage.address,
-        location: storage.location,
-      },
-      sender: {
-        id: sender.id,
-        name: sender.name,
-      },
     });
   }
 }
