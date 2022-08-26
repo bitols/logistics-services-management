@@ -140,6 +140,7 @@ services:
       - KAFKA_CLIENT_ID=logistics-services-management
       - STORAGE_CAPACITY_TOPIC=storage-capacity 
       - STORAGE_LOCATION_TOPIC=storage-location
+      - RECEIVER_LOCATION_TOPIC=receiver-location
       - KAFKA_GROUP_ID=logistics-services  
       - API_GOOGLE_GEOCODE=https://maps.googleapis.com/maps/api/geocode
       - API_GOOGLE_GEOCODE_KEY=AIzaSyC80nZOa8AEJWJE3V0B2TFStXifu13YuaA   

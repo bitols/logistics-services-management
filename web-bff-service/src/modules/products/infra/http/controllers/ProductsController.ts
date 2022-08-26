@@ -49,10 +49,10 @@ export default class ProductsController {
 
     const sender = await getSender.execute({ id: senderId });
     const storage = await getStorage.execute({ id: storageId });
-
     if (sender.id !== storage.senderId) {
       throw new AppErrors('Data integrity violation');
     }
+
     const product = await createProduct.execute({
       name,
       height,
