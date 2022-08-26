@@ -1,6 +1,8 @@
-import { ICreateProductsRequest } from '@shared-types/products/domain/models/requests/ICreateProductsRequest';
 import { inject, injectable } from 'tsyringe';
 import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
+import { ICreateProducts } from '../domain/models/requests/ICreateProducts';
+import { IProducts } from '../domain/models/responses/IProducts';
+import AppErrors from '@shared/errors/AppErrors';
 
 @injectable()
 export default class CreateProductsUseCase {
@@ -9,7 +11,11 @@ export default class CreateProductsUseCase {
     private productsRepository: IProductsRepository,
   ) {}
 
-  public async execute(data: ICreateProductsRequest): Promise<any> {
-    return await this.productsRepository.create(data);
+  public async execute(data: ICreateProducts): Promise<IProducts> {
+    const product = await this.productsRepository.create(data);
+    if (!product) {
+      throw new AppErrors('Error on create product');
+    }
+    return product;
   }
 }

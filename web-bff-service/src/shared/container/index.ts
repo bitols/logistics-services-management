@@ -1,5 +1,5 @@
-import { ICredentialsRepository } from '@modules/credentials/domain/repositories/ICredentialsRepository';
-import CredentialsRepository from '@modules/credentials/infra/rest/repositories/CredentialsRepository';
+import { ISessionsRepository } from '@modules/credentials/domain/repositories/ISessionsRepository';
+import SessionsRepository from '@modules/credentials/infra/rest/repositories/SessionsRepository';
 import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
 import { ProductsRepository } from '@modules/products/infra/rest/repositories/ProductsRepository';
 import { IReceiversRepository } from '@modules/receivers/domain/repositories/IReceiversRepository';
@@ -44,7 +44,7 @@ container.registerSingleton<IReportsRepository>(
   ReportsRepository,
 );
 
-container.registerSingleton<ICredentialsRepository>(
-  'CredentialsRepository',
-  CredentialsRepository,
+container.registerSingleton<ISessionsRepository>(
+  'SessionsRepository',
+  SessionsRepository,
 );

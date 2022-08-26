@@ -1,7 +1,7 @@
 import AppError from '@shared/errors/AppErrors';
 import { NextFunction, Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { GetSessionsUseCase } from '@modules/credentials/useCases/GetSessionsUseCase';
+import { ValidateSessionsUseCase } from '@modules/credentials/useCases/ValidateSessionsUseCase';
 export const isAutenticated = async (
   request: Request,
   respose: Response,
@@ -15,9 +15,9 @@ export const isAutenticated = async (
 
   const [, token] = authHeader.split(' ');
 
-  const getSession = container.resolve(GetSessionsUseCase);
-  const session = await getSession.execute({ token });
+  const validateSession = container.resolve(ValidateSessionsUseCase);
+  const credential = await validateSession.execute({ token });
 
-  request.session = session;
+  request.credential = credential;
   return next();
 };
