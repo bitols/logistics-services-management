@@ -49,9 +49,9 @@ export default class SendersController {
               };
             })
             .reduce(
-              (obj, item) => {
-                obj = item;
-                return obj;
+              (previousValue, currentValue) => {
+                previousValue = currentValue;
+                return previousValue;
               },
               {
                 stored: 0,
