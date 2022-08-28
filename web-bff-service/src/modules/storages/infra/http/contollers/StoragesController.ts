@@ -56,12 +56,12 @@ export default class StoragesController {
     }
 
     if (sender.id !== senderId) {
-      throw new AppErrors('Data integrity violation');
+      throw new AppErrors('Data integrity violation', 422);
     }
 
     const supplier = await getSuppliers.execute({ id: supplierId });
     if (!supplier) {
-      throw new AppErrors('Data integrity violation');
+      throw new AppErrors('Data integrity violation', 422);
     }
 
     const storages = await getStoragesBySender.execute({ senderId });
