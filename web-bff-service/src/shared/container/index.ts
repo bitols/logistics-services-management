@@ -1,5 +1,5 @@
-import { ISessionsRepository } from '@modules/credentials/domain/repositories/ISessionsRepository';
-import SessionsRepository from '@modules/credentials/infra/rest/repositories/SessionsRepository';
+import { ISessionsRepository } from '@modules/sessions/domain/repositories/ISessionsRepository';
+import SessionsRepository from '@modules/sessions/infra/rest/repositories/SessionsRepository';
 import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
 import { ProductsRepository } from '@modules/products/infra/rest/repositories/ProductsRepository';
 import { IReceiversRepository } from '@modules/receivers/domain/repositories/IReceiversRepository';
