@@ -19,6 +19,10 @@ export default class ProductsController {
     const sender = await getSender.execute({ id: product.senderId });
     const storage = await getStorage.execute({ id: product.storageId });
 
+    if (request.credential.senderId !== sender.id) {
+      throw new AppErrors('Unauthorized', 401);
+    }
+
     return response.json({
       id: product.id,
       name: product.name,
@@ -48,9 +52,13 @@ export default class ProductsController {
     const getStorage = container.resolve(GetStoragesUseCase);
 
     const sender = await getSender.execute({ id: senderId });
+    if (request.credential.senderId !== sender.id) {
+      throw new AppErrors('Unauthorized', 401);
+    }
+
     const storage = await getStorage.execute({ id: storageId });
     if (sender.id !== storage.senderId) {
-      throw new AppErrors('Data integrity violation');
+      throw new AppErrors('Data integrity violation', 422);
     }
 
     const product = await createProduct.execute({
