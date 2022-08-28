@@ -19,6 +19,11 @@ export default class StoragesController {
     const getSuppliers = container.resolve(GetSuppliersUseCase);
 
     const storage = await getStorages.execute({ id });
+
+    if (request.credential.senderId !== storage.senderId) {
+      throw new AppErrors('Unauthorized', 401);
+    }
+
     const supplier = await getSuppliers.execute({ id: storage.supplierId });
 
     return response.json({
@@ -45,6 +50,11 @@ export default class StoragesController {
     const getStoragesBySender = container.resolve(GetStoragesBySenderUsecase);
 
     const sender = await getSender.execute({ id: senderId });
+
+    if (request.credential.senderId !== sender.id) {
+      throw new AppErrors('Unauthorized', 401);
+    }
+
     if (sender.id !== senderId) {
       throw new AppErrors('Data integrity violation');
     }

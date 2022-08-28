@@ -3,6 +3,7 @@ import GetStoragesBySenderUsecase from '@modules/storages/useCases/GetStoragesBy
 import GetStoragesReportBySender from '@modules/reports/useCases/GetStoragesReportBySenderUseCase';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import AppErrors from '@shared/errors/AppErrors';
 
 export default class SendersController {
   public async getById(
@@ -14,6 +15,10 @@ export default class SendersController {
     const getSenders = container.resolve(GetSendersUseCase);
 
     const sender = await getSenders.execute({ id });
+
+    if (request.credential.senderId !== sender.id) {
+      throw new AppErrors('Unauthorized', 401);
+    }
 
     return response.json(sender);
   }
@@ -31,6 +36,10 @@ export default class SendersController {
     const sender = await getSenders.execute({ id });
     const storages = await getStorages.execute({ senderId: sender.id });
     const capacityReports = await getReports.execute({ senderId: sender.id });
+
+    if (request.credential.senderId !== sender.id) {
+      throw new AppErrors('Unauthorized', 401);
+    }
 
     return response.json(
       storages.map(storage => {
