@@ -83,28 +83,4 @@ export class ProductsRepository implements IProductsRepository {
       console.error(error.message);
     }
   }
-
-  public async getAllByStorage(
-    request: IGetProductsByStorage,
-  ): Promise<IProducts[] | undefined> {
-    try {
-      const { data, status } = await this.restClient.get<IProducts[]>(
-        `/products/storage/${request.storageId}`,
-        {
-          headers: {
-            Accept: 'application/json',
-          },
-        },
-      );
-
-      console.log(
-        `request all products by storage: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-      return data;
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  }
 }

@@ -4,6 +4,5 @@ export interface ICreateProducts {
   width: number;
   lenght: number;
   price: number;
-  storageId: string;
   senderId: string;
 }

@@ -1,8 +1,10 @@
 import rest from '@config/rest';
+import { ICreateStorageProducts } from '@modules/storages/domain/models/requests/ICreateStorageProducts';
 import { ICreateStorages } from '@modules/storages/domain/models/requests/ICreateStorages';
 import { IGetStorages } from '@modules/storages/domain/models/requests/IGetStorages';
 import { IGetStoragesBySender } from '@modules/storages/domain/models/requests/IGetStoragesBySender';
 import { IGetStoragesBySupplier } from '@modules/storages/domain/models/requests/IGetStoragesBySupplier';
+import { IStorageProducts } from '@modules/storages/domain/models/responses/IStorageProducts';
 import { IStorages } from '@modules/storages/domain/models/responses/IStorages';
 import { IStoragesRepository } from '@modules/storages/domain/repositories/IStoragesRepository';
 
@@ -10,6 +12,51 @@ export class StoragesRepository implements IStoragesRepository {
   private restClient;
   constructor() {
     this.restClient = rest.getHttpClient(rest.Services.Storages);
+  }
+  public async addProducts(
+    request: ICreateStorageProducts,
+  ): Promise<IStorageProducts | undefined> {
+    try {
+      const { data, status } = await this.restClient.post<IStorageProducts>(
+        `/storages/products`,
+        request,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      console.log(
+        `add product on storage: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
+
+      return data;
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  }
+
+  public async getProducts(
+    request: IGetStorages,
+  ): Promise<IStorageProducts[] | undefined> {
+    try {
+      const { data, status } = await this.restClient.get<IStorageProducts[]>(
+        `/storages/${request.id}/products`,
+      );
+
+      console.log(
+        `request storage: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
+
+      return data;
+    } catch (error: any) {
+      console.log(error.message);
+    }
   }
 
   public async create(
