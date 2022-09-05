@@ -1,7 +1,6 @@
 import CreateProductsUseCase from '@modules/products/useCases/CreateProductsUseCase';
 import GetProductsUseCase from '@modules/products/useCases/GetProductsUseCase';
 import GetSendersUseCase from '@modules/senders/useCases/GetSendersUseCase';
-import GetStoragesUseCase from '@modules/storages/useCases/GetStoragesUseCase';
 import AppErrors from '@shared/errors/AppErrors';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
@@ -13,11 +12,9 @@ export default class ProductsController {
     const { id } = request.params;
     const getProduct = container.resolve(GetProductsUseCase);
     const getSender = container.resolve(GetSendersUseCase);
-    const getStorage = container.resolve(GetStoragesUseCase);
 
     const product = await getProduct.execute({ id });
     const sender = await getSender.execute({ id: product.senderId });
-    const storage = await getStorage.execute({ id: product.storageId });
 
     if (request.credential.senderId !== sender.id) {
       throw new AppErrors('Unauthorized', 401);
@@ -30,12 +27,6 @@ export default class ProductsController {
       width: product.width,
       lenght: product.lenght,
       price: product.price,
-      storage: {
-        id: storage.id,
-        name: storage.name,
-        address: storage.address,
-        location: storage.location,
-      },
       sender: {
         id: sender.id,
         name: sender.name,
@@ -49,16 +40,10 @@ export default class ProductsController {
 
     const createProduct = container.resolve(CreateProductsUseCase);
     const getSender = container.resolve(GetSendersUseCase);
-    const getStorage = container.resolve(GetStoragesUseCase);
 
     const sender = await getSender.execute({ id: senderId });
     if (request.credential.senderId !== sender.id) {
       throw new AppErrors('Unauthorized', 401);
-    }
-
-    const storage = await getStorage.execute({ id: storageId });
-    if (sender.id !== storage.senderId) {
-      throw new AppErrors('Data integrity violation', 422);
     }
 
     const product = await createProduct.execute({
@@ -68,7 +53,6 @@ export default class ProductsController {
       lenght,
       price,
       senderId,
-      storageId,
     });
 
     return response.json({

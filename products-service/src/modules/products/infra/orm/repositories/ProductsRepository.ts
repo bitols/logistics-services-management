@@ -8,6 +8,19 @@ export class ProductsRepository implements IProductsRepository {
   constructor() {
     this.ormRepository = dataSource.getRepository(Product);
   }
+  public async getByName(
+    sender: string,
+    name: string,
+  ): Promise<IProduct | null | undefined> {
+    console.log(`get product by name: ${name}`);
+
+    const product = await this.ormRepository.findOneBy({
+      senderId: sender,
+      name: name,
+    });
+
+    return product;
+  }
 
   public async create(data: ICreateProducts): Promise<IProduct> {
     console.log(`create product: ${JSON.stringify(data)}`);
@@ -44,15 +57,6 @@ export class ProductsRepository implements IProductsRepository {
 
     const products = await this.ormRepository.findBy({
       senderId: sender,
-    });
-
-    return products;
-  }
-
-  public async getAllByStorage(storage: string): Promise<IProduct[]> {
-    console.log(`get all products by storage id: ${storage}`);
-    const products = await this.ormRepository.findBy({
-      storageId: storage,
     });
 
     return products;

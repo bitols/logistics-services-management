@@ -1,7 +1,10 @@
+import CreateStoragesProductsUseCase from '@modules/storages/useCases/CreateStoragesProductsUseCase';
 import CreateStoragesUseCase from '@modules/storages/useCases/CreateStoragesUseCase';
+import DeleteStoragesProductsUseCase from '@modules/storages/useCases/DeleteStoragesProductsUseCase';
 import DeleteStoragesUseCase from '@modules/storages/useCases/DeleteStoragesUseCase';
 import GetAllStoragesBySenderIdUseCase from '@modules/storages/useCases/GetAllStoragesBySenderIdUseCase';
 import GetAllStoragesBySupplierIdUseCase from '@modules/storages/useCases/GetAllStoragesBySupplierIdUseCase';
+import GetAllStoragesProductsUseCase from '@modules/storages/useCases/GetAllStoragesProductsUseCase';
 import GetStoragesUseCase from '@modules/storages/useCases/GetStoragesUseCase';
 import { UpdateLocationUseCase } from '@modules/storages/useCases/UpdateLocationUseCase';
 import UpdateStoragesUseCase from '@modules/storages/useCases/UpdateStoragesUseCase';
@@ -105,6 +108,55 @@ export default class StoragesController {
 
     const deleteStorage = container.resolve(DeleteStoragesUseCase);
     await deleteStorage.execute({ id });
+
+    return response.json({});
+  }
+
+  public async getStoredProducts(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { id } = request.params;
+
+    const getAllStoredProducts = container.resolve(
+      GetAllStoragesProductsUseCase,
+    );
+
+    const storageProducts = await getAllStoredProducts.execute({ id });
+    return response.json(storageProducts);
+  }
+
+  public async addStoreProduct(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { name, height, width, lenght, value, productId, storageId } =
+      request.body;
+
+    const createStoredProducts = container.resolve(
+      CreateStoragesProductsUseCase,
+    );
+
+    const storageProducts = await createStoredProducts.execute({
+      name,
+      height,
+      width,
+      lenght,
+      value,
+      productId,
+      storageId,
+    });
+    return response.json(storageProducts);
+  }
+
+  public async removeStoreProduct(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { id } = request.params;
+
+    const deleteProduct = container.resolve(DeleteStoragesProductsUseCase);
+    await deleteProduct.execute({ id });
 
     return response.json({});
   }

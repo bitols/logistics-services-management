@@ -5,5 +5,4 @@ export interface IUpdateProducts {
   width: number;
   lenght: number;
   price: number;
-  storageId: string;
 }

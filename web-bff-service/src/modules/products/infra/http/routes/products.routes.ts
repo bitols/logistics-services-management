@@ -25,7 +25,6 @@ productsRouter.post(
       lenght: Joi.number().precision(5).required(),
       price: Joi.number().precision(2).required(),
       senderId: Joi.string().hex().required(),
-      storageId: Joi.string().hex().required(),
     },
   }),
   productsController.create,
