@@ -22,8 +22,5 @@ export default class Product implements IProduct {
   price: number;
 
   @Column()
-  storageId: string;
-
-  @Column()
   senderId: string;
 }

@@ -1,4 +1,3 @@
-import GetProductsByStorageUseCase from '@modules/products/useCases/GetProductsByStorageUseCase';
 import GetStoragesUseCase from '@modules/storages/useCases/GetStoragesUseCase';
 import GetSendersUseCase from '@modules/senders/useCases/GetSendersUseCase';
 import GetSuppliersUseCase from '@modules/suppliers/useCases/GetSuppliersUseCase';
@@ -7,6 +6,8 @@ import { container } from 'tsyringe';
 import CreateStoragesUseCase from '@modules/storages/useCases/CreateStoragesUseCase';
 import AppErrors from '@shared/errors/AppErrors';
 import GetStoragesBySenderUsecase from '@modules/storages/useCases/GetStoragesBySenderUseCase';
+import GetStoredProductsUseCase from '@modules/storages/useCases/GetStoredProductsUseCase';
+import CreateStoragesProductsUseCase from '@modules/storages/useCases/CreateStoragesProductsUseCase';
 
 export default class StoragesController {
   public async getById(
@@ -19,6 +20,9 @@ export default class StoragesController {
     const getSuppliers = container.resolve(GetSuppliersUseCase);
 
     const storage = await getStorages.execute({ id });
+    if (!storage) {
+      throw new AppErrors('Data integrity violation', 422);
+    }
 
     if (request.credential.senderId !== storage.senderId) {
       throw new AppErrors('Unauthorized', 401);
@@ -49,13 +53,12 @@ export default class StoragesController {
     const createStorage = container.resolve(CreateStoragesUseCase);
     const getStoragesBySender = container.resolve(GetStoragesBySenderUsecase);
 
-    const sender = await getSender.execute({ id: senderId });
-
-    if (request.credential.senderId !== sender.id) {
+    if (request.credential.senderId !== senderId) {
       throw new AppErrors('Unauthorized', 401);
     }
 
-    if (sender.id !== senderId) {
+    const sender = await getSender.execute({ id: senderId });
+    if (!sender) {
       throw new AppErrors('Data integrity violation', 422);
     }
 
@@ -85,29 +88,38 @@ export default class StoragesController {
     });
   }
 
-  public async getProducts(
+  public async getStoredProducts(
     request: Request,
     response: Response,
   ): Promise<Response> {
     const { id } = request.params;
 
-    const getProducts = container.resolve(GetProductsByStorageUseCase);
-    const getSenders = container.resolve(GetSendersUseCase);
+    const getProducts = container.resolve(GetStoredProductsUseCase);
     const getStorages = container.resolve(GetStoragesUseCase);
+    const getSender = container.resolve(GetSendersUseCase);
 
     const storage = await getStorages.execute({ id });
-    const sender = await getSenders.execute({ id: storage.senderId });
-    const products = await getProducts.execute({ storageId: storage.id });
+    if (!storage) {
+      throw new AppErrors('Data integrity violation', 422);
+    }
+
+    if (request.credential.senderId !== storage.senderId) {
+      throw new AppErrors('Unauthorized', 401);
+    }
+
+    const sender = await getSender.execute({ id: storage.senderId });
+    const products = await getProducts.execute({ id: storage.id });
 
     return response.json(
       products.map(product => {
         return {
           id: product.id,
+          productId: product.productId,
           name: product.name,
           height: product.height,
           width: product.width,
           lenght: product.lenght,
-          price: product.price,
+          value: product.value,
           sender: {
             id: sender.id,
             name: sender.name,
@@ -115,5 +127,42 @@ export default class StoragesController {
         };
       }),
     );
+  }
+
+  public async addStoredProducts(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { id: storageId } = request.params;
+    const { name, height, width, lenght, value, productId } = request.body;
+
+    const getStorages = container.resolve(GetStoragesUseCase);
+    const createStoredProducts = container.resolve(
+      CreateStoragesProductsUseCase,
+    );
+
+    const storage = await getStorages.execute({ id: storageId });
+    if (!storage) {
+      throw new AppErrors('Data integrity violation', 422);
+    }
+
+    if (request.credential.senderId !== storage.senderId) {
+      throw new AppErrors('Unauthorized', 401);
+    }
+
+    const storageProducts = await createStoredProducts.execute({
+      name,
+      height,
+      width,
+      lenght,
+      value,
+      productId,
+      storageId,
+    });
+    return response.json({
+      id: storageProducts.id,
+      storageId: storageProducts.storageId,
+      productId: storageProducts.productId,
+    });
   }
 }

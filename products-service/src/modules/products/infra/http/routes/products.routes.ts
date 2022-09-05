@@ -16,16 +16,6 @@ productsRouter.get(
 );
 
 productsRouter.get(
-  '/storage/:id',
-  celebrate({
-    [Segments.PARAMS]: {
-      id: Joi.string().hex().required(),
-    },
-  }),
-  productsController.getAllByStorageId,
-);
-
-productsRouter.get(
   '/sender/:id',
   celebrate({
     [Segments.PARAMS]: {
@@ -45,7 +35,6 @@ productsRouter.post(
       lenght: Joi.number().precision(5).required(),
       price: Joi.number().precision(2).required(),
       senderId: Joi.string().hex().required(),
-      storageId: Joi.string().hex().required(),
     },
   }),
   productsController.create,
@@ -60,7 +49,6 @@ productsRouter.put(
       width: Joi.number().precision(5).required(),
       lenght: Joi.number().precision(5).required(),
       price: Joi.number().precision(2).required(),
-      storageId: Joi.string().hex().required(),
     },
     [Segments.PARAMS]: {
       id: Joi.string().hex().required(),

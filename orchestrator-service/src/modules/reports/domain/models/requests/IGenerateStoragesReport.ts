@@ -3,9 +3,11 @@ export interface IGenerateStoragesReport {
   senderId: string;
   capacity: number;
   products: {
+    productId: string;
+    name: string;
     width: number;
     height: number;
     lenght: number;
-    price: number;
+    value: number;
   }[];
 }

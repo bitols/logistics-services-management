@@ -25,4 +25,13 @@ sendersRouter.get(
   sendersController.getStorages,
 );
 
+sendersRouter.get(
+  '/:id/products',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().hex().required(),
+    },
+  }),
+  sendersController.getProducts,
+);
 export default sendersRouter;

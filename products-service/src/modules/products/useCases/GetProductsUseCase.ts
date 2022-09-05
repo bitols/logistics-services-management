@@ -24,7 +24,6 @@ export default class GetProductsUseCase {
       lenght: product.lenght,
       width: product.width,
       senderId: product.senderId,
-      storageId: product.storageId,
     };
   }
 }

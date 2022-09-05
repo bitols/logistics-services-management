@@ -17,9 +17,6 @@ export default class GetStoragesReportBySender {
     const report = await this.reportsRepository.getAllStoragesCapacityBySender(
       data,
     );
-    if (!report) {
-      throw new AppErrors('Report not found');
-    }
-    return report;
+    return report as IStoragesCapacity[];
   }
 }
