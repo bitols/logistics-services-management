@@ -50,7 +50,7 @@ export default class ProductsController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
-    const { name, height, width, lenght, price, storageId } = request.body;
+    const { name, height, width, lenght, price } = request.body;
 
     const updateProduct = container.resolve(UpdateProductsUseCase);
     const product = await updateProduct.execute({

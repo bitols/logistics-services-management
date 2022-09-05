@@ -110,7 +110,7 @@ storagesRouter.post(
       height: Joi.number().precision(5).required(),
       width: Joi.number().precision(5).required(),
       lenght: Joi.number().precision(5).required(),
-      price: Joi.number().precision(2).required(),
+      value: Joi.number().precision(2).required(),
       productId: Joi.string().hex().required(),
       storageId: Joi.string().hex().required(),
     },
