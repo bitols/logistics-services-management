@@ -13,7 +13,7 @@ export default class GenerateStoragesCapacitysUseCase {
       ?.map(attribute => {
         return {
           volume: attribute.height * attribute.width * attribute.lenght,
-          value: attribute.price,
+          value: attribute.value,
         };
       })
       .reduce((pre, cur) => {

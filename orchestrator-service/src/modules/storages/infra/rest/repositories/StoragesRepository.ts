@@ -4,11 +4,32 @@ import { IGetStorages } from '@modules/storages/domain/models/requests/IGetStora
 import { IUpdateStoragesLocation } from '@modules/storages/domain/models/requests/IUpdateStoragesLocation';
 import { IStorages } from '@modules/storages/domain/models/responses/IStorages';
 import rest from '@config/rest';
+import { IStorageProducts } from '@modules/storages/domain/models/responses/IStorageProducts';
 
 export class StoragesRepository implements IStoragesRepository {
   private restClient;
   constructor() {
     this.restClient = rest.getHttpClient(storagesService.address);
+  }
+
+  public async getProducts(
+    request: IGetStorages,
+  ): Promise<IStorageProducts[] | undefined> {
+    try {
+      const { data, status } = await this.restClient.get<IStorageProducts[]>(
+        `/storages/${request.id}/products`,
+      );
+
+      console.log(
+        `request storage: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
+
+      return data;
+    } catch (error: any) {
+      console.log(error.message);
+    }
   }
 
   public async updateLocation(
