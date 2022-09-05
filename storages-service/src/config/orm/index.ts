@@ -1,5 +1,6 @@
 import config from '@config/orm/config';
 import Storage from '@modules/storages/infra/orm/entities/Storage';
+import StorageProduct from '@modules/storages/infra/orm/entities/StorageProduct';
 import { DataSource } from 'typeorm';
 
 export const dataSource = new DataSource({
@@ -8,5 +9,5 @@ export const dataSource = new DataSource({
   useNewUrlParser: config.useNewUrlParser,
   synchronize: config.synchronize,
   logging: config.logging,
-  entities: [Storage],
+  entities: [Storage, StorageProduct],
 });

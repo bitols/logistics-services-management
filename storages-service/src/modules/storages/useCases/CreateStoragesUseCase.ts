@@ -23,11 +23,6 @@ export default class CreateStoragesUseCase {
       }),
     );
 
-    await queue.produce(
-      queueConfig.storageCapacityTopic,
-      JSON.stringify({ id: storage.id }),
-    );
-
     return {
       id: storage.id,
       name: storage.name,
