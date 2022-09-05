@@ -11,9 +11,7 @@ export default class GetAllProductsBySenderIdUseCase {
     private productsRepository: IProductsRepository,
   ) {}
 
-  public async execute(
-    data: IGetAllProductsBySenderId,
-  ): Promise<IProducts[]> {
+  public async execute(data: IGetAllProductsBySenderId): Promise<IProducts[]> {
     const products = await this.productsRepository.getAllBySender(
       data.senderId,
     );
@@ -31,7 +29,6 @@ export default class GetAllProductsBySenderIdUseCase {
         lenght: product.lenght,
         width: product.width,
         senderId: product.senderId,
-        storageId: product.storageId,
       };
     });
   }
