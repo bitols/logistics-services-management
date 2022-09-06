@@ -1,5 +1,6 @@
 import { ICreateStorageProducts } from '../models/requests/ICreateStorageProducts';
 import { ICreateStorages } from '../models/requests/ICreateStorages';
+import { IDeleteStorages } from '../models/requests/IDeleteStorages';
 import { IGetStorages } from '../models/requests/IGetStorages';
 import { IGetStoragesBySender } from '../models/requests/IGetStoragesBySender';
 import { IGetStoragesBySupplier } from '../models/requests/IGetStoragesBySupplier';
@@ -19,4 +20,5 @@ export interface IStoragesRepository {
   addProducts(
     request: ICreateStorageProducts,
   ): Promise<IStorageProducts | undefined>;
+  rmvProducts(request: IDeleteStorages): Promise<void>;
 }

@@ -8,6 +8,7 @@ import AppErrors from '@shared/errors/AppErrors';
 import GetStoragesBySenderUsecase from '@modules/storages/useCases/GetStoragesBySenderUseCase';
 import GetStoredProductsUseCase from '@modules/storages/useCases/GetStoredProductsUseCase';
 import CreateStoragesProductsUseCase from '@modules/storages/useCases/CreateStoragesProductsUseCase';
+import DeleteStoragesproductsUseCase from '@modules/storages/useCases/DeleteStoragesProductsUseCase';
 
 export default class StoragesController {
   public async getById(
@@ -164,5 +165,31 @@ export default class StoragesController {
       storageId: storageProducts.storageId,
       productId: storageProducts.productId,
     });
+  }
+
+  public async removeStoredProducts(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { id: storageId } = request.params;
+    const { productId } = request.params;
+
+    const getStorages = container.resolve(GetStoragesUseCase);
+    const deleteStoredProduct = container.resolve(
+      DeleteStoragesproductsUseCase,
+    );
+
+    const storage = await getStorages.execute({ id: storageId });
+    if (!storage) {
+      throw new AppErrors('Data integrity violation', 422);
+    }
+
+    if (request.credential.senderId !== storage.senderId) {
+      throw new AppErrors('Unauthorized', 401);
+    }
+
+    await deleteStoredProduct.execute({ id: productId });
+
+    return response.json({});
   }
 }

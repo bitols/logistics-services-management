@@ -1,6 +1,7 @@
 import rest from '@config/rest';
 import { ICreateStorageProducts } from '@modules/storages/domain/models/requests/ICreateStorageProducts';
 import { ICreateStorages } from '@modules/storages/domain/models/requests/ICreateStorages';
+import { IDeleteStorages } from '@modules/storages/domain/models/requests/IDeleteStorages';
 import { IGetStorages } from '@modules/storages/domain/models/requests/IGetStorages';
 import { IGetStoragesBySender } from '@modules/storages/domain/models/requests/IGetStoragesBySender';
 import { IGetStoragesBySupplier } from '@modules/storages/domain/models/requests/IGetStoragesBySupplier';
@@ -13,6 +14,22 @@ export class StoragesRepository implements IStoragesRepository {
   constructor() {
     this.restClient = rest.getHttpClient(rest.Services.Storages);
   }
+  public async rmvProducts(request: IDeleteStorages): Promise<void> {
+    try {
+      const { status } = await this.restClient.delete<void>(
+        `/storages/products/${request.id}`,
+      );
+
+      console.log(
+        `remove product from storage: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  }
+
   public async addProducts(
     request: ICreateStorageProducts,
   ): Promise<IStorageProducts | undefined> {
