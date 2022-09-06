@@ -59,4 +59,15 @@ storagesRouter.post(
   storagesController.addStoredProducts,
 );
 
+storagesRouter.delete(
+  '/:id/products/:productId',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().hex().required(),
+      productId: Joi.string().hex().required(),
+    },
+  }),
+  storagesController.removeStoredProducts,
+);
+
 export default storagesRouter;
