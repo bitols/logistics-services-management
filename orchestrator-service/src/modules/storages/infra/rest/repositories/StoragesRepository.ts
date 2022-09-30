@@ -21,7 +21,7 @@ export class StoragesRepository implements IStoragesRepository {
       );
 
       console.log(
-        `request storage: ${JSON.stringify(
+        `request storaged products: ${JSON.stringify(
           request,
         )}, response status is: ${status}`,
       );
