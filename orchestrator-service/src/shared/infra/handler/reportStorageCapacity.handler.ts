@@ -28,9 +28,7 @@ export const storageCapacityControl = async (
         return {
           productId: x.productId,
           name: x.name,
-          height: x.height,
-          width: x.width,
-          lenght: x.lenght,
+          volume: x.height * x.width * x.lenght,
           value: x.value,
         };
       }),

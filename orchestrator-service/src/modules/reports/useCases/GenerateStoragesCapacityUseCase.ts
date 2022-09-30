@@ -9,29 +9,24 @@ export default class GenerateStoragesCapacitysUseCase {
   ) {}
 
   public async execute(request: IGenerateStoragesReport): Promise<void> {
-    const data = request.products
-      ?.map(attribute => {
-        return {
-          volume: attribute.height * attribute.width * attribute.lenght,
-          value: attribute.value,
-        };
-      })
-      .reduce((pre, cur) => {
-        return {
-          volume: pre.volume + cur.volume,
-          value: pre.value + cur.value,
-        };
-      });
+    const data = request.products?.reduce((pre, cur) => {
+      return {
+        productId: cur.productId,
+        name: cur.name,
+        volume: pre.volume + cur.volume,
+        value: pre.value + cur.value,
+      };
+    });
 
     const capacity = {
       storageId: request.storageId,
       capacity: request.capacity,
-      stored: data ? Number(data.volume.toFixed(3)) : 0,
-      usage: data
-        ? Number(((data.volume * 100) / request.capacity).toFixed(2))
-        : 0,
+      stored: Number((data ? data.volume : 0).toFixed(3)),
+      usage: Number(
+        (data ? (data.volume * 100) / request.capacity : 0).toFixed(2),
+      ),
       products: request.products.length,
-      value: data ? Number(data.value.toFixed(2)) : 0,
+      value: Number((data ? data.value : 0).toFixed(2)),
       senderId: request.senderId,
     };
 

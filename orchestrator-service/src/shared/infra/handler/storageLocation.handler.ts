@@ -5,6 +5,7 @@ import { container } from 'tsyringe';
 export const storageLocation = async (message: string): Promise<void> => {
   try {
     console.log(`storageLocation message received: ${message}`);
+    const requestLocation = JSON.parse(message);
 
     const getLocationFromAddress = container.resolve(
       GetLocationFromAddressUseCase,
@@ -14,13 +15,12 @@ export const storageLocation = async (message: string): Promise<void> => {
       UpdateStoragesLocationUseCase,
     );
 
-    const parsedMessage = JSON.parse(message);
     const location = await getLocationFromAddress.execute(
-      parsedMessage.address,
+      requestLocation.address,
     );
 
     await updateStorageLocation.execute({
-      id: parsedMessage.id,
+      id: requestLocation.id,
       location,
     });
   } catch (error: any) {

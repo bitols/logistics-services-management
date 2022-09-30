@@ -5,9 +5,7 @@ export interface IGenerateStoragesReport {
   products: {
     productId: string;
     name: string;
-    width: number;
-    height: number;
-    lenght: number;
+    volume: number;
     value: number;
   }[];
 }
