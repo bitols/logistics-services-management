@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
     email: null,
     password: null
   };
+
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(email, password).subscribe({
       next: data => {
-        this.sessionsService.saveUser(data);
+        this.sessionsService.saveCredentials(data);
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;

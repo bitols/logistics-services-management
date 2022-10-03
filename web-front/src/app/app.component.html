@@ -3,30 +3,25 @@
     <a href="#" class="navbar-brand">G.S.L.</a>
     <ul class="navbar-nav mr-auto" routerLinkActive="active">
       <li class="nav-item">
-        <a href="/home" class="nav-link" routerLink="home">Home </a>
+        <a href="/home" class="nav-link" routerLink="home">Home</a>
       </li>
-      <li class="nav-item">
-        <a routerLink="products" class="nav-link">Produtos</a>
+      <li class="nav-item" *ngIf="isLoggedIn">
+        <a href="/products" class="nav-link" routerLink="products">Produtos</a>
       </li>
-      <li class="nav-item">
-        <a routerLink="add" class="nav-link">Add</a>
+      <li class="nav-item" *ngIf="isLoggedIn">
+        <a href="/add" class="nav-link" routerLink="add">Add</a>
       </li>
     </ul>
 
     <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
       <li class="nav-item">
-        <a href="/register" class="nav-link" routerLink="register">Sign Up</a>
-      </li>
-      <li class="nav-item">
         <a href="/login" class="nav-link" routerLink="login">Login</a>
       </li>
     </ul>
-
     <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
       <li class="nav-item">
-        <a href="/profile" class="nav-link" routerLink="profile">{{ email }}</a>
+        <a href="#" class="navbar-brand">{{ email }}</a>
       </li>
-
     </ul>
   </nav>
 

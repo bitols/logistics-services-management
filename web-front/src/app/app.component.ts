@@ -21,11 +21,11 @@ export class AppComponent {
     this.isLoggedIn = this.sessionsService.isLoggedIn();
 
     if (this.isLoggedIn) {
-      const user = this.sessionsService.getUser();
-      this.id = user.id;
-      this.email = user.email;
-      this.senderId = user.senderId;
-      this.token = user.token;
+      const access = this.sessionsService.getUser();
+      this.id = access.id;
+      this.email = access.email;
+      this.senderId = access.senderId;
+      this.token = access.token;
     }
   }
 }
