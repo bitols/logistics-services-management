@@ -1,5 +1,6 @@
 import CreateSessionsUseCase from '@modules/credentials/useCases/CreateSessionsUseCase';
 import ValidationSessionsUseCase from '@modules/credentials/useCases/ValidationSessionsUseCase';
+import AppErrors from '@shared/errors/AppErrors';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -10,7 +11,6 @@ export default class SessionsController {
     const createSession = container.resolve(CreateSessionsUseCase);
 
     const auth = await createSession.execute({ email, password });
-
     return response.json(auth);
   }
 

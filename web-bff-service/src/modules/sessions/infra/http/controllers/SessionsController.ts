@@ -1,4 +1,5 @@
 import { CreateSessionsUseCase } from '@modules/sessions/useCases/CreateSessonsUseCase';
+import AppErrors from '@shared/errors/AppErrors';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 export default class SessionsConytoller {
