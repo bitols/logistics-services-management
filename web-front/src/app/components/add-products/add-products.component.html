@@ -63,9 +63,15 @@
 
       <button (click)="saveProducts()" class="btn btn-success">Submit</button>
     </div>
-
+    <div class="form-group">
+      <div *ngIf="isPostFailed" class="alert alert-danger" role="alert">
+        Erro ao efetuar o cadastro: {{ errorMessage }}
+      </div>
+    </div>
     <div *ngIf="submitted">
-      <h4>Produto cadastrado com sucesso!</h4>
+      <div class="alert alert-success">
+        Cadastro realizado com sucesso.
+      </div>
       <button class="btn btn-success" (click)="newProducts()">Add</button>
     </div>
   </div>

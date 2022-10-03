@@ -7,6 +7,7 @@ import { ProductsService } from 'src/app/services/products.service';
   styleUrls: ['./add-products.component.css']
 })
 export class AddProductsComponent implements OnInit {
+   token?: string;
 
   products: Products = {
     name: '',
@@ -18,7 +19,8 @@ export class AddProductsComponent implements OnInit {
   }
 
   submitted = false;
-
+  errorMessage = '';
+  isPostFailed = false;
   constructor(private productsService: ProductsService) { }
 
   ngOnInit(): void {
@@ -40,7 +42,10 @@ export class AddProductsComponent implements OnInit {
           console.log(res);
           this.submitted = true;
         },
-        error: (e: any) => console.error(e)
+        error: (e: any) => {
+          this.errorMessage = e.error.message;
+          this.isPostFailed = true;
+        }
       })
   }
 
