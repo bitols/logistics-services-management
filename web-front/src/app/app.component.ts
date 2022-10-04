@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SessionsService } from './services/sessions.service';
-import { AuthService } from './services/auth.service';
+import { SendersService } from './services/senders.service';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +9,16 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
   isLoggedIn = false;
+  errorMessage?: string;
 
   id?: string;
   email?: string;
   senderId?: string;
+  sender?: string;
+
   token?: string;
 
-  constructor(private sessionsService: SessionsService) { }
+  constructor(private sessionsService: SessionsService, private sendersService: SendersService) { }
 
   ngOnInit(): void {
     this.isLoggedIn = this.sessionsService.isLoggedIn();
@@ -25,7 +28,14 @@ export class AppComponent {
       this.id = access.id;
       this.email = access.email;
       this.senderId = access.senderId;
-      this.token = access.token;
+      this.sendersService.get(access.senderId).subscribe({
+        next: data => {
+          this.sender= data.name;
+        },
+        error: err => {
+          this.errorMessage = err.error.message;
+        }
+      })
     }
   }
 }

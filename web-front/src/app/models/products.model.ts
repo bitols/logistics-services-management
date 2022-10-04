@@ -7,7 +7,7 @@ export class Products {
   price?: number;
   senderId?: string;
   sender?: {
-    id?: string,
-    name?: string,
+    id?: string;
+    name?: string;
   }
 }

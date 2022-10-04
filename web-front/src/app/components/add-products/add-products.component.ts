@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, RouterConfigOptions } from '@angular/router';
 import { Products } from 'src/app/models/products.model';
 import { ProductsService } from 'src/app/services/products.service';
 import { SessionsService } from 'src/app/services/sessions.service';
@@ -15,7 +16,11 @@ export class AddProductsComponent implements OnInit {
   errorMessage = '';
 
 
-  constructor(private productsService: ProductsService, private sessionsService: SessionsService) { }
+  constructor(
+    private productsService: ProductsService,
+    private sessionsService: SessionsService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
 
@@ -48,6 +53,10 @@ export class AddProductsComponent implements OnInit {
   newProducts(): void {
     this.isAddedIn = false;
     this.products = { };
+  }
+
+  backToList(): void {
+    this.router.navigate(['/products'])
   }
 
   reloadPage(): void {

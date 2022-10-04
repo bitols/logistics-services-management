@@ -16,6 +16,8 @@ import { HomeComponent } from './home/home.component';
 
 import { httpInterceptorProviders } from './helpers/http.interceptor'
 
+import { NgxPaginationModule } from 'ngx-pagination';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +31,8 @@ import { httpInterceptorProviders } from './helpers/http.interceptor'
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxPaginationModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
