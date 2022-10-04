@@ -1,4 +1,5 @@
 import CreateProductsUseCase from '@modules/products/useCases/CreateProductsUseCase';
+import DeleteProductsUseCase from '@modules/products/useCases/DeleteProductsUseCase';
 import GetProductsUseCase from '@modules/products/useCases/GetProductsUseCase';
 import GetSendersUseCase from '@modules/senders/useCases/GetSendersUseCase';
 import AppErrors from '@shared/errors/AppErrors';
@@ -34,9 +35,16 @@ export default class ProductsController {
     });
   }
 
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+
+    const deleteProduct = container.resolve(DeleteProductsUseCase);
+    await deleteProduct.execute({ id });
+    return response.json({});
+  }
+
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, height, width, lenght, price, senderId, storageId } =
-      request.body;
+    const { name, height, width, lenght, price, senderId } = request.body;
 
     const createProduct = container.resolve(CreateProductsUseCase);
     const getSender = container.resolve(GetSendersUseCase);
