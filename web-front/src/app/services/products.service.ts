@@ -17,11 +17,14 @@ export class ProductsService {
   }
 
   get(id: any): Observable<Products> {
-    return this.http.get(`${baseUrl}/products${id}`);
+    return this.http.get(`${baseUrl}/products/${id}`);
   }
 
   create(data: any): Observable<any> {
-
     return this.http.post(`${baseUrl}/products`, data);
+  }
+
+  delete(id: any): Observable<any> {
+    return this.http.delete(`${baseUrl}/products/${id}`);
   }
 }

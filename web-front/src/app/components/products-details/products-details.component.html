@@ -1,1 +1,35 @@
-<p>products-details works!</p>
+<div *ngIf="viewMode">
+  <div *ngIf="currentProduct.id">
+    <h4>Detalhes</h4>
+    <div>
+      <label><strong>Nome:</strong></label> {{ currentProduct.name }}
+    </div>
+    <div>
+      <label><strong>Altura:</strong></label>
+      {{ currentProduct.height }}
+    </div>
+    <div>
+      <label><strong>Largura:</strong></label>
+      {{ currentProduct.width }}
+    </div>
+    <div>
+      <label><strong>Comprimento:</strong></label>
+      {{ currentProduct.lenght }}
+    </div>
+    <div>
+      <label><strong>Valor:</strong></label>
+      {{ currentProduct.price }}
+    </div>
+  </div>
+  <a  *ngIf="currentProduct.id"
+    class="badge badge-danger"
+    (click)="deleteProduct()"
+  >
+    remover
+  </a>
+
+  <div *ngIf="!currentProduct.id">
+    <br />
+    <p>Por favor selecione um produto...</p>
+  </div>
+</div>
