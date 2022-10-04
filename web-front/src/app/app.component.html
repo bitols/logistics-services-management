@@ -8,9 +8,6 @@
       <li class="nav-item" *ngIf="isLoggedIn">
         <a href="/products" class="nav-link" routerLink="products">Produtos</a>
       </li>
-      <li class="nav-item" *ngIf="isLoggedIn">
-        <a href="/add" class="nav-link" routerLink="add">Add</a>
-      </li>
     </ul>
 
     <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
@@ -20,7 +17,7 @@
     </ul>
     <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
       <li class="nav-item">
-        <a href="#" class="navbar-brand">{{ email }}</a>
+        <a href="#" class="navbar-brand">{{ sender }}</a>
       </li>
     </ul>
   </nav>
