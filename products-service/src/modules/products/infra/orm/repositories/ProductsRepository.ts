@@ -8,6 +8,16 @@ export class ProductsRepository implements IProductsRepository {
   constructor() {
     this.ormRepository = dataSource.getRepository(Product);
   }
+  public async getAllByName(sender: string, name: string): Promise<IProduct[]> {
+    console.log(`get all products by sender id: ${sender}, name: ${name}`);
+
+    const products = await this.ormRepository.findBy({
+      senderId: sender,
+      name: new RegExp(`^${name}`) as unknown as string,
+    });
+
+    return products;
+  }
   public async getByName(
     sender: string,
     name: string,

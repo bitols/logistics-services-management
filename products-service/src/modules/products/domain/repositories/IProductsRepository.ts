@@ -8,4 +8,5 @@ export interface IProductsRepository {
   getById(id: string): Promise<IProduct | null | undefined>;
   getByName(sender: string, name: string): Promise<IProduct | null | undefined>;
   getAllBySender(sender: string): Promise<IProduct[]>;
+  getAllByName(sender: string, name: string): Promise<IProduct[]>;
 }

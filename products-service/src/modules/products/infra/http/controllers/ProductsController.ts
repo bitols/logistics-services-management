@@ -1,5 +1,6 @@
 import CreateProductsUseCase from '@modules/products/useCases/CreateProductsUseCase';
 import DeleteProductsUseCase from '@modules/products/useCases/DeleteProductsUseCase';
+import GetAllProductsByNameUseCase from '@modules/products/useCases/GetAllProductsByNameUseCase';
 import GetAllProductsBySenderIdUseCase from '@modules/products/useCases/GetAllProductsBySenderIdUseCase';
 import GetProductsUseCase from '@modules/products/useCases/GetProductsUseCase';
 import UpdateProductsUseCase from '@modules/products/useCases/UpdateProductsUseCase';
@@ -11,7 +12,6 @@ export default class ProductsController {
     response: Response,
   ): Promise<Response> {
     const { id } = request.params;
-
     const getProduct = container.resolve(GetProductsUseCase);
     const product = await getProduct.execute({ id });
 
@@ -23,12 +23,25 @@ export default class ProductsController {
     response: Response,
   ): Promise<Response> {
     const { id } = request.params;
+    const name = request.query.name as string;
+
+    if (name) {
+      const getAllProductsByName = container.resolve(
+        GetAllProductsByNameUseCase,
+      );
+
+      const products = await getAllProductsByName.execute({
+        senderId: id,
+        name: name,
+      });
+      return response.json(products);
+    }
 
     const getAllProductsBySender = container.resolve(
       GetAllProductsBySenderIdUseCase,
     );
-    const products = await getAllProductsBySender.execute({ senderId: id });
 
+    const products = await getAllProductsBySender.execute({ senderId: id });
     return response.json(products);
   }
 
