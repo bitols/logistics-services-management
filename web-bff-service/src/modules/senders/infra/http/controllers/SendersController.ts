@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import AppErrors from '@shared/errors/AppErrors';
 import GetProductsBySenderUseCase from '@modules/products/useCases/GetProductsBySenderUseCase';
+import GetProductsByNameUseCase from '@modules/products/useCases/GetProductsByNameUseCase';
 
 export default class SendersController {
   public async getById(
@@ -88,6 +89,17 @@ export default class SendersController {
     response: Response,
   ): Promise<Response> {
     const { id } = request.params;
+    const name = request.query.name as string;
+
+    if (name) {
+      const getProductsByName = container.resolve(GetProductsByNameUseCase);
+
+      const products = await getProductsByName.execute({
+        senderId: id,
+        name: name,
+      });
+      return response.json(products);
+    }
 
     const getProducts = container.resolve(GetProductsBySenderUseCase);
 
