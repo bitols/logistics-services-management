@@ -12,7 +12,7 @@ export class AddProductsComponent implements OnInit {
   products: Products = { }
 
   isAddedIn = false;
-  isAddFailed = false;
+  isAddedFailed = false;
   errorMessage = '';
 
 
@@ -41,11 +41,12 @@ export class AddProductsComponent implements OnInit {
         next: (res: any) => {
           console.log(res);
           this.isAddedIn = true;
-
+          this.isAddedFailed = false;
         },
         error: (e: any) => {
           this.errorMessage = e.error.message;
-          this.isAddFailed = true;
+          this.isAddedIn = false;
+          this.isAddedFailed = true;
         }
       })
   }

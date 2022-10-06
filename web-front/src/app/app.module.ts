@@ -10,9 +10,9 @@ import { AddProductsComponent } from './components/add-products/add-products.com
 import { ProductsDetailsComponent } from './components/products-details/products-details.component';
 import { ProductsListComponent } from './components/products-list/products-list.component';
 
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './components/login/login.component';
 
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './components/home/home.component';
 
 import { httpInterceptorProviders } from './helpers/http.interceptor'
 
