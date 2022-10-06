@@ -13,6 +13,7 @@
           <button
             class="btn btn-outline-secondary"
             type="button"
+            (click)="searchProducts()"
           >
             Localizar
           </button>
@@ -44,6 +45,7 @@
           let i = index"
           [class.active]="i == currentIndex"
           (click)="setActiveProduct(product, i)"
+
         >
           {{ product.name }}
         </li>

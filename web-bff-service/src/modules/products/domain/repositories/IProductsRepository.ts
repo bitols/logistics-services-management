@@ -11,4 +11,5 @@ export interface IProductsRepository {
   ): Promise<IProducts[] | undefined>;
   create(data: ICreateProducts): Promise<IProducts | undefined>;
   delete(request: IDeleteProducts): Promise<void>;
+  getAllByName(request: IGetProductsBySender): Promise<IProducts[] | undefined>;
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { SessionsService } from '../services/sessions.service';
+import { AuthService } from '../../services/auth.service';
+import { SessionsService } from '../../services/sessions.service';
 
 @Component({
   selector: 'app-login',
@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
       error: err => {
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
+        this.isLoggedIn = false;
       }
     });
   }
