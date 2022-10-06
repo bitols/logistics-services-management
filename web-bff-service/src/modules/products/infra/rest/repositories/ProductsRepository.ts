@@ -10,6 +10,33 @@ export class ProductsRepository implements IProductsRepository {
   constructor() {
     this.restClient = rest.getHttpClient(rest.Services.Products);
   }
+  public async getAllByName(
+    request: IGetProductsBySender,
+  ): Promise<IProducts[] | undefined> {
+    try {
+      const { data, status } = await this.restClient.get<IProducts[]>(
+        `/products/sender/${request.senderId}`,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+          params: {
+            name: request.name,
+          },
+        },
+      );
+
+      console.log(
+        `request all products by sender: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
+
+      return data;
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
 
   public async delete(request: IDeleteProducts): Promise<void> {
     try {

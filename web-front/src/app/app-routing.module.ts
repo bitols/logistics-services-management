@@ -5,9 +5,9 @@ import { ProductsListComponent } from './components/products-list/products-list.
 import { ProductsDetailsComponent } from './components/products-details/products-details.component';
 import { AddProductsComponent } from './components/add-products/add-products.component';
 
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './components/login/login.component';
 
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },

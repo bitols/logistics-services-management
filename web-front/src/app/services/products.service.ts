@@ -16,6 +16,10 @@ export class ProductsService {
     return this.http.get<Products[]>(`${baseUrl}/senders/${senderId}/products`);
   }
 
+  getAllByName(senderId: any, name: any): Observable<Products[]> {
+    return this.http.get<Products[]>(`${baseUrl}/senders/${senderId}/products?name=${name}`);
+  }
+
   get(id: any): Observable<Products> {
     return this.http.get(`${baseUrl}/products/${id}`);
   }
