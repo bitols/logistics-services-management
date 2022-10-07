@@ -4,6 +4,7 @@ import { ICreateStorages } from '../domain/models/requests/ICreateStorages';
 import { IStorages } from '../domain/models/responses/IStorages';
 import queue from '@config/queue';
 import queueConfig from '@config/queue/config';
+import AppErrors from '@shared/errors/AppErrors';
 @injectable()
 export default class CreateStoragesUseCase {
   constructor(
@@ -12,6 +13,15 @@ export default class CreateStoragesUseCase {
   ) {}
 
   public async execute(data: ICreateStorages): Promise<IStorages> {
+    const storageExists = await this.storagesRepository.getByName(
+      data.senderId,
+      data.name,
+    );
+
+    if (storageExists) {
+      throw new AppErrors('Storage already exists');
+    }
+
     const storage = await this.storagesRepository.create(data);
 
     await this.storagesRepository.save(storage);

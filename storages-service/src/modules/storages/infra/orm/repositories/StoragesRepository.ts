@@ -11,6 +11,30 @@ export class StoragesRepository implements IStoragesRepository {
     this.ormRepository = dataSource.getRepository(Storage);
   }
 
+  public async getByName(
+    sender: string,
+    name: string,
+  ): Promise<IStorage | null | undefined> {
+    console.log(`get storage by name: ${name}`);
+
+    const storage = await this.ormRepository.findOneBy({
+      senderId: sender,
+      name: name,
+    });
+    return storage;
+  }
+
+  public async getAllByName(sender: string, name: string): Promise<IStorage[]> {
+    console.log(`get all storages by sender id: ${sender}, name: ${name}`);
+
+    const storages = await this.ormRepository.findBy({
+      senderId: sender,
+      name: new RegExp(`^${name}`) as unknown as string,
+    });
+
+    return storages;
+  }
+
   public async create(data: ICreateStorages): Promise<IStorage> {
     console.log(`create storage: ${JSON.stringify(data)}`);
 
