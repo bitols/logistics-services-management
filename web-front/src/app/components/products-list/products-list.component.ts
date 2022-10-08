@@ -28,7 +28,7 @@ export class ProductsListComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.searchProducts();
+    this.refreshList();
   }
 
 
@@ -91,12 +91,5 @@ export class ProductsListComponent implements OnInit {
     this.router.navigate(['/add-products'])
   }
 
-  reloadPage(): void {
-    let currentUrl = this.router.url;
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        this.router.navigate([currentUrl]);
-        console.log(currentUrl);
-    });
-  }
 
 }
