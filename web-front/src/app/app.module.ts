@@ -17,6 +17,13 @@ import { HomeComponent } from './components/home/home.component';
 import { httpInterceptorProviders } from './helpers/http.interceptor'
 
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+
+import { AddStoragesComponent } from './components/add-storages/add-storages.component';
+import { StoragesDetailsComponent } from './components/storages-details/storages-details.component';
+import { StoragesListComponent } from './components/storages-list/storages-list.component';
+
+export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
 @NgModule({
   declarations: [
@@ -25,14 +32,18 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ProductsDetailsComponent,
     ProductsListComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    AddStoragesComponent,
+    StoragesDetailsComponent,
+    StoragesListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgxMaskModule.forRoot()
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

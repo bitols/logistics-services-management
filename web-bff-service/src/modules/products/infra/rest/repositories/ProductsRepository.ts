@@ -27,7 +27,7 @@ export class ProductsRepository implements IProductsRepository {
       );
 
       console.log(
-        `request all products by sender: ${JSON.stringify(
+        `request all products by name: ${JSON.stringify(
           request,
         )}, response status is: ${status}`,
       );

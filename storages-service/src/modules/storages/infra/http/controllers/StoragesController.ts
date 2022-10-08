@@ -2,6 +2,7 @@ import CreateStoragesProductsUseCase from '@modules/storages/useCases/CreateStor
 import CreateStoragesUseCase from '@modules/storages/useCases/CreateStoragesUseCase';
 import DeleteStoragesProductsUseCase from '@modules/storages/useCases/DeleteStoragesProductsUseCase';
 import DeleteStoragesUseCase from '@modules/storages/useCases/DeleteStoragesUseCase';
+import GetAllStoragesByNameUsecase from '@modules/storages/useCases/GetAllStoragesByNameUseCase';
 import GetAllStoragesBySenderIdUseCase from '@modules/storages/useCases/GetAllStoragesBySenderIdUseCase';
 import GetAllStoragesBySupplierIdUseCase from '@modules/storages/useCases/GetAllStoragesBySupplierIdUseCase';
 import GetAllStoragesProductsUseCase from '@modules/storages/useCases/GetAllStoragesProductsUseCase';
@@ -43,7 +44,19 @@ export default class StoragesController {
     response: Response,
   ): Promise<Response> {
     const { id } = request.params;
+    const name = request.query.name as string;
 
+    if (name) {
+      const getAllStoragesByName = container.resolve(
+        GetAllStoragesByNameUsecase,
+      );
+
+      const storages = await getAllStoragesByName.execute({
+        senderId: id,
+        name: name,
+      });
+      return response.json(storages);
+    }
     const getAllStoragesBySender = container.resolve(
       GetAllStoragesBySenderIdUseCase,
     );

@@ -14,6 +14,34 @@ export class StoragesRepository implements IStoragesRepository {
   constructor() {
     this.restClient = rest.getHttpClient(rest.Services.Storages);
   }
+  public async getAllByName(
+    request: IGetStoragesBySender,
+  ): Promise<IStorages[] | undefined> {
+    try {
+      const { data, status } = await this.restClient.get<IStorages[]>(
+        `/storages/senders/${request.senderId}`,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+          params: {
+            name: request.name,
+          },
+        },
+      );
+
+      console.log(
+        `request all storages by name: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
+
+      return data;
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+
   public async rmvProducts(request: IDeleteStorages): Promise<void> {
     try {
       const { status } = await this.restClient.delete<void>(

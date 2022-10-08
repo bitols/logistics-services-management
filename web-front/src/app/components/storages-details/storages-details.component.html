@@ -1,0 +1,29 @@
+<div *ngIf="viewMode">
+  <div *ngIf="currentStorage.id">
+    <h4>Detalhes</h4>
+    <div>
+      <label><strong>Nome:</strong></label> {{ currentStorage.name }}
+    </div>
+    <div>
+      <label><strong>Fornecedor:</strong></label> {{ currentStorage.supplier?.name }}
+    </div>
+    <div *ngIf="currentStorage.capacity">
+      <label><strong>Capacidade:</strong></label> {{ currentStorage.capacity }}
+    </div>
+    <div>
+      <label><strong>Email:</strong></label> {{ currentStorage.email }}
+    </div>
+    <div *ngIf="currentStorage.phone">
+      <label><strong>Telefone:</strong></label> {{ currentStorage.phone | mask: '(00) 0000-0000 || (00) 0 0000-0000' }}
+    </div>
+    <div>
+      <label><strong>Endereço:</strong></label> {{ currentStorage.address }}
+    </div>
+  </div>
+
+
+  <div *ngIf="!currentStorage.id">
+    <br />
+    <p>Por favor selecione um dedpósito...</p>
+  </div>
+</div>

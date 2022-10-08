@@ -8,14 +8,20 @@ import { AddProductsComponent } from './components/add-products/add-products.com
 import { LoginComponent } from './components/login/login.component';
 
 import { HomeComponent } from './components/home/home.component';
+import { StoragesListComponent } from './components/storages-list/storages-list.component';
+import { StoragesDetailsComponent } from './components/storages-details/storages-details.component';
+import { AddStoragesComponent } from './components/add-storages/add-storages.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'products', component: ProductsListComponent },
   { path: 'products/:id', component: ProductsDetailsComponent },
   { path: 'add-products', component: AddProductsComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' }
+  { path: 'storages', component: StoragesListComponent },
+  { path: 'storages/:id', component: StoragesDetailsComponent },
+  { path: 'add-storages', component: AddStoragesComponent }
 ];
 
 @NgModule({
