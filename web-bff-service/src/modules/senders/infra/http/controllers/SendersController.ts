@@ -107,6 +107,7 @@ export default class SendersController {
         return {
           id: storage.id,
           name: storage.name,
+          capacity: storage.capacity,
           email: storage.email,
           phone: storage.phone,
           address: storage.address,
