@@ -4,28 +4,28 @@
     <div>
       <label><strong>Nome:</strong></label> {{ currentProduct.name }}
     </div>
-    <div>
+    <div *ngIf="currentProduct.height">
       <label><strong>Altura:</strong></label>
-      {{ currentProduct.height }}
+      {{ currentProduct.height | mask: 'separator.3' }}
     </div>
-    <div>
+    <div *ngIf="currentProduct.width">
       <label><strong>Largura:</strong></label>
-      {{ currentProduct.width }}
+      {{ currentProduct.width | mask: 'separator.3' }}
     </div>
-    <div>
+    <div *ngIf="currentProduct.lenght">
       <label><strong>Comprimento:</strong></label>
-      {{ currentProduct.lenght }}
+      {{ currentProduct.lenght | mask: 'separator.3' }}
     </div>
-    <div>
+    <div  *ngIf="currentProduct.price">
       <label><strong>Valor:</strong></label>
-      {{ currentProduct.price }}
+      {{ currentProduct.price  | mask: 'separator.2' }}
     </div>
   </div>
   <a  *ngIf="currentProduct.id"
-    class="badge badge-danger"
+    class="m-3 btn btn-sm btn-danger"
     (click)="deleteProduct()"
   >
-    remover
+    Remover
   </a>
 
   <div *ngIf="!currentProduct.id">

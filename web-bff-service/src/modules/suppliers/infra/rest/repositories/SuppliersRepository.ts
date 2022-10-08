@@ -20,8 +20,6 @@ export class SuppliersRepository implements ISuppliersRepository {
         },
       });
 
-      console.log(JSON.stringify(data, null, 4));
-
       // 👇️ "response status is: 200"
       console.log('response status is: ', status);
 
