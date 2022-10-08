@@ -3,7 +3,10 @@
     <a href="#" class="navbar-brand">G.S.L.</a>
     <ul class="navbar-nav mr-auto" routerLinkActive="active">
       <li class="nav-item">
-        <a href="/home" class="nav-link" routerLink="home">Home</a>
+        <a href="/home" class="nav-link" routerLink="home">Início</a>
+      </li>
+      <li class="nav-item" *ngIf="isLoggedIn">
+        <a href="/storages" class="nav-link" routerLink="storages">Depósitos</a>
       </li>
       <li class="nav-item" *ngIf="isLoggedIn">
         <a href="/products" class="nav-link" routerLink="products">Produtos</a>

@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Products } from 'src/app/models/products.model';
-import { ProductsService } from 'src/app/services/products.service';
+import { Storages } from 'src/app/models/storages.model';
 import { SessionsService } from 'src/app/services/sessions.service';
-@Component({
-  selector: 'app-products-list',
-  templateUrl: './products-list.component.html',
-  styleUrls: ['./products-list.component.css']
-})
-export class ProductsListComponent implements OnInit {
+import { StoragesService } from 'src/app/services/storages.service';
 
-  products: Products[] = [];
-  currentProduct: Products = {};
+@Component({
+  selector: 'app-storages-list',
+  templateUrl: './storages-list.component.html',
+  styleUrls: ['./storages-list.component.css']
+})
+export class StoragesListComponent implements OnInit {
+
+  storages: Storages[] = [];
+  currentStorage: Storages = {};
   currentIndex = -1;
   name = '';
 
@@ -21,59 +22,58 @@ export class ProductsListComponent implements OnInit {
   pageSizes = [3, 6, 9];
 
   constructor(
-    private productsService: ProductsService,
+    private storagesService: StoragesService,
     private sessionsService: SessionsService,
     private router: Router
     ) { }
-
 
   ngOnInit(): void {
     this.refreshList();
   }
 
 
-  searchProducts(): void {
+  refreshList(): void {
+    this.searchStorages();
+    this.currentStorage = {};
+    this.currentIndex = -1;
+  }
+
+  searchStorages(): void {
     if( this.name ) {
-      this.retrieveProductsByName();
+      this.retrieveStoragesByName();
     } else {
-      this.retrieveAllProducts();
+      this.retrieveAllStorages();
     }
 
   }
 
-  retrieveAllProducts(): void {
-    this.productsService.getAll(this.sessionsService.getUser().senderId)
+  retrieveAllStorages(): void {
+    this.storagesService.getAll(this.sessionsService.getUser().senderId)
       .subscribe({
         next: (data) => {
-          this.products = data;
+          this.storages = data;
           this.count = data.length;
         },
         error: (e) => console.error(e)
       });
   }
 
-  retrieveProductsByName(): void {
-    this.productsService.getAllByName(
+  retrieveStoragesByName(): void {
+    this.storagesService.getAllByName(
       this.sessionsService.getUser().senderId,
       this.name
     )
       .subscribe({
         next: (data) => {
-          this.products = data;
+          this.storages = data;
           this.count = data.length;
         },
         error: (e) => console.error(e)
       });
   }
 
-  refreshList(): void {
-    this.searchProducts();
-    this.currentProduct = {};
-    this.currentIndex = -1;
-  }
-
-  setActiveProduct(product: Products, index: number): void {
-    this.currentProduct = product;
+  setActiveStorage(storage: Storages, index: number): void {
+    this.currentStorage = storage;
     this.currentIndex = index;
   }
 
@@ -86,9 +86,8 @@ export class ProductsListComponent implements OnInit {
     this.page = event;
   }
 
-  addProducts(): void {
-    this.router.navigate(['/add-products'])
+  addStorages(): void {
+    this.router.navigate(['/add-storages'])
   }
-
 
 }
