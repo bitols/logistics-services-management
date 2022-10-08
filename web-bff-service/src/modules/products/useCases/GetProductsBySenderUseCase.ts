@@ -12,8 +12,12 @@ export default class GetProductsBySenderUseCase {
   ) {}
 
   public async execute(data: IGetProductsBySender): Promise<IProducts[]> {
-    const products = await this.productsRepository.getAllBySender(data);
-
+    let products: IProducts[] | undefined;
+    if (!data.name) {
+      products = await this.productsRepository.getAllBySender(data);
+    } else {
+      products = await this.productsRepository.getAllByName(data);
+    }
     if (!products) {
       throw new AppErrors('Products not found');
     }

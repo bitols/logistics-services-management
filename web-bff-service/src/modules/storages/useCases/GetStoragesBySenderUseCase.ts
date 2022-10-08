@@ -12,8 +12,13 @@ export default class GetStoragesBySenderUsecase {
   ) {}
 
   public async execute(data: IGetStoragesBySender): Promise<IStorages[]> {
-    const storages = await this.storagesRepository.getAllBySender(data);
+    let storages: IStorages[] | undefined;
 
+    if (!data.name) {
+      storages = await this.storagesRepository.getAllBySender(data);
+    } else {
+      storages = await this.storagesRepository.getAllByName(data);
+    }
     if (!storages) {
       throw new AppErrors('Storages not found');
     }

@@ -15,6 +15,7 @@ export interface IStoragesRepository {
   getAllBySender(
     request: IGetStoragesBySender,
   ): Promise<IStorages[] | undefined>;
+  getAllByName(request: IGetStoragesBySender): Promise<IStorages[] | undefined>;
   create(request: ICreateStorages): Promise<IStorages | undefined>;
   getProducts(request: IGetStorages): Promise<IStorageProducts[] | undefined>;
   addProducts(

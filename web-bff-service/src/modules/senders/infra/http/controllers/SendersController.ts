@@ -5,10 +5,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import AppErrors from '@shared/errors/AppErrors';
 import GetProductsBySenderUseCase from '@modules/products/useCases/GetProductsBySenderUseCase';
-import GetProductsByNameUseCase from '@modules/products/useCases/GetProductsByNameUseCase';
 import GetAllSuppliersUseCase from '@modules/suppliers/useCases/GetAllSuppliersUseCase';
-import { IStorages } from '@modules/storages/domain/models/responses/IStorages';
-
 export default class SendersController {
   public async getById(
     request: Request,
@@ -102,9 +99,8 @@ export default class SendersController {
     const getAllSuppliers = container.resolve(GetAllSuppliersUseCase);
     const suppliers = await getAllSuppliers.execute();
 
-    let storages: IStorages[];
     const getStorages = container.resolve(GetStoragesBySenderUsecase);
-    storages = await getStorages.execute({ senderId: id });
+    const storages = await getStorages.execute({ senderId: id, name });
 
     return response.json(
       storages.map(storage => {
@@ -116,12 +112,6 @@ export default class SendersController {
           address: storage.address,
           location: storage.location,
           supplier: suppliers
-            .map(supplier => {
-              return {
-                id: supplier.id,
-                name: supplier.name,
-              };
-            })
             .filter(supplier => supplier.id === storage.supplierId)
             .reduce(prev => {
               return prev;
@@ -144,20 +134,12 @@ export default class SendersController {
     if (request.credential.senderId !== sender.id) {
       throw new AppErrors('Unauthorized', 401);
     }
-
-    if (name) {
-      const getProductsByName = container.resolve(GetProductsByNameUseCase);
-
-      const products = await getProductsByName.execute({
-        senderId: id,
-        name: name,
-      });
-      return response.json(products);
-    }
-
     const getProducts = container.resolve(GetProductsBySenderUseCase);
 
-    const products = await getProducts.execute({ senderId: id });
+    const products = await getProducts.execute({
+      senderId: id,
+      name,
+    });
 
     return response.json(products);
   }
