@@ -60,7 +60,4 @@ export class AddProductsComponent implements OnInit {
     this.router.navigate(['/products'])
   }
 
-  reloadPage(): void {
-    window.location.reload();
-  }
 }
