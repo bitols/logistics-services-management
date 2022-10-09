@@ -8,15 +8,16 @@
       novalidate
     >
       <h4>Novo Depósito</h4>
+
       <div class="form-group">
         <label for="supplier">Fornecedor</label>
         <select
-          class="custom-select mb-3"
+          class="form-control mb-3"
           id="currentSupplier"
           required
           [(ngModel)]="currentSupplier"
           name="currentSupplier"
-          [ngClass]="{ 'is-invalid': f.submitted && !currentSupplier }"
+          [ngClass]="{ 'is-invalid': f.submitted && !currentSupplier.name }"
           [ngModelOptions]="{standalone: true}"
         >
           <option *ngFor="let supplier of suppliers; let i = index" [ngValue]="supplier">
@@ -24,7 +25,7 @@
           </option>
         </select>
 
-        <div *ngIf="!currentSupplier && f.submitted" class="invalid-feedback">
+        <div *ngIf="!currentSupplier.name && f.submitted" class="invalid-feedback">
           O fornecedor é obrigatório!
         </div>
       </div>

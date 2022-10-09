@@ -1,4 +1,5 @@
 <div id="app">
+
   <nav class="navbar navbar-expand navbar-dark bg-dark">
     <a href="#" class="navbar-brand">G.S.L.</a>
     <ul class="navbar-nav mr-auto" routerLinkActive="active">
@@ -10,6 +11,9 @@
       </li>
       <li class="nav-item" *ngIf="isLoggedIn">
         <a href="/products" class="nav-link" routerLink="products">Produtos</a>
+      </li>
+      <li class="nav-item" *ngIf="isLoggedIn">
+        <a href="/storages-manager" class="nav-link" routerLink="storages-manager">Gerenciar Depósitos</a>
       </li>
     </ul>
 
@@ -25,7 +29,7 @@
     </ul>
   </nav>
 
-  <div class="container">
+  <div class="container-fluid">
     <router-outlet></router-outlet>
   </div>
 </div>
