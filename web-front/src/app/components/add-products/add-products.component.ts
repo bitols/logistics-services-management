@@ -35,15 +35,16 @@ export class AddProductsComponent implements OnInit {
       price: this.products.price,
       senderId: this.sessionsService.getUser().senderId
     }
-
+    console.log('onSubmit')
     this.productsService.create(data)
       .subscribe({
         next: (res: any) => {
-          console.log(res);
+          console.log(`next: ${res}`);
           this.isAddedIn = true;
           this.isAddedFailed = false;
         },
         error: (e: any) => {
+          console.error(`error: ${e}`);
           this.errorMessage = e.error.message;
           this.isAddedIn = false;
           this.isAddedFailed = true;
@@ -60,7 +61,4 @@ export class AddProductsComponent implements OnInit {
     this.router.navigate(['/products'])
   }
 
-  reloadPage(): void {
-    window.location.reload();
-  }
 }

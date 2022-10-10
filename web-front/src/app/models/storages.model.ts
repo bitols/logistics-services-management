@@ -1,3 +1,6 @@
+import { Locations } from "./locations.model";
+import { Suppliers } from "./suppliers.model";
+
 export class Storages {
   id?: string;
   name?: string;
@@ -7,12 +10,6 @@ export class Storages {
   address?: string;
   supplierId?: string;
   senderId?: string;
-  location?: {
-    lat?: number;
-    lng?: number;
-  };
-  supplier?: {
-    id?: string;
-    name?: string;
-  }
+  location?:  Locations;
+  supplier?: Suppliers;
 }

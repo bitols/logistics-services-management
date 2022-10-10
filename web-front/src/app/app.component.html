@@ -1,31 +1,43 @@
-<div id="app">
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <a href="#" class="navbar-brand">G.S.L.</a>
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+  <a href="#" class="navbar-brand">G.S.L.</a>
+  <button class="navbar-toggler" type="button" aria-controls="navbarContent" [attr.aria-expanded]="!collapsed" aria-label="Toggle navigation" (click)="collapsed = !collapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="navbar-collapse" [class.collapse]="collapsed" id="navbarContent">
     <ul class="navbar-nav mr-auto" routerLinkActive="active">
-      <li class="nav-item">
-        <a href="/home" class="nav-link" routerLink="home">Início</a>
+      <li class="nav-item" ngbDropdown *ngIf="isLoggedIn">
+        <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownCad" role="button">
+          Cadastros
+        </a>
+        <div ngbDropdownMenu aria-labelledby="navbarDropdownCad" class="dropdown-menu">
+          <a ngbDropdownItem href="/storages" routerLink="storages">Depósitos</a>
+          <a ngbDropdownItem href="/products" routerLink="products">Produtos</a>
+        </div>
       </li>
-      <li class="nav-item" *ngIf="isLoggedIn">
-        <a href="/storages" class="nav-link" routerLink="storages">Depósitos</a>
-      </li>
-      <li class="nav-item" *ngIf="isLoggedIn">
-        <a href="/products" class="nav-link" routerLink="products">Produtos</a>
-      </li>
-    </ul>
-
-    <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
-      <li class="nav-item">
-        <a href="/login" class="nav-link" routerLink="login">Login</a>
-      </li>
-    </ul>
-    <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
-      <li class="nav-item">
-        <a href="#" class="navbar-brand">{{ sender }}</a>
+      <li class="nav-item" ngbDropdown *ngIf="isLoggedIn">
+        <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownProc" role="button">
+          Processos
+        </a>
+        <div ngbDropdownMenu aria-labelledby="navbarDropdownCadProc" class="dropdown-menu">
+          <a ngbDropdownItem href="/storages-manager" routerLink="storages-manager">Gerenciar Depósitos</a>
+        </div>
       </li>
     </ul>
-  </nav>
-
-  <div class="container">
-    <router-outlet></router-outlet>
+    <ul class="navbar-nav ml-auto" routerLinkActive="active">
+      <li class="nav-item" *ngIf="!isLoggedIn">
+        <a href="/login" class="nav-link " routerLink="login">Login</a>
+      </li>
+      <li class="nav-item" ngbDropdown *ngIf="isLoggedIn">
+        <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownPerf" role="button">
+          {{ sender }}
+        </a>
+        <div ngbDropdownMenu aria-labelledby="navbarDropdownPerf" class="dropdown-menu">
+          <a ngbDropdownItem href="#">Sair</a>
+        </div>
+      </li>
+    </ul>
   </div>
+</nav>
+<div class="container-fluid">
+  <router-outlet></router-outlet>
 </div>

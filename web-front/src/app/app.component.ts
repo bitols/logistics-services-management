@@ -8,6 +8,7 @@ import { SendersService } from './services/senders.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  collapsed = true;
   isLoggedIn = false;
   errorMessage?: string;
 
