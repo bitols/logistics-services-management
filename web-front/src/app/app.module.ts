@@ -22,6 +22,9 @@ import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { AddStoragesComponent } from './components/add-storages/add-storages.component';
 import { StoragesDetailsComponent } from './components/storages-details/storages-details.component';
 import { StoragesListComponent } from './components/storages-list/storages-list.component';
+import { StoragesManagerComponent } from './components/storages-manager/storages-manager.component';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
@@ -35,7 +38,8 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
     HomeComponent,
     AddStoragesComponent,
     StoragesDetailsComponent,
-    StoragesListComponent
+    StoragesListComponent,
+    StoragesManagerComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +47,8 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
     FormsModule,
     HttpClientModule,
     NgxPaginationModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    NgbModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

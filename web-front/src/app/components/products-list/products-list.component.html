@@ -5,13 +5,13 @@
       <div class="input-group mb-3">
         <input
           type="text"
-          class="form-control"
+          class="form-control mr-sm-2"
           placeholder="Localize pelo nome"
           [(ngModel)]="name"
         />
         <div class="input-group-append">
           <button
-            class="btn btn-outline-secondary"
+            class="btn btn-outline-secondary my-2 my-sm-0"
             type="button"
             (click)="refreshList()"
           >
@@ -45,7 +45,6 @@
           let i = index"
           [class.active]="i == currentIndex"
           (click)="setActiveProduct(product, i)"
-
         >
           {{ product.name }}
         </li>
