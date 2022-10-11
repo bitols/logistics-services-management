@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterConfigOptions } from '@angular/router';
 import { Products } from 'src/app/models/products.model';
+import { NotificationService } from 'src/app/services/notification.service';
 import { ProductsService } from 'src/app/services/products.service';
 import { SessionsService } from 'src/app/services/sessions.service';
 @Component({
@@ -19,6 +20,7 @@ export class AddProductsComponent implements OnInit {
   constructor(
     private productsService: ProductsService,
     private sessionsService: SessionsService,
+    private notificationService: NotificationService,
     private router: Router,
   ) { }
 
@@ -35,16 +37,17 @@ export class AddProductsComponent implements OnInit {
       price: this.products.price,
       senderId: this.sessionsService.getUser().senderId
     }
-    console.log('onSubmit')
     this.productsService.create(data)
       .subscribe({
         next: (res: any) => {
-          console.log(`next: ${res}`);
+          this.notificationService.showSuccess('Product registred','Success');
           this.isAddedIn = true;
           this.isAddedFailed = false;
+          this.backToList();
         },
         error: (e: any) => {
           console.error(`error: ${e}`);
+          this.notificationService.showError(e.error.message,'Fail');
           this.errorMessage = e.error.message;
           this.isAddedIn = false;
           this.isAddedFailed = true;

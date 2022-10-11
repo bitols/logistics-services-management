@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Products } from 'src/app/models/products.model';
+import { NotificationService } from 'src/app/services/notification.service';
 import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
@@ -17,6 +18,7 @@ export class ProductsDetailsComponent implements OnInit {
 
   constructor(
     private productsService: ProductsService,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
@@ -36,7 +38,10 @@ export class ProductsDetailsComponent implements OnInit {
           this.currentProduct = data;
           console.log(data);
         },
-        error: (e) => console.error(e)
+        error: (e) => {
+          console.error(e);
+          this.notificationService.showError(`Problem to retrieve product`,'Fail');
+        }
       });
   }
 
@@ -45,9 +50,13 @@ export class ProductsDetailsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           console.log(data);
+          this.notificationService.showSuccess('Product deleted','Success');
           this.reloadPage();
         },
-        error: (e) => console.error(e)
+        error: (e) => {
+          console.error(e);
+          this.notificationService.showError(e.error.message,'Fail');
+        }
       });
   }
 
@@ -55,7 +64,6 @@ export class ProductsDetailsComponent implements OnInit {
     let currentUrl = this.router.url;
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
         this.router.navigate([currentUrl]);
-        console.log(currentUrl);
     });
   }
 

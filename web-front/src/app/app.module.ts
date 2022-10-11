@@ -26,6 +26,9 @@ import { StoragesManagerComponent } from './components/storages-manager/storages
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
 export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
 @NgModule({
@@ -48,7 +51,9 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
     HttpClientModule,
     NgxPaginationModule,
     NgxMaskModule.forRoot(),
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot() ,
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

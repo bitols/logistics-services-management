@@ -20,10 +20,15 @@
       <label><strong>Endereço:</strong></label> {{ currentStorage.address }}
     </div>
   </div>
-
+  <a  *ngIf="currentStorage.id"
+    class="m-3 btn btn-sm btn-danger"
+    (click)="deleteStorage()"
+  >
+    Remover
+  </a>
 
   <div *ngIf="!currentStorage.id">
     <br />
-    <p>Por favor selecione um dedpósito...</p>
+    <p>Por favor selecione um depósito...</p>
   </div>
 </div>
