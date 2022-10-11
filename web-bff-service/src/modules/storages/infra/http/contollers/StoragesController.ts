@@ -9,6 +9,7 @@ import GetStoragesBySenderUsecase from '@modules/storages/useCases/GetStoragesBy
 import GetStoredProductsUseCase from '@modules/storages/useCases/GetStoredProductsUseCase';
 import CreateStoragesProductsUseCase from '@modules/storages/useCases/CreateStoragesProductsUseCase';
 import DeleteStoragesproductsUseCase from '@modules/storages/useCases/DeleteStoragesProductsUseCase';
+import DeleteStoragesUseCase from '@modules/storages/useCases/DeleteStoragesUseCase';
 
 export default class StoragesController {
   public async getById(
@@ -43,6 +44,13 @@ export default class StoragesController {
         name: supplier.name,
       },
     });
+  }
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+
+    const deleteStorage = container.resolve(DeleteStoragesUseCase);
+    await deleteStorage.execute({ id });
+    return response.json({});
   }
 
   public async create(request: Request, response: Response): Promise<Response> {

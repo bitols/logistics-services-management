@@ -50,7 +50,7 @@ export class ProductsRepository implements IProductsRepository {
       );
 
       console.log(
-        `request product: ${JSON.stringify(
+        `delete product: ${JSON.stringify(
           request,
         )}, response status is: ${status}`,
       );

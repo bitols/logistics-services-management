@@ -1,6 +1,6 @@
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
-import { IDeleteStorages } from '../domain/models/requests/IDeleteStorages';
+import { IDeleteStorageProducts } from '../domain/models/requests/IDeleteStorageProducts';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
 
 @injectable()
@@ -10,7 +10,7 @@ export default class DeleteStoragesproductsUseCase {
     private storagesRepository: IStoragesRepository,
   ) {}
 
-  public async execute(data: IDeleteStorages): Promise<void> {
+  public async execute(data: IDeleteStorageProducts): Promise<void> {
     await this.storagesRepository.rmvProducts(data);
   }
 }

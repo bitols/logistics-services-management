@@ -20,6 +20,15 @@ storagesRouter.post(
   }),
   storagesController.create,
 );
+storagesRouter.delete(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().hex().required(),
+    },
+  }),
+  storagesController.delete,
+);
 
 storagesRouter.get(
   '/:id',

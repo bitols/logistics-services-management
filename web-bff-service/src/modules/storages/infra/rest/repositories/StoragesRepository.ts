@@ -1,6 +1,7 @@
 import rest from '@config/rest';
 import { ICreateStorageProducts } from '@modules/storages/domain/models/requests/ICreateStorageProducts';
 import { ICreateStorages } from '@modules/storages/domain/models/requests/ICreateStorages';
+import { IDeleteStorageProducts } from '@modules/storages/domain/models/requests/IDeleteStorageProducts';
 import { IDeleteStorages } from '@modules/storages/domain/models/requests/IDeleteStorages';
 import { IGetStorages } from '@modules/storages/domain/models/requests/IGetStorages';
 import { IGetStoragesBySender } from '@modules/storages/domain/models/requests/IGetStoragesBySender';
@@ -14,6 +15,23 @@ export class StoragesRepository implements IStoragesRepository {
   constructor() {
     this.restClient = rest.getHttpClient(rest.Services.Storages);
   }
+
+  public async delete(request: IDeleteStorages): Promise<void> {
+    try {
+      const { status } = await this.restClient.delete<void>(
+        `/storages/${request.id}`,
+      );
+
+      console.log(
+        `delete storage: ${JSON.stringify(
+          request,
+        )}, response status is: ${status}`,
+      );
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  }
+
   public async getAllByName(
     request: IGetStoragesBySender,
   ): Promise<IStorages[] | undefined> {
@@ -42,7 +60,7 @@ export class StoragesRepository implements IStoragesRepository {
     }
   }
 
-  public async rmvProducts(request: IDeleteStorages): Promise<void> {
+  public async rmvProducts(request: IDeleteStorageProducts): Promise<void> {
     try {
       const { status } = await this.restClient.delete<void>(
         `/storages/products/${request.id}`,
