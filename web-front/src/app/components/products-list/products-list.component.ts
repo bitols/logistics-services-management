@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Products } from 'src/app/models/products.model';
+import { NotificationService } from 'src/app/services/notification.service';
 import { ProductsService } from 'src/app/services/products.service';
 import { SessionsService } from 'src/app/services/sessions.service';
 @Component({
@@ -23,6 +24,7 @@ export class ProductsListComponent implements OnInit {
   constructor(
     private productsService: ProductsService,
     private sessionsService: SessionsService,
+    private notificationService: NotificationService,
     private router: Router
     ) { }
 
@@ -48,7 +50,10 @@ export class ProductsListComponent implements OnInit {
           this.products = data;
           this.count = data.length;
         },
-        error: (e) => console.error(e)
+        error: (e) => {
+          console.error(e),
+          this.notificationService.showError(`Problem to retrieve products`,'Fail');
+        }
       });
   }
 
@@ -62,7 +67,10 @@ export class ProductsListComponent implements OnInit {
           this.products = data;
           this.count = data.length;
         },
-        error: (e) => console.error(e)
+        error: (e) => {
+          console.error(e);
+          this.notificationService.showError(`Problem to retrieve products`,'Fail');
+        }
       });
   }
 

@@ -27,4 +27,12 @@ export class StoragesService {
   create(data: any): Observable<any> {
     return this.http.post(`${baseUrl}/storages`, data);
   }
+
+  delete(id: any): Observable<any> {
+    return this.http.delete(`${baseUrl}/storages/${id}`);
+  }
+
+  getStoredProducts(id: any): Observable<any> {
+    return this.http.get(`${baseUrl}/storages/${id}/products`);
+  }
 }

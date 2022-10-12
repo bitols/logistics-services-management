@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NotificationService } from 'src/app/services/notification.service';
 import { AuthService } from '../../services/auth.service';
 import { SessionsService } from '../../services/sessions.service';
 
@@ -17,11 +19,16 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService, private sessionsService: SessionsService) { }
+  constructor(
+    private authService: AuthService,
+    private sessionsService: SessionsService,
+    private notificationService: NotificationService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     if (this.sessionsService.isLoggedIn()) {
-      this.isLoggedIn = true;
+      this.router.navigate(['/'])
     }
   }
 
@@ -34,12 +41,14 @@ export class LoginComponent implements OnInit {
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
+        this.notificationService.showSuccess('Accepted credentials','Login sucess')
         this.reloadPage();
       },
       error: err => {
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
         this.isLoggedIn = false;
+        this.notificationService.showError(this.errorMessage,'Login failed');
       }
     });
   }

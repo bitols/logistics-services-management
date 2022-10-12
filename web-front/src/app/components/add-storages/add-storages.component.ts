@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storages } from 'src/app/models/storages.model';
 import { Suppliers } from 'src/app/models/suppliers.model';
+import { NotificationService } from 'src/app/services/notification.service';
 import { SessionsService } from 'src/app/services/sessions.service';
 import { StoragesService } from 'src/app/services/storages.service';
 import { SuppliersService } from 'src/app/services/suppliers.service';
@@ -26,6 +27,7 @@ export class AddStoragesComponent implements OnInit {
     private suppliersService: SuppliersService,
     private storagesService: StoragesService,
     private sessionsService: SessionsService,
+    private notificationService: NotificationService,
     private router: Router,
   ) { }
 
@@ -47,12 +49,14 @@ export class AddStoragesComponent implements OnInit {
     this.storagesService.create(data)
       .subscribe({
         next: (res: any) => {
-          console.log(res);
+          this.notificationService.showSuccess('Storage registred','Success');
           this.isAddedIn = true;
           this.isAddedFailed = false;
+          this.backToList();
         },
         error: (e: any) => {
           this.errorMessage = e.error.message;
+          this.notificationService.showError(e.error.message,'Fail');
           this.isAddedIn = false;
           this.isAddedFailed = true;
         }

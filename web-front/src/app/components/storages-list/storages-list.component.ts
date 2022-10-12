@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storages } from 'src/app/models/storages.model';
+import { NotificationService } from 'src/app/services/notification.service';
 import { SessionsService } from 'src/app/services/sessions.service';
 import { StoragesService } from 'src/app/services/storages.service';
 
@@ -24,6 +25,7 @@ export class StoragesListComponent implements OnInit {
   constructor(
     private storagesService: StoragesService,
     private sessionsService: SessionsService,
+    private notificationService: NotificationService,
     private router: Router
     ) { }
 
@@ -54,7 +56,10 @@ export class StoragesListComponent implements OnInit {
           this.storages = data;
           this.count = data.length;
         },
-        error: (e) => console.error(e)
+        error: (e) => {
+          console.error(e);
+          this.notificationService.showError(`Problem to retrieve storages`,'Fail');
+        }
       });
   }
 
@@ -68,7 +73,10 @@ export class StoragesListComponent implements OnInit {
           this.storages = data;
           this.count = data.length;
         },
-        error: (e) => console.error(e)
+        error: (e) =>  {
+          console.error(e);
+          this.notificationService.showError(`Problem to retrieve storages`,'Fail');
+        }
       });
   }
 
