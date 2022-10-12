@@ -28,6 +28,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
@@ -53,7 +54,14 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
     NgxMaskModule.forRoot(),
     NgbModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot() ,
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+      progressBar: true,
+      countDuplicates: true,
+      extendedTimeOut: 2000,
+      positionClass: 'toast-bottom-right',
+    }) ,
+    GoogleMapsModule,
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

@@ -54,12 +54,8 @@ storagesRouter.post(
   '/:id/products',
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().required(),
-      height: Joi.number().precision(5).required(),
-      width: Joi.number().precision(5).required(),
-      lenght: Joi.number().precision(5).required(),
-      value: Joi.number().precision(2).required(),
       productId: Joi.string().hex().required(),
+      quantity: Joi.number().required(),
     },
     [Segments.PARAMS]: {
       id: Joi.string().hex().required(),

@@ -6,8 +6,9 @@ import { container } from 'tsyringe';
 import CreateStoragesUseCase from '@modules/storages/useCases/CreateStoragesUseCase';
 import AppErrors from '@shared/errors/AppErrors';
 import GetStoragesBySenderUsecase from '@modules/storages/useCases/GetStoragesBySenderUseCase';
+import GetProductsBySenderUseCase from '@modules/products/useCases/GetProductsBySenderUseCase';
 import GetStoredProductsUseCase from '@modules/storages/useCases/GetStoredProductsUseCase';
-import CreateStoragesProductsUseCase from '@modules/storages/useCases/CreateStoragesProductsUseCase';
+import AddStoragesProductsUseCase from '@modules/storages/useCases/AddStoragesProductsUseCase';
 import DeleteStoragesproductsUseCase from '@modules/storages/useCases/DeleteStoragesProductsUseCase';
 import DeleteStoragesUseCase from '@modules/storages/useCases/DeleteStoragesUseCase';
 
@@ -102,10 +103,9 @@ export default class StoragesController {
     response: Response,
   ): Promise<Response> {
     const { id } = request.params;
-
-    const getProducts = container.resolve(GetStoredProductsUseCase);
+    const getProducts = container.resolve(GetProductsBySenderUseCase);
+    const getStoredProducts = container.resolve(GetStoredProductsUseCase);
     const getStorages = container.resolve(GetStoragesUseCase);
-    const getSender = container.resolve(GetSendersUseCase);
 
     const storage = await getStorages.execute({ id });
     if (!storage) {
@@ -115,26 +115,22 @@ export default class StoragesController {
     if (request.credential.senderId !== storage.senderId) {
       throw new AppErrors('Unauthorized', 401);
     }
-
-    const sender = await getSender.execute({ id: storage.senderId });
-    const products = await getProducts.execute({ id: storage.id });
+    const products = await getProducts.execute({ senderId: storage.senderId });
+    const storedProducts = await getStoredProducts.execute({ id: storage.id });
 
     return response.json(
-      products.map(product => {
-        return {
-          id: product.id,
-          productId: product.productId,
-          name: product.name,
-          height: product.height,
-          width: product.width,
-          lenght: product.lenght,
-          value: product.value,
-          sender: {
-            id: sender.id,
-            name: sender.name,
-          },
-        };
-      }),
+      products
+        .map(product => {
+          return {
+            id: product.id,
+            name: product.name,
+            quantity: storedProducts.filter(
+              storedProducts => storedProducts.productId === product.id,
+            ).length,
+            value: product.price,
+          };
+        })
+        .filter(product => product.quantity > 0),
     );
   }
 
@@ -143,12 +139,10 @@ export default class StoragesController {
     response: Response,
   ): Promise<Response> {
     const { id: storageId } = request.params;
-    const { name, height, width, lenght, value, productId } = request.body;
+    const { productId, quantity } = request.body;
 
     const getStorages = container.resolve(GetStoragesUseCase);
-    const createStoredProducts = container.resolve(
-      CreateStoragesProductsUseCase,
-    );
+    const createStoredProducts = container.resolve(AddStoragesProductsUseCase);
 
     const storage = await getStorages.execute({ id: storageId });
     if (!storage) {
@@ -159,20 +153,12 @@ export default class StoragesController {
       throw new AppErrors('Unauthorized', 401);
     }
 
-    const storageProducts = await createStoredProducts.execute({
-      name,
-      height,
-      width,
-      lenght,
-      value,
-      productId,
+    await createStoredProducts.execute({
       storageId,
+      productId,
+      quantity,
     });
-    return response.json({
-      id: storageProducts.id,
-      storageId: storageProducts.storageId,
-      productId: storageProducts.productId,
-    });
+    return response.json({});
   }
 
   public async removeStoredProducts(
