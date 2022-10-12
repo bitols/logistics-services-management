@@ -1,25 +1,78 @@
 <h4>Gestão de Depósitos</h4>
 <div class="row">
-  <div class="col-md-6">
-    <div class="form-group">
-      <label for="storage">Depósito</label>
-      <select (change)="setCurrentLocation()"
-        class="form-control mb-3"
+  <div class="col-md-12">
+    <div class="input-group mb-3">
+      <select (change)="refreshData()"
+        class="form-control mr-sm-2"
         id="currentStorage"
         required
         [(ngModel)]="currentStorage"
         name="currentStorage"
         [ngModelOptions]="{standalone: true}"
       >
+        <option selected>Selecione um depósito</option>
         <option *ngFor="let storage of storages; let i = index" [ngValue]="storage">
           {{ storage.name }}
         </option>
       </select>
+      <div class="input-group-append">
+        <button
+          class="btn btn-outline-secondary my-2 my-sm-0"
+          type="button"
+          (click)="refreshData()"
+        >
+          Atualizar
+        </button>
+      </div>
     </div>
-
   </div>
-  <div class="col-md-6">
-    <div class="google_map_container">
+  <div class="col-md-7">
+    <div class="row" *ngIf="currentStorage.name">
+      <div class="col-md-12">
+        <pagination-controls
+          previousLabel="Ant"
+          nextLabel="Prox"
+          [responsive]="true"
+          (pageChange)="handlePageChange($event)"
+       ></pagination-controls>
+      </div>
+      <div class="col-md-12">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Produto</th>
+              <th scope="col">Qtd</th>
+              <th scope="col">R$ Und</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of products | paginate: {
+                itemsPerPage: pageSize,
+                currentPage: page,
+                totalItems: count
+              };
+              let i = index">
+                <td>{{ product.name }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.value }}</td>
+              </tr>
+              </tbody>
+        </table>
+      </div>
+      <div class="mt-3">
+        <button class="m-3 btn btn-sm btn-success">
+          Adicionar
+        </button>
+        Itens por Página:
+        <select (change)="handlePageSizeChange($event)">
+          <option *ngFor="let size of pageSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
       <google-map [zoom]="mapZoom" [center]="mapCenter" [options]="mapOptions">
         <map-marker
           #marker="mapMarker"
@@ -29,6 +82,5 @@
         </map-marker>
         <map-info-window>{{ markerInfoContent }}</map-info-window>
       </google-map>
-    </div>
   </div>
 </div>

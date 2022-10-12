@@ -31,4 +31,8 @@ export class StoragesService {
   delete(id: any): Observable<any> {
     return this.http.delete(`${baseUrl}/storages/${id}`);
   }
+
+  getStoredProducts(id: any): Observable<any> {
+    return this.http.get(`${baseUrl}/storages/${id}/products`);
+  }
 }

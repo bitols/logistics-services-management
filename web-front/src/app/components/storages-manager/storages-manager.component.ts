@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { Products } from 'src/app/models/products.model';
 import { Storages } from 'src/app/models/storages.model';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SessionsService } from 'src/app/services/sessions.service';
@@ -14,6 +15,12 @@ export class StoragesManagerComponent implements OnInit {
 
   storages: Storages[] = [];
   currentStorage: Storages = {};
+  products: Products[] = [];
+
+  page = 1;
+  count = 0;
+  pageSize = 5;
+  pageSizes = [5, 10, 20];
 
   @ViewChild(GoogleMap, { static: false })
   map!: GoogleMap;
@@ -63,6 +70,35 @@ export class StoragesManagerComponent implements OnInit {
   openInfoWindow(marker: MapMarker) {
     // this is called when the marker is clicked.
     this.infoWindow.open(marker);
+  }
+
+  refreshData() {
+    this.setCurrentLocation();
+    this.retrieveCurrentProducts();
+  }
+
+  retrieveCurrentProducts() {
+    this.storagesService.getStoredProducts(this.currentStorage.id)
+      .subscribe({
+        next: (data) => {
+          this.products = data;
+          this.count = data.length;
+        },
+        error: (e) => {
+          console.error(e);
+          this.notificationService.showError(`Problem to retrieve products`,'Fail');
+        }
+      });
+
+  }
+
+  handlePageSizeChange(event: any): void {
+    this.pageSize = event.target.value;
+    this.page = 1;
+   }
+
+  handlePageChange(event: number): void {
+    this.page = event;
   }
 
   setCurrentLocation() {

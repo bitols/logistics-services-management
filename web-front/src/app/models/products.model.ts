@@ -5,6 +5,8 @@ export class Products {
   width?: number;
   lenght?: number;
   price?: number;
+  value?: number;
+  quantity?: number;
   senderId?: string;
   sender?: {
     id?: string;
