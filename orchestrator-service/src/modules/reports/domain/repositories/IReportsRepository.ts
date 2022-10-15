@@ -1,7 +1,9 @@
-import { IRegisterStoragesReport } from '../models/requests/IRegisterStoragesReport';
-import { IStoragesReport } from '../models/responses/IStoragesReport';
+import { IStorageReport } from '../models/entities/IStorageReport';
+import { IGetStoragesReport } from '../models/requests/IGetStoragesReport';
+
 export interface IReportsRepository {
-  registerStoragesCapacity(
-    request: IRegisterStoragesReport,
-  ): Promise<IStoragesReport | undefined>;
+  getStoragesReport(
+    request: IGetStoragesReport,
+  ): Promise<IStorageReport | undefined>;
+  registerStoragesReport(request: IStorageReport): Promise<void>;
 }

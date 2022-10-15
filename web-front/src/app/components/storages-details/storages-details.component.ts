@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Storages } from 'src/app/models/storages.model';
+import { NotificationService } from 'src/app/services/notification.service';
 import { StoragesService } from 'src/app/services/storages.service';
 
 @Component({
@@ -19,6 +20,7 @@ export class StoragesDetailsComponent implements OnInit {
     private storagesService: StoragesService,
     private route: ActivatedRoute,
     private router: Router,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -35,9 +37,29 @@ export class StoragesDetailsComponent implements OnInit {
           this.currentStorage = data;
           console.log(data);
         },
-        error: (e) => console.error(e)
+        error: (e) => {
+          console.error(e);
+          this.notificationService.showError(`Problem to retrieve storage`,'Fail');
+        }
       });
   }
+
+
+  deleteStorage(): void {
+    this.storagesService.delete(this.currentStorage.id)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          this.notificationService.showSuccess('Storage deleted','Success');
+          this.reloadPage();
+        },
+        error: (e) => {
+          console.error(e);
+          this.notificationService.showError(e.error.message,'Fail');
+        }
+      });
+  }
+
 
   reloadPage(): void {
     let currentUrl = this.router.url;

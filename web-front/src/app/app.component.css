@@ -1,0 +1,9 @@
+
+.toast {
+  opacity: 1 !important;
+}
+.container-fluid {
+  text-align: left;
+  max-width: 800px;
+  margin: auto;
+}

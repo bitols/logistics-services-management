@@ -4,13 +4,21 @@ import { IDeleteStorages } from '../domain/models/requests/IDeleteStorages';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
 
 @injectable()
-export default class DeleteStoragesproductsUseCase {
+export default class DeleteStoragesUseCase {
   constructor(
     @inject('StoragesRepository')
     private storagesRepository: IStoragesRepository,
   ) {}
 
   public async execute(data: IDeleteStorages): Promise<void> {
-    await this.storagesRepository.rmvProducts(data);
+    const products = await this.storagesRepository.getProducts({
+      id: data.id,
+    });
+
+    if (products) {
+      throw new AppErrors('Need remove products of storage before', 422);
+    }
+
+    await this.storagesRepository.delete(data);
   }
 }

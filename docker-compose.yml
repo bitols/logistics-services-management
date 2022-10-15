@@ -57,6 +57,7 @@ services:
       - KAFKA_HOST=kafka:29092
       - KAFKA_CLIENT_ID=logistics-services-management
       - STORAGE_LOCATION_TOPIC=storage-location
+      - STORAGE_PRODUCT_TOPIC=storage-product
       - STORAGE_CAPACITY_TOPIC=storage-capacity       
     networks:
       - logistics-management-network
@@ -74,7 +75,6 @@ services:
       - DB_HOST=cluster0.bw7lb.mongodb.net
       - KAFKA_HOST=kafka:29092
       - KAFKA_CLIENT_ID=logistics-services-management
-      - STORAGE_CAPACITY_TOPIC=storage-capacity
     networks:
       - logistics-management-network
     ports:
@@ -139,6 +139,7 @@ services:
       - KAFKA_HOST=kafka:29092
       - KAFKA_CLIENT_ID=logistics-services-management
       - STORAGE_CAPACITY_TOPIC=storage-capacity 
+      - STORAGE_PRODUCT_TOPIC=storage-product
       - STORAGE_LOCATION_TOPIC=storage-location
       - RECEIVER_LOCATION_TOPIC=receiver-location
       - KAFKA_GROUP_ID=logistics-services  

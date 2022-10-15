@@ -1,7 +1,7 @@
-import { IStoragesCapacityRepository } from '@modules/reports/domain/repositories/IStoragesCapacityRepository';
-import { StoragesCapacityRepository } from '@modules/reports/infra/orm/repositories/StoragesCapacityRepository';
+import { IStoragesReportRepository } from '@modules/reports/domain/repositories/IStoragesReportRepository';
+import { StoragesReportRepository } from '@modules/reports/infra/orm/repositories/StoragesReportRepository';
 import { container } from 'tsyringe';
-container.registerSingleton<IStoragesCapacityRepository>(
-  'StoragesCapacityRepository',
-  StoragesCapacityRepository,
+container.registerSingleton<IStoragesReportRepository>(
+  'StoragesReportRepository',
+  StoragesReportRepository,
 );

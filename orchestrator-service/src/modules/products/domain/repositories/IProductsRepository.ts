@@ -1,7 +1,7 @@
-import { IGetAllProductsByStorageId } from '../models/requests/IGetAllProductsByStorageId';
+import { IGetAllProductsBySender } from '../models/requests/IGetAllProductsBySender';
 import { IProducts } from '../models/responses/IProducts';
 export interface IProductsRepository {
-  getAllByStorage(
-    request: IGetAllProductsByStorageId,
+  getAllBySender(
+    request: IGetAllProductsBySender,
   ): Promise<IProducts[] | undefined>;
 }

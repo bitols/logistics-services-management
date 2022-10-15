@@ -27,7 +27,7 @@ const consume = async (
   await consumer.subscribe({ topic });
   await consumer.run({
     eachMessage: async ({ message }) => {
-      callback(message.value?.toString());
+      await callback(message.value?.toString());
     },
   });
 };

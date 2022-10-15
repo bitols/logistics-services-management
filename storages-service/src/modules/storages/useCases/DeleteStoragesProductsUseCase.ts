@@ -24,8 +24,20 @@ export default class DeleteStoragesproductsUseCase {
     await this.storageProductsRepository.remove(storageProduct);
 
     await queue.produce(
-      queueConfig.storageCapacityTopic,
-      JSON.stringify({ id: storageProduct.storageId }),
+      queueConfig.storageProductTopic,
+      JSON.stringify({
+        increase: false,
+        storedProduct: {
+          id: storageProduct.productId,
+          name: storageProduct.name,
+          height: storageProduct.height,
+          width: storageProduct.width,
+          lenght: storageProduct.lenght,
+          value: storageProduct.value,
+          storageId: storageProduct.storageId,
+          productId: storageProduct.productId,
+        },
+      }),
     );
   }
 }
