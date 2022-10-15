@@ -9,7 +9,7 @@ import GetStoragesBySenderUsecase from '@modules/storages/useCases/GetStoragesBy
 import GetProductsBySenderUseCase from '@modules/products/useCases/GetProductsBySenderUseCase';
 import GetStoredProductsUseCase from '@modules/storages/useCases/GetStoredProductsUseCase';
 import AddStoragesProductsUseCase from '@modules/storages/useCases/AddStoragesProductsUseCase';
-import DeleteStoragesproductsUseCase from '@modules/storages/useCases/DeleteStoragesProductsUseCase';
+import RmvStoragesproductsUseCase from '@modules/storages/useCases/RmvStoragesProductsUseCase';
 import DeleteStoragesUseCase from '@modules/storages/useCases/DeleteStoragesUseCase';
 
 export default class StoragesController {
@@ -165,13 +165,11 @@ export default class StoragesController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-    const { id: storageId } = request.params;
-    const { productId } = request.params;
+    const { id: storageId, productId } = request.params;
+    const { quantity } = request.body;
 
     const getStorages = container.resolve(GetStoragesUseCase);
-    const deleteStoredProduct = container.resolve(
-      DeleteStoragesproductsUseCase,
-    );
+    const rmvStoredProduct = container.resolve(RmvStoragesproductsUseCase);
 
     const storage = await getStorages.execute({ id: storageId });
     if (!storage) {
@@ -182,7 +180,11 @@ export default class StoragesController {
       throw new AppErrors('Unauthorized', 401);
     }
 
-    await deleteStoredProduct.execute({ id: productId });
+    await rmvStoredProduct.execute({
+      storageId,
+      productId,
+      quantity,
+    });
 
     return response.json({});
   }

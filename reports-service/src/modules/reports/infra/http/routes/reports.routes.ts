@@ -20,6 +20,7 @@ reportsRouter.post(
   '/storages',
   celebrate({
     [Segments.BODY]: {
+      id: Joi.string().hex().optional(),
       storageId: Joi.string().hex().required(),
       capacity: Joi.number().required(),
       stored: Joi.number().required(),
