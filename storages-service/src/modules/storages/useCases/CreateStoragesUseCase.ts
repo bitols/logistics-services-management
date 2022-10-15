@@ -32,6 +32,14 @@ export default class CreateStoragesUseCase {
         address: storage.address,
       }),
     );
+    await queue.produce(
+      queueConfig.storageCapacityTopic,
+      JSON.stringify({
+        storageId: storage.id,
+        senderId: storage.senderId,
+        capacity: storage.capacity,
+      }),
+    );
 
     return {
       id: storage.id,

@@ -44,7 +44,11 @@ export default class UpdateStoragesUseCase {
     if (changeCapacity) {
       await queue.produce(
         queueConfig.storageCapacityTopic,
-        JSON.stringify({ id: storage.id }),
+        JSON.stringify({
+          storageId: storage.id,
+          senderId: storage.senderId,
+          capacity: storage.capacity,
+        }),
       );
     }
 

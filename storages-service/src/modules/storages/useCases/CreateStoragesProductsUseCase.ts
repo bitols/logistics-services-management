@@ -15,24 +15,35 @@ export default class CreateStoragesProductsUseCase {
   public async execute(
     data: ICreateStorageProducts,
   ): Promise<IStorageProducts> {
-    const product = await this.storageProductsRepository.create(data);
+    const storageProduct = await this.storageProductsRepository.create(data);
 
-    await this.storageProductsRepository.save(product);
-
+    await this.storageProductsRepository.save(storageProduct);
     await queue.produce(
-      queueConfig.storageCapacityTopic,
-      JSON.stringify({ id: product.storageId }),
+      queueConfig.storageProductTopic,
+      JSON.stringify({
+        increase: true,
+        storedProduct: {
+          id: storageProduct.productId,
+          name: storageProduct.name,
+          height: storageProduct.height,
+          width: storageProduct.width,
+          lenght: storageProduct.lenght,
+          value: storageProduct.value,
+          storageId: storageProduct.storageId,
+          productId: storageProduct.productId,
+        },
+      }),
     );
 
     return {
-      id: product.id,
-      name: product.name,
-      value: product.value,
-      height: product.height,
-      lenght: product.lenght,
-      width: product.width,
-      productId: product.productId,
-      storageId: product.storageId,
+      id: storageProduct.id,
+      name: storageProduct.name,
+      value: storageProduct.value,
+      height: storageProduct.height,
+      lenght: storageProduct.lenght,
+      width: storageProduct.width,
+      productId: storageProduct.productId,
+      storageId: storageProduct.storageId,
     };
   }
 }
