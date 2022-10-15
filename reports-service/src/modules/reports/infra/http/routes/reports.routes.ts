@@ -7,29 +7,30 @@ const reportsRouter = Router();
 const reportsController = new ReportsController();
 
 reportsRouter.get(
-  '/:senderId/storages-capacity',
+  '/storages/:storageId',
   celebrate({
     [Segments.PARAMS]: {
-      senderId: Joi.string().hex().required(),
+      storageId: Joi.string().hex().required(),
     },
   }),
-  reportsController.getSendersStoragesCapacity,
+  reportsController.getStoragesReport,
 );
 
 reportsRouter.post(
-  '/storages-capacity',
+  '/storages',
   celebrate({
     [Segments.BODY]: {
       storageId: Joi.string().hex().required(),
       capacity: Joi.number().required(),
       stored: Joi.number().required(),
       usage: Joi.number().required(),
-      products: Joi.number().required(),
+      products: Joi.array().required(),
       value: Joi.number().required(),
       senderId: Joi.string().hex().required(),
+      items: Joi.number().required(),
     },
   }),
-  reportsController.RegisterSendersStoragesCapacity,
+  reportsController.registerStoragesReport,
 );
 
 export default reportsRouter;

@@ -1,5 +1,5 @@
 import orm from '@config/orm/config';
-import StoragesCapacity from '@modules/reports/infra/orm/entities/StorageCapacity';
+import StorageReport from '@modules/reports/infra/orm/entities/StorageReport';
 import { DataSource } from 'typeorm';
 
 export const dataSource = new DataSource({
@@ -8,5 +8,5 @@ export const dataSource = new DataSource({
   useNewUrlParser: orm.useNewUrlParser,
   synchronize: orm.synchronize,
   logging: orm.logging,
-  entities: [StoragesCapacity],
+  entities: [StorageReport],
 });

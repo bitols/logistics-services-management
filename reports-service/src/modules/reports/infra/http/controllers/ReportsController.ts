@@ -1,33 +1,39 @@
-import GetAllStoragesCapacityBySenderIdUseCase from '@modules/reports/useCases/GetAllStoragesCapacityBySenderIdUseCase';
-import RegisterStoragesCapacityUseCase from '@modules/reports/useCases/RegisterStoragesCapacityUseCase';
+import GetStoragesReportUseCase from '@modules/reports/useCases/GetStoragesReportUseCase';
+import RegisterStoragesReportUseCase from '@modules/reports/useCases/RegisterStoragesReportUseCase';
 import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 
 export default class ReportsController {
-  public async getSendersStoragesCapacity(
+  public async getStoragesReport(
     request: Request,
     response: Response,
   ): Promise<Response> {
-    const { senderId } = request.params;
+    const { storageId } = request.params;
 
-    const getAllStoragesCapacityBySender = container.resolve(
-      GetAllStoragesCapacityBySenderIdUseCase,
-    );
-    const storagesCapacity = await getAllStoragesCapacityBySender.execute({
-      senderId,
+    const getStoragesReport = container.resolve(GetStoragesReportUseCase);
+    const storagesCapacity = await getStoragesReport.execute({
+      storageId,
     });
     return response.json(storagesCapacity);
   }
 
-  public async RegisterSendersStoragesCapacity(
+  public async registerStoragesReport(
     request: Request,
     response: Response,
   ): Promise<Response> {
-    const { storageId, capacity, stored, usage, products, value, senderId } =
-      request.body;
+    const {
+      storageId,
+      capacity,
+      stored,
+      usage,
+      products,
+      value,
+      senderId,
+      items,
+    } = request.body;
 
     const registerStoragesCapacity = container.resolve(
-      RegisterStoragesCapacityUseCase,
+      RegisterStoragesReportUseCase,
     );
     const storageCapacity = await registerStoragesCapacity.execute({
       storageId,
@@ -37,6 +43,7 @@ export default class ReportsController {
       products,
       value,
       senderId,
+      items,
     });
 
     return response.json(storageCapacity);
