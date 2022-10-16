@@ -24,65 +24,6 @@ export default class SendersController {
     return response.json(sender);
   }
 
-  /* public async getStorages(
-    request: Request,
-    response: Response,
-  ): Promise<Response> {
-    const { id } = request.params;
-
-    const getSenders = container.resolve(GetSendersUseCase);
-    const getStorages = container.resolve(GetStoragesBySenderUsecase);
-    const getReports = container.resolve(GetStoragesReportBySender);
-
-    const sender = await getSenders.execute({ id });
-    const storages = await getStorages.execute({ senderId: sender.id });
-    const capacityReports = await getReports.execute({ senderId: sender.id });
-
-    if (request.credential.senderId !== sender.id) {
-      throw new AppErrors('Unauthorized', 401);
-    }
-
-    return response.json(
-      storages.map(storage => {
-        return {
-          id: storage.id,
-          name: storage.name,
-          capacity: storage.capacity,
-          indicators: capacityReports
-            ? capacityReports
-                .filter(capacity => capacity.storageId === storage.id)
-                .map(indicator => {
-                  return {
-                    stored: indicator.stored,
-                    usage: indicator.usage,
-                    products: indicator.products,
-                    value: indicator.value,
-                  };
-                })
-                .reduce(
-                  (previousValue, currentValue) => {
-                    previousValue = currentValue;
-                    return previousValue;
-                  },
-                  {
-                    stored: 0,
-                    usage: 0,
-                    products: 0,
-                    value: 0,
-                  },
-                )
-            : {
-                stored: 0,
-                usage: 0,
-                products: 0,
-                value: 0,
-              },
-          location: storage.location,
-        };
-      }),
-    );
-  }*/
-
   public async getStorages(
     request: Request,
     response: Response,

@@ -61,7 +61,6 @@ export default class StoragesController {
     const getSuppliers = container.resolve(GetSuppliersUseCase);
     const getSender = container.resolve(GetSendersUseCase);
     const createStorage = container.resolve(CreateStoragesUseCase);
-    const getStoragesBySender = container.resolve(GetStoragesBySenderUsecase);
 
     if (request.credential.senderId !== senderId) {
       throw new AppErrors('Unauthorized', 401);
@@ -75,12 +74,6 @@ export default class StoragesController {
     const supplier = await getSuppliers.execute({ id: supplierId });
     if (!supplier) {
       throw new AppErrors('Data integrity violation', 422);
-    }
-
-    const storages = await getStoragesBySender.execute({ senderId });
-    const filterStorages = storages.filter(storage => storage.name === name);
-    if (filterStorages.length) {
-      throw new AppErrors('Storage already exists');
     }
 
     const storage = await createStorage.execute({
