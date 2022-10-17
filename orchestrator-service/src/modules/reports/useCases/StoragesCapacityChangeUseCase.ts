@@ -23,14 +23,14 @@ export default class StoragesCapacityChangeUseCase {
     } else {
       storageReport.capacity = storageCapacity.capacity;
       if (storageReport.products.length > 0) {
+        storageReport.products.forEach(product => {
+          product.usage = (product.stored * 100) / storageCapacity.capacity;
+        });
         await recalculateStorageReport(storageReport);
       }
     }
 
     await this.reportsRepository.registerStoragesReport(storageReport);
-    console.log(
-      `teste de contagem de storage:${JSON.stringify(storageReport)} `,
-    );
   }
 
   createNew(storageCapacity: IStoragesCapacityControl): IStorageReport {

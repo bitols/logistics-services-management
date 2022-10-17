@@ -1,6 +1,6 @@
-import { IStorageProducts } from '@modules/storages/domain/models/responses/IStorageProducts';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
+import { IStorageProducts } from '../domain/models/requests/IStoragesProductControl';
 import { IReportsRepository } from '../domain/repositories/IReportsRepository';
 import {
   productToReport,
@@ -29,16 +29,24 @@ export default class StoragesProductsDecreaseUseCase {
     );
 
     if (storageReport.products.length) {
+      let existProduct = true;
       storageReport.products
         .filter(product => product.id === productReport.id)
         .forEach(product => {
-          if (product.items > 0) {
+          if (existProduct) {
             product.items -= productReport.items;
             product.stored -= productReport.stored;
             product.value -= productReport.value;
             product.usage = (product.stored * 100) / storageReport.capacity;
           }
+          existProduct = product.items > 0;
         });
+
+      if (!existProduct) {
+        storageReport.products = storageReport.products.filter(
+          product => product.id !== productReport.id,
+        );
+      }
 
       await recalculateStorageReport(storageReport);
       await this.reportsRepository.registerStoragesReport(storageReport);
