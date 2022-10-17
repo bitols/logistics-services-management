@@ -10,7 +10,7 @@ export const productToReport = async (
     id: storageProduct.id,
     name: storageProduct.name,
     items: storageProduct.quantity,
-    value: storageProduct.value,
+    value: storageProduct.quantity * storageProduct.value,
     stored:
       storageProduct.height *
       storageProduct.lenght *
