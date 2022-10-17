@@ -143,8 +143,16 @@ export default class StoragesController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-    const { name, height, width, lenght, value, productId, storageId } =
-      request.body;
+    const {
+      name,
+      height,
+      width,
+      lenght,
+      value,
+      productId,
+      storageId,
+      quantity,
+    } = request.body;
 
     const createStoredProducts = container.resolve(
       CreateStoragesProductsUseCase,
@@ -158,6 +166,7 @@ export default class StoragesController {
       value,
       productId,
       storageId,
+      quantity,
     });
     return response.json(storageProducts);
   }
@@ -166,10 +175,8 @@ export default class StoragesController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-    const { id } = request.params;
-
     const deleteProduct = container.resolve(DeleteStoragesProductsUseCase);
-    await deleteProduct.execute({ id });
+    await deleteProduct.execute(request.body);
 
     return response.json({});
   }

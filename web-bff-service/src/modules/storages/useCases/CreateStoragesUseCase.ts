@@ -11,6 +11,14 @@ export default class CreateStoragesUseCase {
   ) {}
 
   public async execute(data: ICreateStorages): Promise<IStorages> {
+    const storages = await this.storagesRepository.getAllByName({
+      senderId: data.senderId,
+      name: data.name,
+    });
+
+    if (storages) {
+      throw new AppErrors('Storage already exists');
+    }
     const storage = await this.storagesRepository.create(data);
     if (!storage) {
       throw new AppErrors('Error on create storage');

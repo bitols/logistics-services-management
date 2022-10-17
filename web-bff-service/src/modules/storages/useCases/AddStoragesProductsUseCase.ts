@@ -21,23 +21,16 @@ export default class AddStoragesProductsUseCase {
       throw new AppErrors('Product not Exists');
     }
     try {
-      const promises = [];
-      for (let index = 0; index < data.quantity; index++) {
-        promises.push(
-          this.storagesRepository.addProducts({
-            productId: product.id,
-            name: product.name,
-            height: product.height,
-            width: product.width,
-            lenght: product.lenght,
-            value: product.price,
-            storageId: data.storageId,
-          }),
-        );
-      }
-      Promise.all(promises)
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
+      await this.storagesRepository.addProducts({
+        productId: product.id,
+        name: product.name,
+        height: product.height,
+        width: product.width,
+        lenght: product.lenght,
+        value: product.price,
+        storageId: data.storageId,
+        quantity: data.quantity,
+      });
     } catch (error: any) {
       throw new AppErrors('Error on associate products', 500);
     }

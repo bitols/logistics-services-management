@@ -1,5 +1,7 @@
+import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
+import { IDeleteStorageProducts } from '../domain/models/requests/IDeleteStorageProducts';
 import { IRmvStorageProduct } from '../domain/models/requests/IRmvStorageProductl';
 import { IStoragesRepository } from '../domain/repositories/IStoragesRepository';
 
@@ -8,10 +10,34 @@ export default class RmvStoragesproductsUseCase {
   constructor(
     @inject('StoragesRepository')
     private storagesRepository: IStoragesRepository,
+    @inject('ProductsRepository')
+    private productsRepository: IProductsRepository,
   ) {}
 
   public async execute(data: IRmvStorageProduct): Promise<void> {
-    const storedProducts = await this.storagesRepository.getProducts({
+    const product = await this.productsRepository.getById({
+      id: data.productId,
+    });
+    if (!product) {
+      throw new AppErrors('Product not Exists');
+    }
+    try {
+      await this.storagesRepository.rmvProducts({
+        productId: product.id,
+        name: product.name,
+        height: product.height,
+        width: product.width,
+        lenght: product.lenght,
+        value: product.price,
+        storageId: data.storageId,
+        quantity: data.quantity,
+      });
+    } catch (error: any) {
+      throw new AppErrors('Error on remove products', 500);
+    }
+
+    /*
+    let storedProducts = await this.storagesRepository.getProducts({
       id: data.storageId,
     });
 
@@ -19,28 +45,26 @@ export default class RmvStoragesproductsUseCase {
       throw new AppErrors('Storage is empty', 400);
     }
 
-    const storedProductsToDelete = storedProducts.filter(
+    storedProducts = storedProducts.filter(
       storedProduct => storedProduct.productId === data.productId,
     );
 
-    if (!storedProductsToDelete.length) {
+    if (!storedProducts.length) {
       throw new AppErrors('Product not exists', 400);
     }
 
     try {
-      const promises = [];
+      const storedProductsToDelete: IDeleteStorageProducts[] = [];
       for (let index = 0; index < data.quantity; index++) {
-        promises.push(
-          this.storagesRepository.rmvProducts({
-            id: storedProductsToDelete[index].id,
-          }),
-        );
+        storedProductsToDelete.push({ id: storedProducts[index].id });
       }
-      Promise.all(promises)
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
+
+      console.log(JSON.stringify(storedProductsToDelete));
+
+      await this.storagesRepository.rmvProducts(storedProductsToDelete);
     } catch (error: any) {
       throw new AppErrors('Error on associate products', 500);
     }
+*/
   }
 }

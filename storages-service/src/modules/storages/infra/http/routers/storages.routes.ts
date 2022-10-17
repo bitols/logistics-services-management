@@ -6,6 +6,8 @@ import StoragesController from '../controllers/StoragesController';
 const storagesRouter = Router();
 const storagesController = new StoragesController();
 
+storagesRouter.delete('/products', storagesController.removeStoreProduct);
+
 storagesRouter.get(
   '/:id',
   celebrate({
@@ -113,19 +115,10 @@ storagesRouter.post(
       value: Joi.number().precision(2).required(),
       productId: Joi.string().hex().required(),
       storageId: Joi.string().hex().required(),
+      quantity: Joi.number().integer().required(),
     },
   }),
   storagesController.addStoreProduct,
-);
-
-storagesRouter.delete(
-  '/products/:id',
-  celebrate({
-    [Segments.PARAMS]: {
-      id: Joi.string().hex().required(),
-    },
-  }),
-  storagesController.removeStoreProduct,
 );
 
 export default storagesRouter;

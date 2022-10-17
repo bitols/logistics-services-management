@@ -6,4 +6,5 @@ export interface ICreateStorageProducts {
   value: number;
   storageId: string;
   productId: string;
+  quantity: number;
 }

@@ -63,7 +63,10 @@ export class StoragesRepository implements IStoragesRepository {
   public async rmvProducts(request: IDeleteStorageProducts): Promise<void> {
     try {
       const { status } = await this.restClient.delete<void>(
-        `/storages/products/${request.id}`,
+        `/storages/products/`,
+        {
+          data: request,
+        },
       );
 
       console.log(
