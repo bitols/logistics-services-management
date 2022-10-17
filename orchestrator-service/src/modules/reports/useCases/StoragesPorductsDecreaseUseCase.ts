@@ -1,6 +1,6 @@
-import { IStorageProducts } from '@modules/storages/domain/models/responses/IStorageProducts';
 import AppErrors from '@shared/errors/AppErrors';
 import { inject, injectable } from 'tsyringe';
+import { IStorageProducts } from '../domain/models/requests/IStoragesProductControl';
 import { IReportsRepository } from '../domain/repositories/IReportsRepository';
 import {
   productToReport,

@@ -31,9 +31,6 @@ export default class StoragesCapacityChangeUseCase {
     }
 
     await this.reportsRepository.registerStoragesReport(storageReport);
-    console.log(
-      `teste de contagem de storage:${JSON.stringify(storageReport)} `,
-    );
   }
 
   createNew(storageCapacity: IStoragesCapacityControl): IStorageReport {

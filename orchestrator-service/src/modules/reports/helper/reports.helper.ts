@@ -1,7 +1,6 @@
-import { IStorageProducts } from '@modules/storages/domain/models/responses/IStorageProducts';
-import { StoragesRepository } from '@modules/storages/infra/rest/repositories/StoragesRepository';
 import { IProductStorageReport } from '../domain/models/entities/IProductStorageReport';
 import { IStorageReport } from '../domain/models/entities/IStorageReport';
+import { IStorageProducts } from '../domain/models/requests/IStoragesProductControl';
 
 export const productToReport = async (
   storageProduct: IStorageProducts,
@@ -10,14 +9,18 @@ export const productToReport = async (
   return {
     id: storageProduct.id,
     name: storageProduct.name,
-    items: 1,
+    items: storageProduct.quantity,
     value: storageProduct.value,
     stored:
-      storageProduct.height * storageProduct.lenght * storageProduct.width,
+      storageProduct.height *
+      storageProduct.lenght *
+      storageProduct.width *
+      storageProduct.quantity,
     usage:
       (storageProduct.height *
         storageProduct.lenght *
         storageProduct.width *
+        storageProduct.quantity *
         100) /
       capacity,
   };

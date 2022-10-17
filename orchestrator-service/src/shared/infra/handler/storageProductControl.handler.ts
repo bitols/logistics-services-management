@@ -1,4 +1,4 @@
-import { IStoragesProductControl } from '@modules/reports/domain/models/requests/IStoragesProductCOntrol';
+import { IStoragesProductControl } from '@modules/reports/domain/models/requests/IStoragesProductControl';
 import StoragesProductsDecreaseUseCase from '@modules/reports/useCases/StoragesPorductsDecreaseUseCase';
 import StoragesProductsIncreaseUseCase from '@modules/reports/useCases/StoragesProductsIncreaseUseCase';
 import { container } from 'tsyringe';
