@@ -1,0 +1,59 @@
+<div class="submit-form">
+  <form
+    name="form"
+    (ngSubmit)="f.form.valid && onSubmit()"
+    #f="ngForm"
+    novalidate
+  >
+    <div class="form-group">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Associação de Produtos ao Estoque</h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"></div>
+          <label for="product">Produto</label>
+          <select class="form-control mr-sm-2"
+            id="currentProduct"
+            required
+            [(ngModel)]="currentProduct"
+            name="currentProduct"
+            [ngClass]="{ 'is-invalid': f.submitted && !currentProduct.id }"
+            [ngModelOptions]="{standalone: true}"
+          >
+            <option selected>Selecione um produto</option>
+            <option *ngFor="let product of products; let i = index" [ngValue]="product">
+              {{ product.name }}
+            </option>
+          </select>
+          <div *ngIf="!currentProduct.id && f.submitted" class="invalid-feedback">
+            O produto é obrigatório!
+          </div>
+          <div class="form-group">
+            <label for="quantity">Quantidade</label>
+            <input
+              type="number"
+              class="form-control"
+              id="quantity"
+              required
+              [(ngModel)]="currentQuantity"
+              #quantity="ngModel"
+              name="quantity"
+              [ngClass]="{ 'is-invalid': f.submitted && quantity.errors }"
+            />
+            <div *ngIf="f.submitted && quantity.errors" class="invalid-feedback">
+              A quantidade é obrigatória!
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <div class="mt-1">
+          <button class="m-1 btn btn-success">Enviar</button>
+          <button class="m-1 btn btn-danger" type="button" (click)="activeModal.close('Close click')">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

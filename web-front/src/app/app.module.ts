@@ -29,6 +29,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { AddStoragesProductsComponent } from './components/add-storages-products/add-storages-products.component';
 
 export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
@@ -43,7 +44,8 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
     AddStoragesComponent,
     StoragesDetailsComponent,
     StoragesListComponent,
-    StoragesManagerComponent
+    StoragesManagerComponent,
+    AddStoragesProductsComponent
   ],
   imports: [
     BrowserModule,
