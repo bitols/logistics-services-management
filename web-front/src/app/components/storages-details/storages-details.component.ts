@@ -39,7 +39,7 @@ export class StoragesDetailsComponent implements OnInit {
         },
         error: (e) => {
           console.error(e);
-          this.notificationService.showError(`Problem to retrieve storage`,'Fail');
+          this.notificationService.showError(`Problem to retrieve storage`);
         }
       });
   }
@@ -50,12 +50,12 @@ export class StoragesDetailsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           console.log(data);
-          this.notificationService.showSuccess('Storage deleted','Success');
+          this.notificationService.showSuccess('Storage deleted');
           this.reloadPage();
         },
         error: (e) => {
           console.error(e);
-          this.notificationService.showError(e.error.message,'Fail');
+          this.notificationService.showError(e.error.message);
         }
       });
   }

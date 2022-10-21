@@ -40,7 +40,7 @@ export class ProductsDetailsComponent implements OnInit {
         },
         error: (e) => {
           console.error(e);
-          this.notificationService.showError(`Problem to retrieve product`,'Fail');
+          this.notificationService.showError(`Problem to retrieve product`);
         }
       });
   }
@@ -50,12 +50,12 @@ export class ProductsDetailsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           console.log(data);
-          this.notificationService.showSuccess('Product deleted','Success');
+          this.notificationService.showSuccess('Product deleted');
           this.reloadPage();
         },
         error: (e) => {
           console.error(e);
-          this.notificationService.showError(e.error.message,'Fail');
+          this.notificationService.showError(e.error.message);
         }
       });
   }
