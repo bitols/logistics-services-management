@@ -7,3 +7,8 @@
   max-width: 800px;
   margin: auto;
 }
+
+.modal-backdrop {
+  /* bug fix - no overlay */
+  display: none;
+}

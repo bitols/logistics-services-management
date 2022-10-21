@@ -40,14 +40,14 @@ export class AddProductsComponent implements OnInit {
     this.productsService.create(data)
       .subscribe({
         next: (res: any) => {
-          this.notificationService.showSuccess('Product registred','Success');
+          this.notificationService.showSuccess('Product registred');
           this.isAddedIn = true;
           this.isAddedFailed = false;
           this.backToList();
         },
         error: (e: any) => {
           console.error(`error: ${e}`);
-          this.notificationService.showError(e.error.message,'Fail');
+          this.notificationService.showError(e.error.message);
           this.errorMessage = e.error.message;
           this.isAddedIn = false;
           this.isAddedFailed = true;

@@ -58,7 +58,7 @@ export class StoragesListComponent implements OnInit {
         },
         error: (e) => {
           console.error(e);
-          this.notificationService.showError(`Problem to retrieve storages`,'Fail');
+          this.notificationService.showError(`Problem to retrieve storages`);
         }
       });
   }
@@ -75,7 +75,7 @@ export class StoragesListComponent implements OnInit {
         },
         error: (e) =>  {
           console.error(e);
-          this.notificationService.showError(`Problem to retrieve storages`,'Fail');
+          this.notificationService.showError(`Problem to retrieve storages`);
         }
       });
   }

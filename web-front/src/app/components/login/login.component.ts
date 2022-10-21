@@ -41,14 +41,14 @@ export class LoginComponent implements OnInit {
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.notificationService.showSuccess('Accepted credentials','Login sucess')
+        this.notificationService.showSuccess('Accepted credentials');
         this.reloadPage();
       },
       error: err => {
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
         this.isLoggedIn = false;
-        this.notificationService.showError(this.errorMessage,'Login failed');
+        this.notificationService.showError(this.errorMessage);
       }
     });
   }

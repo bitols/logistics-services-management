@@ -52,7 +52,7 @@ export class ProductsListComponent implements OnInit {
         },
         error: (e) => {
           console.error(e),
-          this.notificationService.showError(`Problem to retrieve products`,'Fail');
+          this.notificationService.showError(`Problem to retrieve products`);
         }
       });
   }
@@ -69,7 +69,7 @@ export class ProductsListComponent implements OnInit {
         },
         error: (e) => {
           console.error(e);
-          this.notificationService.showError(`Problem to retrieve products`,'Fail');
+          this.notificationService.showError(`Problem to retrieve products`);
         }
       });
   }
