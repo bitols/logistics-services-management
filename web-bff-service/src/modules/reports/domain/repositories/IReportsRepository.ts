@@ -1,8 +1,8 @@
-import { IGetStoragesCapacityBySender } from '../models/requests/IGetStoragesCapacityBySender';
-import { IStoragesCapacity } from '../models/responses/IStoragesCapacity';
+import { IGetStoragesReport } from '../models/requests/IGetStoragesReport';
+import { IStoragesReport } from '../models/responses/IStoragesReport';
 
 export interface IReportsRepository {
-  getAllStoragesCapacityBySender(
-    request: IGetStoragesCapacityBySender,
-  ): Promise<IStoragesCapacity[] | undefined>;
+  getStoragesReport(
+    request: IGetStoragesReport,
+  ): Promise<IStoragesReport | undefined>;
 }

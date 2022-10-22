@@ -1,6 +1,5 @@
 import GetSendersUseCase from '@modules/senders/useCases/GetSendersUseCase';
 import GetStoragesBySenderUsecase from '@modules/storages/useCases/GetStoragesBySenderUseCase';
-//import GetStoragesReportBySender from '@modules/reports/useCases/GetStoragesReportBySenderUseCase';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import AppErrors from '@shared/errors/AppErrors';

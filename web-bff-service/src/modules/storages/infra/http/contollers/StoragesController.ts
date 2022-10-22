@@ -11,6 +11,7 @@ import GetStoredProductsUseCase from '@modules/storages/useCases/GetStoredProduc
 import AddStoragesProductsUseCase from '@modules/storages/useCases/AddStoragesProductsUseCase';
 import RmvStoragesproductsUseCase from '@modules/storages/useCases/RmvStoragesProductsUseCase';
 import DeleteStoragesUseCase from '@modules/storages/useCases/DeleteStoragesUseCase';
+import GetStoragesReportUseCase from '@modules/reports/useCases/GetStoragesReportUseCase';
 
 export default class StoragesController {
   public async getById(
@@ -125,6 +126,30 @@ export default class StoragesController {
         })
         .filter(product => product.quantity > 0),
     );
+  }
+
+  public async getStoragesReport(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { id } = request.params;
+    const getStorages = container.resolve(GetStoragesUseCase);
+    const getReports = container.resolve(GetStoragesReportUseCase);
+
+    const storage = await getStorages.execute({ id });
+    if (!storage) {
+      throw new AppErrors('Data integrity violation', 422);
+    }
+
+    if (request.credential.senderId !== storage.senderId) {
+      throw new AppErrors('Unauthorized', 401);
+    }
+
+    const reports = await getReports.execute({
+      storageId: id,
+    });
+
+    return response.json(reports);
   }
 
   public async addStoredProducts(
