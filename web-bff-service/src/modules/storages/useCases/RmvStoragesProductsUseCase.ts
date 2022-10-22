@@ -18,9 +18,15 @@ export default class RmvStoragesproductsUseCase {
     const product = await this.productsRepository.getById({
       id: data.productId,
     });
+
     if (!product) {
       throw new AppErrors('Product not Exists');
     }
+
+    if (data.quantity < 1 || data.quantity > 100) {
+      throw new AppErrors('Quantity must be between 1 and 100');
+    }
+
     try {
       await this.storagesRepository.rmvProducts({
         productId: product.id,

@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { options } from '../app.module';
 import { Storages } from '../models/storages.model';
 
 const baseUrl = 'http://localhost:3000';
@@ -38,5 +39,9 @@ export class StoragesService {
 
   addStoragesProducts(id: any, data: any): Observable<any> {
     return this.http.post(`${baseUrl}/storages/${id}/products`, data)
+  }
+
+  rmvStoragesProducts(id: any, productId: any, data: any): Observable<any> {
+    return this.http.delete(`${baseUrl}/storages/${id}/products/${productId}`, {body: data});
   }
 }

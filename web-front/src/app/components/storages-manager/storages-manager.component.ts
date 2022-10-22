@@ -7,6 +7,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { SessionsService } from 'src/app/services/sessions.service';
 import { StoragesService } from 'src/app/services/storages.service';
 import { AddStoragesProductsComponent } from '../add-storages-products/add-storages-products.component';
+import { RmvStoragesProductsComponent } from '../rmv-storages-products/rmv-storages-products.component';
 
 @Component({
   selector: 'app-storages-manager',
@@ -89,6 +90,8 @@ export class StoragesManagerComponent implements OnInit {
         },
         error: (e) => {
           console.error(e);
+          this.products = [];
+          this.count = 0;
           this.notificationService.showError(`Problem to retrieve products`);
         }
       });
@@ -125,5 +128,11 @@ export class StoragesManagerComponent implements OnInit {
   addProduct() {
     const modalRef = this.modalService.open(AddStoragesProductsComponent);
     modalRef.componentInstance.storagesId = this.currentStorage.id;
+  }
+
+  rmvProduct() {
+    const modalRef = this.modalService.open(RmvStoragesProductsComponent);
+    modalRef.componentInstance.storagesId = this.currentStorage.id;
+    modalRef.componentInstance.products = this.products;
   }
 }

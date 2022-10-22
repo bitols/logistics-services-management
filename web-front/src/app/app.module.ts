@@ -30,6 +30,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { AddStoragesProductsComponent } from './components/add-storages-products/add-storages-products.component';
+import { RmvStoragesProductsComponent } from './components/rmv-storages-products/rmv-storages-products.component';
 
 export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
@@ -45,7 +46,8 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
     StoragesDetailsComponent,
     StoragesListComponent,
     StoragesManagerComponent,
-    AddStoragesProductsComponent
+    AddStoragesProductsComponent,
+    RmvStoragesProductsComponent
   ],
   imports: [
     BrowserModule,

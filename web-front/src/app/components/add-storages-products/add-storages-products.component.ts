@@ -15,7 +15,6 @@ export class AddStoragesProductsComponent implements OnInit {
   @Input() storagesId?: number;
 
   currentQuantity?: number = undefined;
-
   products: Products[] = [];
   currentProduct: Products = {};
 
