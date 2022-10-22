@@ -20,7 +20,6 @@ export default class DeleteStoragesproductsUseCase {
       storagesProducts = storagesProducts.filter(
         product => product.productId === data.productId,
       );
-
       if (storagesProducts.length) {
         let storageProduct: IStorageProduct;
         const promises = [];
