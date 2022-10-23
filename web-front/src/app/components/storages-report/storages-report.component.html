@@ -1,0 +1,90 @@
+<h4>Indicadores de Depósitos</h4>
+<div class="row">
+  <div class="col-md-12">
+    <div class="input-group mb-3">
+      <select (change)="retrieveStorageReport()"
+        class="form-control mr-sm-2"
+        id="currentStorage"
+        required
+        [(ngModel)]="currentStorage"
+        name="currentStorage"
+        [ngModelOptions]="{standalone: true}"
+      >
+        <option *ngFor="let storage of storages; let i = index" [ngValue]="storage">
+          {{ storage.name }}
+        </option>
+      </select>
+      <div class="input-group-append">
+        <button
+          class="btn btn-outline-secondary my-2 my-sm-0"
+          type="button"
+          (click)="retrieveStorageReport()"
+        >
+          Atualizar
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <div class="row">
+      <div class="col-md-12">
+        <h5>Resumo</h5>
+      </div>
+      <div class="col-md-12">
+        <
+      </div>
+      <div class="col-md-12">
+        <h5>Ocupação (%) por produto</h5>
+      </div>
+      <div class="col-md-12">
+        <canvas baseChart
+          [data]="barChartData"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [legend]="barChartLegend"
+          [type]="'bar'">
+        </canvas>
+      </div>
+      <div class="col-md-12">
+        <h5>Valores totais por produto</h5>
+      </div>
+      <div class="col-md-12">
+        <canvas baseChart
+          [data]="barChartData"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [legend]="barChartLegend"
+          [type]="'bar'">
+        </canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="row">
+      <div class="col-md-12">
+        <h5>Volume armazenamento</h5>
+      </div>
+      <div class="col-md-12">
+        <canvas baseChart
+          [labels]="doughnutChartLabels"
+          [datasets]="doughnutChartDatasets"
+          [options]="doughnutChartOptions"
+          [legend]="true"
+          [type]="'doughnut'">
+        </canvas>
+      </div>
+      <div class="col-md-12">
+        <h5>Quantidades de produtos</h5>
+      </div>
+      <div class="col-md-12">
+        <canvas baseChart
+          [datasets]="polarAreaChartDatasets"
+          [labels]="polarAreaChartLabels"
+          [legend]="polarAreaLegend"
+          [options]="polarAreaOptions"
+          [type]="'polarArea'">
+        </canvas>
+      </div>
+    </div>
+  </div>
+</div>

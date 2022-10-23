@@ -37,6 +37,10 @@ export class StoragesService {
     return this.http.get(`${baseUrl}/storages/${id}/products`);
   }
 
+  getStoragesReport(id: any): Observable<any> {
+    return this.http.get(`${baseUrl}/storages/${id}/reports`);
+  }
+
   addStoragesProducts(id: any, data: any): Observable<any> {
     return this.http.post(`${baseUrl}/storages/${id}/products`, data)
   }

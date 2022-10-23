@@ -10,7 +10,6 @@
         name="currentStorage"
         [ngModelOptions]="{standalone: true}"
       >
-        <option selected>Selecione um depósito</option>
         <option *ngFor="let storage of storages; let i = index" [ngValue]="storage">
           {{ storage.name }}
         </option>
