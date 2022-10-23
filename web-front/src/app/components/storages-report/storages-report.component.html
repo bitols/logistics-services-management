@@ -1,8 +1,8 @@
 <h4>Indicadores de Depósitos</h4>
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <div class="input-group mb-3">
-      <select (change)="retrieveStorageReport()"
+      <select (change)="refreshData()"
         class="form-control mr-sm-2"
         id="currentStorage"
         required
@@ -18,72 +18,117 @@
         <button
           class="btn btn-outline-secondary my-2 my-sm-0"
           type="button"
-          (click)="retrieveStorageReport()"
+          (click)="refreshData()"
         >
           Atualizar
         </button>
       </div>
     </div>
   </div>
-  <div class="col-md-7">
+
+  <div class="col-md-7" *ngIf="storageReport.id">
     <div class="row">
       <div class="col-md-12">
-        <h5>Resumo</h5>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="card" >
+              <div class="card-body">
+                <h5 class="card-title">Resumo</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Informações do estoque</h6>
+                <p class="card-text">
+                  <label><strong>Capacidade:</strong></label> {{storageReport.capacity}}m³<br>
+                  <label><strong>Ocupação:</strong></label> {{storageReport.usage!.toFixed(2)}}%<br>
+                  <label><strong>Itens:</strong></label> {{storageReport.items!}}<br>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <div class="card" >
+              <div class="card-body">
+                <h5 class="card-title">Classificação</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Produto por especificidade</h6>
+                <p class="card-text">
+                  <label><strong>Maior Quantia:</strong></label> {{getProductMaxQuantity()}}<br>
+                  <label><strong>Maior Volume:</strong></label> {{getProductMaxVolume()}}<br>
+                  <label><strong>Maior Valor:</strong></label> {{getProductMaxValue()}}<br>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-md-12">
-        <
+        <div class="card" >
+          <div class="card-body">
+            <h5 class="card-title">Ocupação</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Armazenamento %</h6>
+            <div class="card-text">
+              <canvas  class="card-img" baseChart
+                [data]="percentVolumeChartData"
+                [options]="percentVolumeChartOptions"
+                [plugins]="percentVolumeChartPlugins"
+                [legend]="true"
+                [type]="'bar'">
+              </canvas>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-md-12">
-        <h5>Ocupação (%) por produto</h5>
-      </div>
-      <div class="col-md-12">
-        <canvas baseChart
-          [data]="barChartData"
-          [options]="barChartOptions"
-          [plugins]="barChartPlugins"
-          [legend]="barChartLegend"
-          [type]="'bar'">
-        </canvas>
-      </div>
-      <div class="col-md-12">
-        <h5>Valores totais por produto</h5>
-      </div>
-      <div class="col-md-12">
-        <canvas baseChart
-          [data]="barChartData"
-          [options]="barChartOptions"
-          [plugins]="barChartPlugins"
-          [legend]="barChartLegend"
-          [type]="'bar'">
-        </canvas>
+        <div class="card" >
+          <div class="card-body">
+            <h5 class="card-title">Valor</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Armazenamento R$</h6>
+            <div class="card-text">
+              <canvas  class="card-img" baseChart
+                [data]="storedValueChartData"
+                [options]="storedValueChartOptions"
+                [plugins]="storedValueChartPlugins"
+                [legend]="true"
+                [type]="'bar'">
+              </canvas>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col-md-5">
+  <div class="col-md-5" *ngIf="storageReport.id">
     <div class="row">
       <div class="col-md-12">
-        <h5>Volume armazenamento</h5>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Volume</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Armazenamento m³</h6>
+            <div class="card-text">
+              <canvas  class="card-img" baseChart
+                [labels]="storedVolumeChartLabels"
+                [datasets]="storedVolumeChartDatasets"
+                [options]="storedVolumeChartOptions"
+                [legend]="true"
+                [type]="'doughnut'">
+              </canvas>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-md-12">
-        <canvas baseChart
-          [labels]="doughnutChartLabels"
-          [datasets]="doughnutChartDatasets"
-          [options]="doughnutChartOptions"
-          [legend]="true"
-          [type]="'doughnut'">
-        </canvas>
-      </div>
-      <div class="col-md-12">
-        <h5>Quantidades de produtos</h5>
-      </div>
-      <div class="col-md-12">
-        <canvas baseChart
-          [datasets]="polarAreaChartDatasets"
-          [labels]="polarAreaChartLabels"
-          [legend]="polarAreaLegend"
-          [options]="polarAreaOptions"
-          [type]="'polarArea'">
-        </canvas>
+        <div class="card" >
+          <div class="card-body">
+            <h5 class="card-title">Quantidade</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Armazenamento itens</h6>
+            <div class="card-text">
+              <canvas  class="card-img" baseChart
+                [datasets]="storedQuantityChartDatasets"
+                [labels]="storedQuantityChartLabels"
+                [legend]="true"
+                [options]="storedQuantityOptions"
+                [type]="'polarArea'">
+              </canvas>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

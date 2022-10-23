@@ -18,40 +18,34 @@ export class StoragesReportComponent implements OnInit {
   storageReport: StoragesReport = {};
 
   // Doughnut
-  public doughnutChartLabels: string[] = [ 'Download Sales', 'In-Store Sales', 'Mail-Order Sales' ];
-  public doughnutChartDatasets: ChartConfiguration<'doughnut'>['data']['datasets'] = [
-      { data: [ 350, 450, 100 ], label: 'Series A' }
-    ];
-
-  public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'] = {
+  public storedVolumeChartLabels: string[] = [];
+  public storedVolumeChartDatasets: ChartConfiguration<'doughnut'>['data']['datasets'] = [];
+  public storedVolumeChartOptions: ChartConfiguration<'doughnut'>['options'] = {
     responsive: true,
     maintainAspectRatio: false
   };
 
-  public barChartLegend = true;
-  public barChartPlugins = [];
-
-  public barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
-    datasets: [
-      { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Series A' },
-      { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Series B' }
-    ]
-  };
-
-  public barChartOptions: ChartConfiguration<'bar'>['options'] = {
+  //bar
+  public percentVolumeChartPlugins = [];
+  public percentVolumeChartData?: ChartConfiguration<'bar'>['data'];
+  public percentVolumeChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
     maintainAspectRatio: false
   };
+
+    //bar
+    public storedValueChartPlugins = [];
+    public storedValueChartData?: ChartConfiguration<'bar'>['data'];
+    public storedValueChartOptions: ChartConfiguration<'bar'>['options'] = {
+      responsive: true,
+      maintainAspectRatio: false
+    };
 
     // PolarArea
-    public polarAreaChartLabels: string[] = [ 'Download Sales', 'In-Store Sales', 'Mail Sales', 'Telesales', 'Corporate Sales' ];
-    public polarAreaChartDatasets: ChartConfiguration<'polarArea'>['data']['datasets'] = [
-      { data: [ 300, 500, 100, 40, 120 ] }
-    ];
-    public polarAreaLegend = true;
+    public storedQuantityChartLabels: string[] = [];
+    public storedQuantityChartDatasets: ChartConfiguration<'polarArea'>['data']['datasets'] = [];
+    public storedQuantityOptions: ChartConfiguration<'polarArea'>['options'] = {
 
-    public polarAreaOptions: ChartConfiguration<'polarArea'>['options'] = {
       responsive: true,
       maintainAspectRatio: false
     };
@@ -64,6 +58,12 @@ export class StoragesReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.retrieveAllStorages();
+  }
+
+  refreshData():void {
+    this.cleanCharts();
+    this.retrieveStorageReport();
+
   }
 
   retrieveAllStorages(): void {
@@ -84,11 +84,88 @@ export class StoragesReportComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.storageReport = data;
+          this.populateCharts();
         },
         error: (e) => {
           console.error(e);
           this.notificationService.showError(`Problem to retrieve storages report`);
         }
       });
+  }
+
+  cleanCharts(): void {
+    this.storedVolumeChartLabels = [];
+    this.storedVolumeChartDatasets =[];
+    this.storedQuantityChartLabels  = [];
+  }
+
+  getProductMaxQuantity(): string {
+    const product = this.storageReport.products?.reduce((prev, current) => {
+      return prev.items! > current.items! ? prev : current
+    }
+  );
+    return product!.name!;
+  }
+
+  getProductMaxVolume(): string {
+    const product = this.storageReport.products?.reduce((prev, current) => {
+      return prev.stored! > current.stored! ? prev : current
+    }
+  );
+    return product!.name!;
+  }
+
+  getProductMaxValue(): string {
+    const product = this.storageReport.products?.reduce((prev, current) => {
+      return prev.value! > current.value! ? prev : current
+    }
+  );
+    return product!.name!;
+  }
+
+  populateCharts(): void {
+    this.percentVolumeChartData = {
+      labels: [ 'Armazenamento(%)'],
+      datasets: [ ]
+    };
+
+    this.storedVolumeChartDatasets = [
+      { data: [], label: 'Volumes' }
+    ];
+
+    this.storedQuantityChartDatasets = [
+      { data: [], label:'Quantidades' }
+    ];
+
+    this.storedValueChartData = {
+      labels: [ '(R$)'],
+      datasets: [ ]
+    };
+
+    this.storageReport.products?.forEach((product => {
+      this.percentVolumeChartData?.datasets.push({data: [product.usage!], label: product.name});
+
+      this.storedVolumeChartLabels.push(product.name!);
+      this.storedVolumeChartDatasets[0].data.push(product.stored!);
+
+      this.storedQuantityChartLabels.push(product.name!);
+      this.storedQuantityChartDatasets[0].data.push(product.items!);
+
+      this.storedValueChartData?.datasets.push({data: [product.value!], label: product.name});
+    }));
+
+
+    const volumeEmpty = this.storageReport.capacity! - this.storageReport.stored!;
+    if (volumeEmpty>0) {
+      this.storedVolumeChartLabels.push('Espaço vazio');
+      this.storedVolumeChartDatasets[0].data.push(volumeEmpty);
+    }
+
+    const percentEmpty = 100 - this.storageReport.usage!
+    if (percentEmpty>0) {
+      this.percentVolumeChartData?.datasets.push({data: [percentEmpty], label: 'Espaço vazio'})
+    }
+
+
   }
 }
