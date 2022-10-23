@@ -23,7 +23,6 @@ const routes: Routes = [
   { path: 'add-products', component: AddProductsComponent },
   { path: 'storages', component: StoragesListComponent },
   { path: 'storages/:id', component: StoragesDetailsComponent },
-  { path: 'add-storages', component: AddStoragesComponent },
   { path: 'storages-manager', component: StoragesManagerComponent },
   { path: 'storages-report', component: StoragesReportComponent }
 ];

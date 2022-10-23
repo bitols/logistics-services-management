@@ -87,6 +87,8 @@ export class StoragesReportComponent implements OnInit {
           this.populateCharts();
         },
         error: (e) => {
+
+          this.cleanCharts();
           console.error(e);
           this.notificationService.showError(`Problem to retrieve storages report`);
         }
@@ -95,8 +97,8 @@ export class StoragesReportComponent implements OnInit {
 
   cleanCharts(): void {
     this.storedVolumeChartLabels = [];
-    this.storedVolumeChartDatasets =[];
     this.storedQuantityChartLabels  = [];
+    this.storageReport = {}
   }
 
   getProductMaxQuantity(): string {

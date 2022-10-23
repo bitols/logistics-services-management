@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Storages } from 'src/app/models/storages.model';
 import { Suppliers } from 'src/app/models/suppliers.model';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -19,16 +20,14 @@ export class AddStoragesComponent implements OnInit {
   currentSupplier: Suppliers = {};
   supplierName = '';
 
-  isAddedIn = false;
-  isAddedFailed = false;
   errorMessage = '';
 
   constructor(
+    public activeModal: NgbActiveModal,
     private suppliersService: SuppliersService,
     private storagesService: StoragesService,
     private sessionsService: SessionsService,
     private notificationService: NotificationService,
-    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -50,21 +49,17 @@ export class AddStoragesComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.notificationService.showSuccess('Storage registred');
-          this.isAddedIn = true;
-          this.isAddedFailed = false;
-          this.backToList();
+          this.activeModal.close('Close click');
         },
         error: (e: any) => {
           this.errorMessage = e.error.message;
           this.notificationService.showError(e.error.message);
-          this.isAddedIn = false;
-          this.isAddedFailed = true;
+          this.activeModal.close('Close click');
         }
       })
   }
 
   newStorages(): void {
-    this.isAddedIn = false;
     this.storages = { };
     this.refreshList();
 
@@ -103,9 +98,5 @@ export class AddStoragesComponent implements OnInit {
   refreshList(): void {
     this.searchSuppliers();
     this.currentSupplier = {};
-  }
-
-  backToList(): void {
-    this.router.navigate(['/storages'])
   }
 }

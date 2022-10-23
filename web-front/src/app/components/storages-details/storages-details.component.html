@@ -8,7 +8,7 @@
       <label><strong>Fornecedor:</strong></label> {{ currentStorage.supplier?.name }}
     </div>
     <div *ngIf="currentStorage.capacity">
-      <label><strong>Capacidade:</strong></label> {{ currentStorage.capacity }}
+      <label><strong>Capacidade:</strong></label> {{ currentStorage.capacity.toFixed(2) }}m³
     </div>
     <div>
       <label><strong>Email:</strong></label> {{ currentStorage.email }}

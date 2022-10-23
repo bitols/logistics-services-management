@@ -2,3 +2,8 @@
   max-width: 400px;
   margin: auto;
 }
+
+::ng-deep ngb-modal-backdrop {
+  z-index: 1050 !important;
+}
+

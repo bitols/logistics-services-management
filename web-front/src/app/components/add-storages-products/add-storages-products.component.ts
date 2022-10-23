@@ -56,6 +56,7 @@ export class AddStoragesProductsComponent implements OnInit {
       },
       error: (e: any) => {
         this.notificationService.showError(e.error.message);
+        this.activeModal.close('Close click');
       }
     })
   }
