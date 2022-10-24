@@ -49,12 +49,12 @@ export class AddStoragesComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.notificationService.showSuccess('Storage registred');
-          this.activeModal.close('Close click');
+          this.activeModal.close('Success');
         },
         error: (e: any) => {
           this.errorMessage = e.error.message;
           this.notificationService.showError(e.error.message);
-          this.activeModal.close('Close click');
+          this.activeModal.close('Error');
         }
       })
   }

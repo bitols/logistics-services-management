@@ -98,6 +98,11 @@ export class ProductsListComponent implements OnInit {
 
   addProducts(): void {
     const modalRef = this.modalService.open(AddProductsComponent);
+    modalRef.result.then((result) => {
+      if(result==='Success') {
+        this.refreshList();
+      }
+    });
   }
 
 

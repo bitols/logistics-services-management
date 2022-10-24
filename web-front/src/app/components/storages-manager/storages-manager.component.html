@@ -53,7 +53,7 @@
               let i = index">
                 <td>{{ product.name }}</td>
                 <td>{{ product.quantity }}</td>
-                <td>{{ product.value }}</td>
+                <td>{{ product.value!.toFixed(2) }}</td>
               </tr>
               </tbody>
         </table>

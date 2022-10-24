@@ -98,6 +98,11 @@ export class StoragesListComponent implements OnInit {
 
   addStorages(): void {
     const modalRef = this.modalService.open(AddStoragesComponent);
+    modalRef.result.then((result) => {
+      if(result==='Success') {
+        this.refreshList();
+      }
+    });
   }
 
 }

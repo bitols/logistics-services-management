@@ -36,12 +36,12 @@ export class AddProductsComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.notificationService.showSuccess('Product registred');
-          this.activeModal.close('Close click');
+          this.activeModal.close('Success');
         },
         error: (e: any) => {
           console.error(`error: ${e}`);
           this.notificationService.showError(e.error.message);
-           this.activeModal.close('Close click');
+           this.activeModal.close('Error');
         }
       })
   }

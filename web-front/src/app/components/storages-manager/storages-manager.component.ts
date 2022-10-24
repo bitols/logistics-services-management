@@ -128,11 +128,21 @@ export class StoragesManagerComponent implements OnInit {
   addProduct() {
     const modalRef = this.modalService.open(AddStoragesProductsComponent);
     modalRef.componentInstance.storagesId = this.currentStorage.id;
+    modalRef.result.then((result) => {
+      if(result==='Success') {
+        this.refreshData();
+      }
+    });
   }
 
   rmvProduct() {
     const modalRef = this.modalService.open(RmvStoragesProductsComponent);
     modalRef.componentInstance.storagesId = this.currentStorage.id;
     modalRef.componentInstance.products = this.products;
+    modalRef.result.then((result) => {
+      if(result==='Success') {
+        this.refreshData();
+      }
+    });
   }
 }
