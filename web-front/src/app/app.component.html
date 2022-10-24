@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark">
-  <a href="#" class="navbar-brand">G.S.L.</a>
+  <a href="#" class="navbar-brand">Boa Entrega Transportes</a>
   <button class="navbar-toggler" type="button" aria-controls="navbarContent" [attr.aria-expanded]="!collapsed" aria-label="Toggle navigation" (click)="collapsed = !collapsed">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -12,7 +12,6 @@
         <div ngbDropdownMenu aria-labelledby="navbarDropdownCad" class="dropdown-menu">
           <a ngbDropdownItem href="/storages" routerLink="storages">Depósitos</a>
           <a ngbDropdownItem href="/products" routerLink="products">Produtos</a>
-
         </div>
       </li>
       <li class="nav-item" ngbDropdown *ngIf="isLoggedIn">
@@ -21,6 +20,14 @@
         </a>
         <div ngbDropdownMenu aria-labelledby="navbarDropdownCadProc" class="dropdown-menu">
           <a ngbDropdownItem href="/storages-manager" routerLink="storages-manager">Controlar Depósitos</a>
+        </div>
+      </li>
+      <li class="nav-item" ngbDropdown *ngIf="isLoggedIn">
+        <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdownProc" role="button">
+          Gestão
+        </a>
+        <div ngbDropdownMenu aria-labelledby="navbarDropdownCadProc" class="dropdown-menu">
+          <a ngbDropdownItem href="/storages-report" routerLink="storages-report">Indicadores de Depósitos</a>
         </div>
       </li>
     </ul>
@@ -39,7 +46,7 @@
     </ul>
   </div>
 </nav>
-<div class="container-fluid">
+<div class="container-lg">
 
   <router-outlet></router-outlet>
 </div>

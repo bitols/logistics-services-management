@@ -1,6 +1,6 @@
 <h4>Controle de Depósitos</h4>
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <div class="input-group mb-3">
       <select (change)="refreshData()"
         class="form-control mr-sm-2"
@@ -10,7 +10,6 @@
         name="currentStorage"
         [ngModelOptions]="{standalone: true}"
       >
-        <option selected>Selecione um depósito</option>
         <option *ngFor="let storage of storages; let i = index" [ngValue]="storage">
           {{ storage.name }}
         </option>
@@ -54,7 +53,7 @@
               let i = index">
                 <td>{{ product.name }}</td>
                 <td>{{ product.quantity }}</td>
-                <td>{{ product.value }}</td>
+                <td>{{ product.value!.toFixed(2) }}</td>
               </tr>
               </tbody>
         </table>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterConfigOptions } from '@angular/router';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Products } from 'src/app/models/products.model';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProductsService } from 'src/app/services/products.service';
@@ -12,16 +12,11 @@ import { SessionsService } from 'src/app/services/sessions.service';
 export class AddProductsComponent implements OnInit {
   products: Products = { }
 
-  isAddedIn = false;
-  isAddedFailed = false;
-  errorMessage = '';
-
-
   constructor(
+    public activeModal: NgbActiveModal,
     private productsService: ProductsService,
     private sessionsService: SessionsService,
     private notificationService: NotificationService,
-    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -41,27 +36,14 @@ export class AddProductsComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.notificationService.showSuccess('Product registred');
-          this.isAddedIn = true;
-          this.isAddedFailed = false;
-          this.backToList();
+          this.activeModal.close('Success');
         },
         error: (e: any) => {
           console.error(`error: ${e}`);
           this.notificationService.showError(e.error.message);
-          this.errorMessage = e.error.message;
-          this.isAddedIn = false;
-          this.isAddedFailed = true;
+           this.activeModal.close('Error');
         }
       })
-  }
-
-  newProducts(): void {
-    this.isAddedIn = false;
-    this.products = { };
-  }
-
-  backToList(): void {
-    this.router.navigate(['/products'])
   }
 
 }

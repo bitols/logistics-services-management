@@ -12,6 +12,7 @@ import { StoragesListComponent } from './components/storages-list/storages-list.
 import { StoragesDetailsComponent } from './components/storages-details/storages-details.component';
 import { AddStoragesComponent } from './components/add-storages/add-storages.component';
 import { StoragesManagerComponent } from './components/storages-manager/storages-manager.component';
+import { StoragesReportComponent } from './components/storages-report/storages-report.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -22,8 +23,8 @@ const routes: Routes = [
   { path: 'add-products', component: AddProductsComponent },
   { path: 'storages', component: StoragesListComponent },
   { path: 'storages/:id', component: StoragesDetailsComponent },
-  { path: 'add-storages', component: AddStoragesComponent },
-  { path: 'storages-manager', component: StoragesManagerComponent }
+  { path: 'storages-manager', component: StoragesManagerComponent },
+  { path: 'storages-report', component: StoragesReportComponent }
 ];
 
 @NgModule({

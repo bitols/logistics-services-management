@@ -31,6 +31,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { AddStoragesProductsComponent } from './components/add-storages-products/add-storages-products.component';
 import { RmvStoragesProductsComponent } from './components/rmv-storages-products/rmv-storages-products.component';
+import { StoragesReportComponent } from './components/storages-report/storages-report.component';
+import { NgChartsModule } from 'ng2-charts';
 
 export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
@@ -47,7 +49,8 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
     StoragesListComponent,
     StoragesManagerComponent,
     AddStoragesProductsComponent,
-    RmvStoragesProductsComponent
+    RmvStoragesProductsComponent,
+    StoragesReportComponent
   ],
   imports: [
     BrowserModule,
@@ -66,6 +69,7 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
       positionClass: 'toast-bottom-right',
     }) ,
     GoogleMapsModule,
+    NgChartsModule,
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

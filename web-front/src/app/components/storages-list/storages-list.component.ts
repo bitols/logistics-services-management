@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Storages } from 'src/app/models/storages.model';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SessionsService } from 'src/app/services/sessions.service';
 import { StoragesService } from 'src/app/services/storages.service';
+import { AddStoragesComponent } from '../add-storages/add-storages.component';
 
 @Component({
   selector: 'app-storages-list',
@@ -26,7 +28,7 @@ export class StoragesListComponent implements OnInit {
     private storagesService: StoragesService,
     private sessionsService: SessionsService,
     private notificationService: NotificationService,
-    private router: Router
+    private modalService: NgbModal
     ) { }
 
   ngOnInit(): void {
@@ -95,7 +97,12 @@ export class StoragesListComponent implements OnInit {
   }
 
   addStorages(): void {
-    this.router.navigate(['/add-storages'])
+    const modalRef = this.modalService.open(AddStoragesComponent);
+    modalRef.result.then((result) => {
+      if(result==='Success') {
+        this.refreshList();
+      }
+    });
   }
 
 }

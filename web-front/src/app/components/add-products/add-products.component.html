@@ -1,99 +1,105 @@
-<h4>Novo Produto</h4>
 <div class="submit-form">
   <form
-    *ngIf="!isAddedIn"
-    name="form"
-    (ngSubmit)="f.form.valid && onSubmit()"
-    #f="ngForm"
-    novalidate
+  name="form"
+  (ngSubmit)="f.form.valid && onSubmit()"
+  #f="ngForm"
+  novalidate
   >
-    <div class="form-group">
-      <label for="name">Nome</label>
-      <input
-        type="text"
-        class="form-control"
-        id="name"
-        required
-        [(ngModel)]="products.name"
-        #name="ngModel"
-        name="name"
-        [ngClass]="{ 'is-invalid': f.submitted && name.errors }"
-      />
-      <div *ngIf="name.errors && f.submitted" class="invalid-feedback">
-        O nome é obrigatório!
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="height">Altura</label>
-      <input
-        type="number"
-        class="form-control"
-        id="height"
-        required
-        [(ngModel)]="products.height"
-        #height="ngModel"
-        name="height"
-        [ngClass]="{ 'is-invalid': f.submitted && height.errors }"
-      />
-      <div *ngIf=" f.submitted && height.errors" class="invalid-feedback">
-        A altura é obrigatória!
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="width">Largura</label>
-      <input
-        type="number"
-        class="form-control"
-        id="width"
-        required
-        [(ngModel)]="products.width"
-        #width="ngModel"
-        name="width"
-        [ngClass]="{ 'is-invalid': f.submitted && width.errors }"
-      />
-      <div *ngIf="f.submitted && width.errors" class="invalid-feedback">
-        A largura é obrigatória!
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="lenght">Comprimento</label>
-      <input
-        type="number"
-        class="form-control"
-        id="lenght"
-        required
-        [(ngModel)]="products.lenght"
-        #lenght="ngModel"
-        name="lenght"
-        [ngClass]="{ 'is-invalid': f.submitted && lenght.errors }"
-      />
-      <div *ngIf="f.submitted && lenght.errors" class="invalid-feedback">
-        O comprimento é obrigatório!
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="price">Valor</label>
-      <input
-        type="number"
-        class="form-control"
-        id="price"
-        required
-        [(ngModel)]="products.price"
-        #price="ngModel"
-        name="price"
-        [ngClass]="{ 'is-invalid': f.submitted && price.errors }"
-      />
-      <div *ngIf="f.submitted && lenght.errors" class="invalid-feedback">
-        O valor é obrigatório!
-      </div>
-    </div>
-    <div class="mt-1">
-      <button class="m-1 btn btn-success">Enviar</button>
-      <button class="m-1 btn btn-danger" type="button" (click)="backToList()">Voltar</button>
-    </div>
+  <div class="form-group">
+     <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Novo Produto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+     </div>
+     <div class="modal-body">
+        <div class="form-group">
+           <label for="name">Nome</label>
+           <input
+           type="text"
+           class="form-control"
+           id="name"
+           required
+           [(ngModel)]="products.name"
+           #name="ngModel"
+           name="name"
+           [ngClass]="{ 'is-invalid': f.submitted && name.errors }"
+           />
+           <div *ngIf="name.errors && f.submitted" class="invalid-feedback">
+              O nome é obrigatório!
+           </div>
+        </div>
+        <div class="form-group">
+           <label for="height">Altura</label>
+           <input
+           type="number"
+           class="form-control"
+           id="height"
+           required
+           [(ngModel)]="products.height"
+           #height="ngModel"
+           name="height"
+           [ngClass]="{ 'is-invalid': f.submitted && height.errors }"
+           />
+           <div *ngIf=" f.submitted && height.errors" class="invalid-feedback">
+              A altura é obrigatória!
+           </div>
+        </div>
+        <div class="form-group">
+           <label for="width">Largura</label>
+           <input
+           type="number"
+           class="form-control"
+           id="width"
+           required
+           [(ngModel)]="products.width"
+           #width="ngModel"
+           name="width"
+           [ngClass]="{ 'is-invalid': f.submitted && width.errors }"
+           />
+           <div *ngIf="f.submitted && width.errors" class="invalid-feedback">
+              A largura é obrigatória!
+           </div>
+        </div>
+        <div class="form-group">
+           <label for="lenght">Comprimento</label>
+           <input
+           type="number"
+           class="form-control"
+           id="lenght"
+           required
+           [(ngModel)]="products.lenght"
+           #lenght="ngModel"
+           name="lenght"
+           [ngClass]="{ 'is-invalid': f.submitted && lenght.errors }"
+           />
+           <div *ngIf="f.submitted && lenght.errors" class="invalid-feedback">
+              O comprimento é obrigatório!
+           </div>
+        </div>
+        <div class="form-group">
+           <label for="price">Valor</label>
+           <input
+           type="number"
+           class="form-control"
+           id="price"
+           required
+           [(ngModel)]="products.price"
+           #price="ngModel"
+           name="price"
+           [ngClass]="{ 'is-invalid': f.submitted && price.errors }"
+           />
+           <div *ngIf="f.submitted && lenght.errors" class="invalid-feedback">
+              O valor é obrigatório!
+           </div>
+        </div>
+     </div>
+  </div>
+  <div class="modal-footer">
+     <div class="mt-1">
+        <button class="m-1 btn btn-success">Enviar</button>
+        <button class="m-1 btn btn-danger" type="button" (click)="activeModal.close('Close click')">Voltar</button>
+     </div>
+  </div>
   </form>
 </div>

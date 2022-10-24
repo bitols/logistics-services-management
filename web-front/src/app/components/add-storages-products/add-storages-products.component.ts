@@ -52,10 +52,11 @@ export class AddStoragesProductsComponent implements OnInit {
     .subscribe({
       next: (res: any) => {
         this.notificationService.showSuccess('Products registred on Storage');
-        this.activeModal.close('Close click');
+        this.activeModal.close('Success');
       },
       error: (e: any) => {
         this.notificationService.showError(e.error.message);
+        this.activeModal.close('Error');
       }
     })
   }

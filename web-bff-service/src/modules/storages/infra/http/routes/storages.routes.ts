@@ -50,6 +50,16 @@ storagesRouter.get(
   storagesController.getStoredProducts,
 );
 
+storagesRouter.get(
+  '/:id/reports',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().hex().required(),
+    },
+  }),
+  storagesController.getStoragesReport,
+);
+
 storagesRouter.post(
   '/:id/products',
   celebrate({
