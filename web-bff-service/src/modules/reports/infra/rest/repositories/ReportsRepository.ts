@@ -1,6 +1,6 @@
 import rest from '@config/rest';
-import { IGetStoragesCapacityBySender } from '@modules/reports/domain/models/requests/IGetStoragesCapacityBySender';
-import { IStoragesCapacity } from '@modules/reports/domain/models/responses/IStoragesCapacity';
+import { IGetStoragesReport } from '@modules/reports/domain/models/requests/IGetStoragesReport';
+import { IStoragesReport } from '@modules/reports/domain/models/responses/IStoragesReport';
 import { IReportsRepository } from '@modules/reports/domain/repositories/IReportsRepository';
 
 export class ReportsRepository implements IReportsRepository {
@@ -8,12 +8,12 @@ export class ReportsRepository implements IReportsRepository {
   constructor() {
     this.restClient = rest.getHttpClient(rest.Services.Reports);
   }
-  public async getAllStoragesCapacityBySender(
-    request: IGetStoragesCapacityBySender,
-  ): Promise<IStoragesCapacity[] | undefined> {
+  public async getStoragesReport(
+    request: IGetStoragesReport,
+  ): Promise<IStoragesReport | undefined> {
     try {
-      const { data, status } = await this.restClient.get<IStoragesCapacity[]>(
-        `/reports/${request.senderId}/storages-capacity`,
+      const { data, status } = await this.restClient.get<IStoragesReport>(
+        `/reports/storages/${request.storageId}`,
         {
           headers: {
             Accept: 'application/json',

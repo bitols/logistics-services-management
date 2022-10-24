@@ -1,121 +1,124 @@
-<h4>Novo Depósito</h4>
 <div class="submit-form">
   <form
-    *ngIf="!isAddedIn"
-    name="form"
-    (ngSubmit)="f.form.valid && onSubmit()"
-    #f="ngForm"
-    novalidate
+  name="form"
+  (ngSubmit)="f.form.valid && onSubmit()"
+  #f="ngForm"
+  novalidate
   >
-    <div class="form-group">
-      <label for="supplier">Fornecedor</label>
-      <select
-        class="form-control mb-3"
-        id="currentSupplier"
-        required
-        [(ngModel)]="currentSupplier"
-        name="currentSupplier"
-        [ngClass]="{ 'is-invalid': f.submitted && !currentSupplier.name }"
-        [ngModelOptions]="{standalone: true}"
-      >
-        <option *ngFor="let supplier of suppliers; let i = index" [ngValue]="supplier">
-          {{ supplier.name }}
-        </option>
-      </select>
-
-      <div *ngIf="!currentSupplier.name && f.submitted" class="invalid-feedback">
-        O fornecedor é obrigatório!
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="name">Nome</label>
-      <input
-        type="text"
-        class="form-control"
-        id="name"
-        required
-        [(ngModel)]="storages.name"
-        #name="ngModel"
-        name="name"
-        [ngClass]="{ 'is-invalid': f.submitted && name.errors }"
-      />
-      <div *ngIf="name.errors && f.submitted" class="invalid-feedback">
-        O nome é obrigatório!
-      </div>
-    </div>
-      <div class="form-group">
-        <label for="capacity">Capacidade</label>
-        <input
-          type="number"
-          class="form-control"
-          id="capacity"
-          required
-          [(ngModel)]="storages.capacity"
-          #capacity="ngModel"
-          name="capacity"
-          [ngClass]="{ 'is-invalid': f.submitted && capacity.errors }"
-        />
-        <div *ngIf=" f.submitted && capacity.errors" class="invalid-feedback">
-          A capacidade é obrigatória!
+  <div class="form-group">
+     <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Novo Depósito</h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+     </div>
+     <div class="modal-body">
+        <div class="form-group">
+           <label for="supplier">Fornecedor</label>
+           <select
+           class="form-control mr-sm-2"
+           id="currentSupplier"
+           required
+           [(ngModel)]="currentSupplier"
+           name="currentSupplier"
+           [ngClass]="{ 'is-invalid': f.submitted && !currentSupplier.name }"
+           [ngModelOptions]="{standalone: true}"
+           >
+           <option *ngFor="let supplier of suppliers; let i = index" [ngValue]="supplier">
+           {{ supplier.name }}
+           </option>
+           </select>
+           <div *ngIf="!currentSupplier.name && f.submitted" class="invalid-feedback">
+              O fornecedor é obrigatório!
+           </div>
         </div>
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          type="text"
-          class="form-control"
-          id="email"
-          required
-          [(ngModel)]="storages.email"
-          #email="ngModel"
-          name="email"
-          [ngClass]="{ 'is-invalid': f.submitted && email.errors }"
-        />
-        <div *ngIf=" f.submitted && email.errors" class="invalid-feedback">
-          O email é obrigatório!
+        <div class="form-group">
+           <label for="name">Nome</label>
+           <input
+           type="text"
+           class="form-control mb-3"
+           id="name"
+           required
+           [(ngModel)]="storages.name"
+           #name="ngModel"
+           name="name"
+           [ngClass]="{ 'is-invalid': f.submitted && name.errors }"
+           />
+           <div *ngIf="name.errors && f.submitted" class="invalid-feedback">
+              O nome é obrigatório!
+           </div>
         </div>
-      </div>
-
-      <div class="form-group">
-        <label for="phone">Telefone</label>
-        <input
-          type="text"
-          class="form-control"
-          id="phone"
-          required
-          [(ngModel)]="storages.phone"
-          #phone="ngModel"
-          name="phone"
-          [ngClass]="{ 'is-invalid': f.submitted && phone.errors }"
-        />
-        <div *ngIf=" f.submitted && phone.errors" class="invalid-feedback">
-          O telefone é obrigatório!
+        <div class="form-group">
+           <label for="capacity">Capacidade</label>
+           <input
+           type="number"
+           class="form-control"
+           id="capacity"
+           required
+           [(ngModel)]="storages.capacity"
+           #capacity="ngModel"
+           name="capacity"
+           [ngClass]="{ 'is-invalid': f.submitted && capacity.errors }"
+           />
+           <div *ngIf=" f.submitted && capacity.errors" class="invalid-feedback">
+              A capacidade é obrigatória!
+           </div>
         </div>
-      </div>
-
-
-    <div class="form-group">
-      <label for="address">Endereço</label>
-      <input
-        type="text"
-        class="form-control"
-        id="address"
-        required
-        [(ngModel)]="storages.address"
-        #address="ngModel"
-        name="address"
-        [ngClass]="{ 'is-invalid': f.submitted && address.errors }"
-      />
-      <div *ngIf=" f.submitted && address.errors" class="invalid-feedback">
-        O endereço é obrigatório!
-      </div>
-    </div>
-    <div class="mt-1">
-      <button class="m-1 btn btn-success">Enviar</button>
-      <button class="m-1 btn btn-danger" type="button" (click)="backToList()">Voltar</button>
-    </div>
+        <div class="form-group">
+           <label for="email">Email</label>
+           <input
+           type="text"
+           class="form-control"
+           id="email"
+           required
+           [(ngModel)]="storages.email"
+           #email="ngModel"
+           name="email"
+           [ngClass]="{ 'is-invalid': f.submitted && email.errors }"
+           />
+           <div *ngIf=" f.submitted && email.errors" class="invalid-feedback">
+              O email é obrigatório!
+           </div>
+        </div>
+        <div class="form-group">
+           <label for="phone">Telefone</label>
+           <input
+           type="text"
+           class="form-control"
+           id="phone"
+           required
+           [(ngModel)]="storages.phone"
+           #phone="ngModel"
+           name="phone"
+           [ngClass]="{ 'is-invalid': f.submitted && phone.errors }"
+           />
+           <div *ngIf=" f.submitted && phone.errors" class="invalid-feedback">
+              O telefone é obrigatório!
+           </div>
+        </div>
+        <div class="form-group">
+           <label for="address">Endereço</label>
+           <input
+           type="text"
+           class="form-control"
+           id="address"
+           required
+           [(ngModel)]="storages.address"
+           #address="ngModel"
+           name="address"
+           [ngClass]="{ 'is-invalid': f.submitted && address.errors }"
+           />
+           <div *ngIf=" f.submitted && address.errors" class="invalid-feedback">
+              O endereço é obrigatório!
+           </div>
+        </div>
+     </div>
+  </div>
+  <div class="modal-footer">
+     <div class="mt-1">
+        <button class="m-1 btn btn-success">Enviar</button>
+        <button class="m-1 btn btn-danger" type="button" (click)="activeModal.close('Close click')">Voltar</button>
+     </div>
+  </div>
   </form>
 </div>
-

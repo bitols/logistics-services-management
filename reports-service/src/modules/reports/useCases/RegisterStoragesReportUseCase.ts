@@ -1,7 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { IRegisterStoragesCapacity } from '../domain/models/requests/IRegisterStoragesCapacity';
 import { IRegisterStoragesReport } from '../domain/models/requests/IRegisterStoragesReport';
-import { IStoragesCapacity } from '../domain/models/responses/IStoragesCapacity';
 import { IStoragesReportRepository } from '../domain/repositories/IStoragesReportRepository';
 
 @injectable()
