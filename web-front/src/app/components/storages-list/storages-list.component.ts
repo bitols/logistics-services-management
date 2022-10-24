@@ -28,7 +28,6 @@ export class StoragesListComponent implements OnInit {
     private storagesService: StoragesService,
     private sessionsService: SessionsService,
     private notificationService: NotificationService,
-    private router: Router,
     private modalService: NgbModal
     ) { }
 

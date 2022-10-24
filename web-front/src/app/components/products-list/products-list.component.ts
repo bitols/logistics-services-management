@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Products } from 'src/app/models/products.model';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProductsService } from 'src/app/services/products.service';
 import { SessionsService } from 'src/app/services/sessions.service';
+import { AddProductsComponent } from '../add-products/add-products.component';
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
@@ -25,7 +27,7 @@ export class ProductsListComponent implements OnInit {
     private productsService: ProductsService,
     private sessionsService: SessionsService,
     private notificationService: NotificationService,
-    private router: Router
+    private modalService: NgbModal
     ) { }
 
 
@@ -95,7 +97,7 @@ export class ProductsListComponent implements OnInit {
   }
 
   addProducts(): void {
-    this.router.navigate(['/add-products'])
+    const modalRef = this.modalService.open(AddProductsComponent);
   }
 
 
