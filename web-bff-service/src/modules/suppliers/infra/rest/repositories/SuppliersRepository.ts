@@ -9,8 +9,6 @@ export class SuppliersRepository implements ISuppliersRepository {
     this.restClient = rest.getHttpClient(rest.Services.Suppliers);
   }
   public async getAll(): Promise<ISuppliers[] | undefined> {
-    console.log('request all suppliers');
-
     try {
       const { data, status } = await this.restClient.get<
         ISuppliers[] | undefined
@@ -19,10 +17,6 @@ export class SuppliersRepository implements ISuppliersRepository {
           Accept: 'application/json',
         },
       });
-
-      // 👇️ "response status is: 200"
-      console.log('response status is: ', status);
-
       return data;
     } catch (error: any) {
       console.error(error.message);
@@ -32,7 +26,6 @@ export class SuppliersRepository implements ISuppliersRepository {
   public async getById(
     request: IGetSuppliers,
   ): Promise<ISuppliers | undefined> {
-    console.log('request supplier: ', request);
     try {
       const { data, status } = await this.restClient.get<
         ISuppliers | undefined
@@ -41,11 +34,6 @@ export class SuppliersRepository implements ISuppliersRepository {
           Accept: 'application/json',
         },
       });
-
-      console.log(JSON.stringify(data, null, 4));
-
-      // 👇️ "response status is: 200"
-      console.log('response status is: ', status);
 
       return data;
     } catch (error: any) {

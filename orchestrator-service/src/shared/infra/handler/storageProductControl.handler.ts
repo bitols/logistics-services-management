@@ -5,7 +5,6 @@ import { container } from 'tsyringe';
 
 export const storageProductControl = async (message: string): Promise<void> => {
   try {
-    console.log(`storageProductControl message received: ${message}`);
     const storageProductControl = JSON.parse(
       message,
     ) as IStoragesProductControl;
@@ -23,6 +22,6 @@ export const storageProductControl = async (message: string): Promise<void> => {
       await storageProductDecrease.execute(storageProductControl.storedProduct);
     }
   } catch (error: any) {
-    console.log(error.message);
+    console.error(error.message);
   }
 };

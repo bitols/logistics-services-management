@@ -21,11 +21,6 @@ export class ReceiversRepository implements IReceiversRepository {
         },
       );
 
-      console.log(
-        `request receiver ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
       return data;
     } catch (error: any) {
       console.error(error.message);
@@ -42,8 +37,6 @@ export class ReceiversRepository implements IReceiversRepository {
           },
         },
       );
-
-      console.log(`request all receivers, response status is: ${status}`);
 
       return data;
     } catch (error: any) {

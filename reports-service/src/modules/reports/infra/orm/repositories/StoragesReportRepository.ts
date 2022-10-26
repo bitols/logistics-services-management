@@ -12,16 +12,12 @@ export class StoragesReportRepository implements IStoragesReportRepository {
   }
 
   public async create(data: IRegisterStoragesReport): Promise<IStorageReport> {
-    console.log(`create storage reports: ${JSON.stringify(data)}`);
-
     const storageReport = this.ormRepository.create(data);
 
     return storageReport;
   }
 
   public async save(storageReport: IStorageReport): Promise<IStorageReport> {
-    console.log(`save storage reports: ${JSON.stringify(storageReport)}`);
-
     await this.ormRepository.save(storageReport);
 
     return storageReport;
@@ -30,8 +26,6 @@ export class StoragesReportRepository implements IStoragesReportRepository {
   public async getByStorageId(
     storage: string,
   ): Promise<IStorageReport | null | undefined> {
-    console.log(`get storage reports by storageId: ${storage}`);
-
     const storageReport = await this.ormRepository.findOneBy({
       storageId: storage,
     });
@@ -40,8 +34,6 @@ export class StoragesReportRepository implements IStoragesReportRepository {
   }
 
   public async getAllBySender(sender: string): Promise<IStorageReport[]> {
-    console.log(`get all storages reports by senderId: ${sender}`);
-
     const storagesReport = await this.ormRepository.findBy({
       senderId: sender,
     });

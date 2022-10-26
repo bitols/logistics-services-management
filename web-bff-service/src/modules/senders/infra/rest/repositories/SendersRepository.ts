@@ -20,8 +20,6 @@ export class SendersRepository implements ISendersRepository {
         },
       );
 
-      console.log(`request all senders, response status is: ${status}`);
-
       return data;
     } catch (error: any) {
       console.error(error.message);
@@ -37,12 +35,6 @@ export class SendersRepository implements ISendersRepository {
             Accept: 'application/json',
           },
         },
-      );
-
-      console.log(
-        `request sender: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
       );
 
       return data;

@@ -19,12 +19,6 @@ export class ReceiversRepository implements IReceiversRepository {
         { location: request.location },
       );
 
-      console.log(
-        `request update Location receiver: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
       console.error(error.message);

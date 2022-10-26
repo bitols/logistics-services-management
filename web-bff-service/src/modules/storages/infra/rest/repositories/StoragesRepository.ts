@@ -21,14 +21,8 @@ export class StoragesRepository implements IStoragesRepository {
       const { status } = await this.restClient.delete<void>(
         `/storages/${request.id}`,
       );
-
-      console.log(
-        `delete storage: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
     } catch (error: any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 
@@ -47,13 +41,6 @@ export class StoragesRepository implements IStoragesRepository {
           },
         },
       );
-
-      console.log(
-        `request all storages by name: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
       console.error(error.message);
@@ -68,14 +55,8 @@ export class StoragesRepository implements IStoragesRepository {
           data: request,
         },
       );
-
-      console.log(
-        `remove product from storage: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
     } catch (error: any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 
@@ -92,16 +73,9 @@ export class StoragesRepository implements IStoragesRepository {
           },
         },
       );
-
-      console.log(
-        `add product on storage: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 
@@ -112,16 +86,9 @@ export class StoragesRepository implements IStoragesRepository {
       const { data, status } = await this.restClient.get<IStorageProducts[]>(
         `/storages/${request.id}/products`,
       );
-
-      console.log(
-        `request storage: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 
@@ -138,13 +105,6 @@ export class StoragesRepository implements IStoragesRepository {
           },
         },
       );
-
-      console.log(
-        `request all storages by sender: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
       console.error(error.message);
@@ -161,12 +121,6 @@ export class StoragesRepository implements IStoragesRepository {
             Accept: 'application/json',
           },
         },
-      );
-
-      console.log(
-        `request all storages by sender: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
       );
 
       return data;
@@ -187,13 +141,6 @@ export class StoragesRepository implements IStoragesRepository {
           },
         },
       );
-
-      console.log(
-        `request all storages by supplier: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
       console.error(error.message);
@@ -210,13 +157,6 @@ export class StoragesRepository implements IStoragesRepository {
           },
         },
       );
-
-      console.log(
-        `request storage: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
       console.error(error.message);

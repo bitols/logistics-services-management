@@ -22,9 +22,7 @@ export default class CreateStoragesProductsUseCase {
           ),
         );
       }
-      Promise.all(promises)
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
+      Promise.all(promises).then().catch();
 
       await queue.produce(
         queueConfig.storageProductTopic,

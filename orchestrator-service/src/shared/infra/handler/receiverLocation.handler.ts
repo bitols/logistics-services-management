@@ -4,7 +4,6 @@ import { container } from 'tsyringe';
 
 export const receiverLocation = async (message: string): Promise<void> => {
   try {
-    console.log(`receiverLocation message received: ${message}`);
     const requestLocation = JSON.parse(message);
 
     const getLocationFromAddress = container.resolve(
@@ -23,6 +22,6 @@ export const receiverLocation = async (message: string): Promise<void> => {
       location,
     });
   } catch (error: any) {
-    console.log(error.message);
+    console.error(error.message);
   }
 };

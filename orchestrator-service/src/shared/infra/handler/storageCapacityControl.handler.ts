@@ -5,7 +5,6 @@ export const storageCapacityControl = async (
   message: string,
 ): Promise<void> => {
   try {
-    console.log(`storageCapacityControl message received: ${message}`);
     const storagesCapacityControl = JSON.parse(
       message,
     ) as IStoragesCapacityControl;
@@ -16,6 +15,6 @@ export const storageCapacityControl = async (
 
     await storagesCapacityChange.execute(storagesCapacityControl);
   } catch (error: any) {
-    console.log(error.message);
+    console.error(error.message);
   }
 };
