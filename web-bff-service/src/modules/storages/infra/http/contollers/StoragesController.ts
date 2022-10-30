@@ -1,11 +1,9 @@
 import GetStoragesUseCase from '@modules/storages/useCases/GetStoragesUseCase';
-import GetSendersUseCase from '@modules/senders/useCases/GetSendersUseCase';
 import GetSuppliersUseCase from '@modules/suppliers/useCases/GetSuppliersUseCase';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateStoragesUseCase from '@modules/storages/useCases/CreateStoragesUseCase';
 import AppErrors from '@shared/errors/AppErrors';
-import GetStoragesBySenderUsecase from '@modules/storages/useCases/GetStoragesBySenderUseCase';
 import GetProductsBySenderUseCase from '@modules/products/useCases/GetProductsBySenderUseCase';
 import GetStoredProductsUseCase from '@modules/storages/useCases/GetStoredProductsUseCase';
 import AddStoragesProductsUseCase from '@modules/storages/useCases/AddStoragesProductsUseCase';
@@ -60,16 +58,10 @@ export default class StoragesController {
       request.body;
 
     const getSuppliers = container.resolve(GetSuppliersUseCase);
-    const getSender = container.resolve(GetSendersUseCase);
     const createStorage = container.resolve(CreateStoragesUseCase);
 
     if (request.credential.senderId !== senderId) {
       throw new AppErrors('Unauthorized', 401);
-    }
-
-    const sender = await getSender.execute({ id: senderId });
-    if (!sender) {
-      throw new AppErrors('Data integrity violation', 422);
     }
 
     const supplier = await getSuppliers.execute({ id: supplierId });
@@ -132,24 +124,39 @@ export default class StoragesController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-    const { id } = request.params;
-    const getStorages = container.resolve(GetStoragesUseCase);
-    const getReports = container.resolve(GetStoragesReportUseCase);
+    const scope = '[StoragesController]';
+    const method = '[getStoragesReport]';
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-    const storage = await getStorages.execute({ id });
-    if (!storage) {
-      throw new AppErrors('Data integrity violation', 422);
+      const { id } = request.params;
+      console.log(`[INFO]${scope}${method} storageId:${id}`);
+
+      const getStorages = container.resolve(GetStoragesUseCase);
+      const getReports = container.resolve(GetStoragesReportUseCase);
+
+      const storage = await getStorages.execute({ id });
+
+      if (request.credential.senderId !== storage.senderId) {
+        throw new AppErrors('Unauthorized', 401);
+      }
+
+      const reports = await getReports.execute({
+        storageId: id,
+      });
+
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json(reports);
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
     }
-
-    if (request.credential.senderId !== storage.senderId) {
-      throw new AppErrors('Unauthorized', 401);
-    }
-
-    const reports = await getReports.execute({
-      storageId: id,
-    });
-
-    return response.json(reports);
   }
 
   public async addStoredProducts(

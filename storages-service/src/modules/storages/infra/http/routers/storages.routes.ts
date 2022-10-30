@@ -1,3 +1,4 @@
+import { loggingRequest } from '@shared/infra/middlewares/loggingRequest';
 import { celebrate, Segments } from 'celebrate';
 import { Router } from 'express';
 import Joi from 'joi';
@@ -10,6 +11,7 @@ storagesRouter.delete('/products', storagesController.removeStoreProduct);
 
 storagesRouter.get(
   '/:id',
+  loggingRequest,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().hex().required(),
@@ -30,6 +32,7 @@ storagesRouter.get(
 
 storagesRouter.get(
   '/senders/:id',
+  loggingRequest,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().hex().required(),
@@ -40,6 +43,7 @@ storagesRouter.get(
 
 storagesRouter.post(
   '/',
+  loggingRequest,
   celebrate({
     [Segments.BODY]: {
       name: Joi.string().required(),
@@ -96,6 +100,7 @@ storagesRouter.delete(
 
 storagesRouter.get(
   '/:id/products',
+  loggingRequest,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().hex().required(),
@@ -106,6 +111,7 @@ storagesRouter.get(
 
 storagesRouter.post(
   '/products',
+  loggingRequest,
   celebrate({
     [Segments.BODY]: {
       name: Joi.string().required(),

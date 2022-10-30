@@ -8,13 +8,13 @@ export const isAutenticated = async (
   next: NextFunction,
 ): Promise<void> => {
   const authHeader = request.headers.authorization;
+
   if (!authHeader) {
     throw new AppError('JWT is missing.', 401);
   }
 
   const validateSession = container.resolve(ValidateSessionsUseCase);
   const credential = await validateSession.execute({ token: authHeader });
-
   request.credential = credential;
   return next();
 };

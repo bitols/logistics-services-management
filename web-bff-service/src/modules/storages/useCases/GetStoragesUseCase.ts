@@ -6,18 +6,34 @@ import { IStoragesRepository } from '../domain/repositories/IStoragesRepository'
 
 @injectable()
 export default class GetStoragesUseCase {
+  private scope = '[GetStoragesUseCase]';
   constructor(
     @inject('StoragesRepository')
     private storagesRepository: IStoragesRepository,
   ) {}
 
   public async execute(data: IGetStorages): Promise<IStorages> {
-    const storage = await this.storagesRepository.getById(data);
+    const method = '[execute]';
 
+    const storage = await this.storagesRepository.getById(data);
+    console.time(
+      `[INFO]${this.scope}${method} Request ${JSON.stringify(
+        data,
+      )} from service`,
+    );
     if (!storage) {
+      console.timeEnd(
+        `[INFO]${this.scope}${method} Request ${JSON.stringify(
+          data,
+        )} from service`,
+      );
       throw new AppErrors('Storage not found');
     }
-
+    console.timeEnd(
+      `[INFO]${this.scope}${method} Request ${JSON.stringify(
+        data,
+      )} from service`,
+    );
     return storage;
   }
 }

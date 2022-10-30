@@ -17,12 +17,27 @@ export default class StoragesController {
     request: Request,
     response: Response,
   ): Promise<Response> {
+    const scope = '[StoragesController]';
+    const method = '[getById]';
     const { id } = request.params;
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-    const getStorage = container.resolve(GetStoragesUseCase);
-    const storage = await getStorage.execute({ id });
+      console.log(`[INFO]${scope}${method}  id:${id}`);
+      const getStorage = container.resolve(GetStoragesUseCase);
+      const storage = await getStorage.execute({ id });
 
-    return response.json(storage);
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json(storage);
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
+    }
   }
 
   public async getAllBySupplierId(
@@ -43,26 +58,43 @@ export default class StoragesController {
     request: Request,
     response: Response,
   ): Promise<Response> {
+    const scope = '[StoragesController]';
+    const method = '[getAllBySenderId]';
     const { id } = request.params;
     const name = request.query.name as string;
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-    if (name) {
-      const getAllStoragesByName = container.resolve(
-        GetAllStoragesByNameUsecase,
+      console.log(`[INFO]${scope}${method}  senderId:${id}`);
+      if (name) {
+        const getAllStoragesByName = container.resolve(
+          GetAllStoragesByNameUsecase,
+        );
+
+        const storages = await getAllStoragesByName.execute({
+          senderId: id,
+          name: name,
+        });
+        return response.json(storages);
+      }
+      const getAllStoragesBySender = container.resolve(
+        GetAllStoragesBySenderIdUseCase,
       );
 
-      const storages = await getAllStoragesByName.execute({
-        senderId: id,
-        name: name,
-      });
-      return response.json(storages);
-    }
-    const getAllStoragesBySender = container.resolve(
-      GetAllStoragesBySenderIdUseCase,
-    );
-    const storages = await getAllStoragesBySender.execute({ senderId: id });
+      const storages = await getAllStoragesBySender.execute({ senderId: id });
 
-    return response.json(storages);
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json(storages);
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
+    }
   }
 
   public async create(request: Request, response: Response): Promise<Response> {

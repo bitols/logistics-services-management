@@ -9,10 +9,25 @@ import { container } from 'tsyringe';
 
 export default class SuppliersController {
   public async getAll(request: Request, response: Response): Promise<Response> {
-    const getAllSuppliers = container.resolve(GetAllSuppliersUseCase);
-    const suppliers = await getAllSuppliers.execute();
+    const scope = '[SuppliersController]';
+    const method = '[getAll]';
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
+      const getAllSuppliers = container.resolve(GetAllSuppliersUseCase);
+      console.log(`[INFO]${scope}${method}}`);
+      const suppliers = await getAllSuppliers.execute();
 
-    return response.json(suppliers);
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json(suppliers);
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
+    }
   }
 
   public async getById(
