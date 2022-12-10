@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import StoragesController from '../contollers/StoragesController';
 import { celebrate, Joi, Segments } from 'celebrate';
+import { loggingRequest } from '@shared/infra/middlewares/loggingRequest';
 
 const storagesRouter = Router();
 const storagesController = new StoragesController();
 
 storagesRouter.post(
   '/',
+  loggingRequest,
   celebrate({
     [Segments.BODY]: {
       name: Joi.string().required(),
@@ -22,6 +24,7 @@ storagesRouter.post(
 );
 storagesRouter.delete(
   '/:id',
+  loggingRequest,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().hex().required(),
@@ -32,6 +35,7 @@ storagesRouter.delete(
 
 storagesRouter.get(
   '/:id',
+  loggingRequest,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().hex().required(),
@@ -42,6 +46,7 @@ storagesRouter.get(
 
 storagesRouter.get(
   '/:id/products',
+  loggingRequest,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().hex().required(),
@@ -52,6 +57,7 @@ storagesRouter.get(
 
 storagesRouter.get(
   '/:id/reports',
+  loggingRequest,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().hex().required(),
@@ -62,6 +68,7 @@ storagesRouter.get(
 
 storagesRouter.post(
   '/:id/products',
+  loggingRequest,
   celebrate({
     [Segments.BODY]: {
       productId: Joi.string().hex().required(),
@@ -76,6 +83,7 @@ storagesRouter.post(
 
 storagesRouter.delete(
   '/:id/products/:productId',
+  loggingRequest,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().hex().required(),

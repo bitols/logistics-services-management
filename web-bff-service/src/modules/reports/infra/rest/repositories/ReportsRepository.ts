@@ -21,12 +21,6 @@ export class ReportsRepository implements IReportsRepository {
         },
       );
 
-      console.log(
-        `request all storages capacity reports by sender: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
       console.error(error.message);

@@ -35,7 +35,6 @@ export class StoragesDetailsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.currentStorage = data;
-          console.log(data);
         },
         error: (e) => {
           console.error(e);
@@ -49,7 +48,6 @@ export class StoragesDetailsComponent implements OnInit {
     this.storagesService.delete(this.currentStorage.id)
       .subscribe({
         next: (data) => {
-          console.log(data);
           this.notificationService.showSuccess('Storage deleted');
           this.reloadPage();
         },
@@ -65,7 +63,6 @@ export class StoragesDetailsComponent implements OnInit {
     let currentUrl = this.router.url;
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
         this.router.navigate([currentUrl]);
-        console.log(currentUrl);
     });
   }
 

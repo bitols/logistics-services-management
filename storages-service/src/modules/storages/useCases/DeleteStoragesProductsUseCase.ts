@@ -8,13 +8,20 @@ import { IDeleteStorageProducts } from '../domain/models/requests/IDeleteStorage
 
 @injectable()
 export default class DeleteStoragesproductsUseCase {
+  private scope = '[DeleteStoragesproductsUseCase]';
   constructor(
     @inject('StorageProductsRepository')
     private storageProductsRepository: IStorageProductsRepository,
   ) {}
 
   public async execute(data: IDeleteStorageProducts): Promise<void> {
+    const method = '[execute]';
     try {
+      console.time(
+        `[INFO]${this.scope}${method} Register ${JSON.stringify(
+          data,
+        )} to data base`,
+      );
       let storagesProducts =
         await this.storageProductsRepository.getAllByStorages(data.storageId);
       storagesProducts = storagesProducts.filter(
@@ -28,28 +35,44 @@ export default class DeleteStoragesproductsUseCase {
           promises.push(this.storageProductsRepository.remove(storageProduct));
         }
 
-        Promise.all(promises)
-          .then(response => console.log(response))
-          .catch(error => console.log(error));
+        Promise.all(promises).then().catch();
 
+        const queueRmvProduct = {
+          increase: false,
+          storedProduct: {
+            id: data.productId,
+            name: data.name,
+            height: data.height,
+            width: data.width,
+            lenght: data.lenght,
+            value: data.value,
+            storageId: data.storageId,
+            productId: data.productId,
+            quantity: data.quantity,
+          },
+        };
+
+        console.time(
+          `[INFO]${this.scope}${method} Produce message ${JSON.stringify(
+            queueRmvProduct,
+          )} to topic ${queueConfig.storageCapacityTopic}`,
+        );
         await queue.produce(
           queueConfig.storageProductTopic,
-          JSON.stringify({
-            increase: false,
-            storedProduct: {
-              id: data.productId,
-              name: data.name,
-              height: data.height,
-              width: data.width,
-              lenght: data.lenght,
-              value: data.value,
-              storageId: data.storageId,
-              productId: data.productId,
-              quantity: data.quantity,
-            },
-          }),
+          JSON.stringify(queueRmvProduct),
+        );
+        console.timeEnd(
+          `[INFO]${this.scope}${method} Produce message ${JSON.stringify(
+            queueRmvProduct,
+          )} to topic ${queueConfig.storageCapacityTopic}`,
         );
       }
+
+      console.timeEnd(
+        `[INFO]${this.scope}${method} Register ${JSON.stringify(
+          data,
+        )} to data base`,
+      );
     } catch (error: any) {
       throw new AppErrors('Error on remove products', 500);
     }

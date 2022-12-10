@@ -17,14 +17,12 @@ export class GeolocationsRepository implements IGeolocationsRepository {
           geocodeService.key
         }`,
       );
-      console.log(
-        `request location from address: ${address}, response status is: ${status}`,
-      );
+
       if (data.results.length) {
         return data.results[0].geometry;
       }
     } catch (error: any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 }

@@ -13,7 +13,7 @@ const init = async (): Promise<void> => {
 
 const produce = async (topic: string, message: string): Promise<void> => {
   if (!queue) {
-    console.log('Queue not initialized');
+    console.error('Queue not initialized');
     throw new AppErrors('Queue not initialized', 500);
   }
 
@@ -26,7 +26,6 @@ const produce = async (topic: string, message: string): Promise<void> => {
     topic,
     messages: [{ value: message }],
   });
-  console.log(`queue.produce: ${JSON.stringify(result)}`);
 };
 
 export default { init, produce };

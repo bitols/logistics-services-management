@@ -23,11 +23,6 @@ export class ReportsRepository implements IReportsRepository {
         },
       );
 
-      console.log(
-        `request storages report: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
       return data;
     } catch (error: any) {
       console.error(error.message);
@@ -39,12 +34,6 @@ export class ReportsRepository implements IReportsRepository {
       const { status } = await this.restClient.post<void>(
         `/reports/storages`,
         request,
-      );
-
-      console.log(
-        `request register storage reports: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
       );
     } catch (error: any) {
       console.error(error.message);

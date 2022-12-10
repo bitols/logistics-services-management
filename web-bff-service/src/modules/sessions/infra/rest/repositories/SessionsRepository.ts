@@ -22,11 +22,6 @@ export default class SessionsRepository implements ISessionsRepository {
           },
         },
       );
-      console.log(
-        `request sessiont: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
 
       return data;
     } catch (error: any) {
@@ -47,8 +42,6 @@ export default class SessionsRepository implements ISessionsRepository {
           },
         },
       );
-      console.log(` response status is: ${status}`);
-
       return data;
     } catch (error: any) {
       console.error(error.message);

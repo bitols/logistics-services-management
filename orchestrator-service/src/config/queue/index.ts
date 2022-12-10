@@ -15,7 +15,6 @@ const consume = async (
   callback: CallableFunction,
 ): Promise<void> => {
   if (!queue) {
-    console.log('Queue not initialized');
     throw new AppErrors('Queue not initialized', 500);
   }
   const consumer = queue.consumer({

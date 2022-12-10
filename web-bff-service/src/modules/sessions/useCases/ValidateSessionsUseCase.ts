@@ -17,7 +17,6 @@ export class ValidateSessionsUseCase {
     if (!credential) {
       throw new AppErrors('JWT expired.', 401);
     }
-
     return credential;
   }
 }

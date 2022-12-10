@@ -20,15 +20,9 @@ export class StoragesRepository implements IStoragesRepository {
         `/storages/${request.id}/products`,
       );
 
-      console.log(
-        `request storaged products: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 
@@ -39,12 +33,6 @@ export class StoragesRepository implements IStoragesRepository {
       const { data, status } = await this.restClient.patch<IStorages>(
         `/storages/${request.id}/location`,
         { location: request.location },
-      );
-
-      console.log(
-        `request update Location storage: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
       );
 
       return data;
@@ -59,15 +47,9 @@ export class StoragesRepository implements IStoragesRepository {
         `/storages/${request.id}`,
       );
 
-      console.log(
-        `request storage: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 }

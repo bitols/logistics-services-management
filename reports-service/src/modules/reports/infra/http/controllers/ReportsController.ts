@@ -8,19 +8,37 @@ export default class ReportsController {
     request: Request,
     response: Response,
   ): Promise<Response> {
+    const scope = '[ReportsController]';
+    const method = '[getStoragesReport]';
     const { storageId } = request.params;
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-    const getStoragesReport = container.resolve(GetStoragesReportUseCase);
-    const storagesCapacity = await getStoragesReport.execute({
-      storageId,
-    });
-    return response.json(storagesCapacity);
+      console.log(`[INFO]${scope}${method}  storageId:${storageId}`);
+      const getStoragesReport = container.resolve(GetStoragesReportUseCase);
+      const storagesCapacity = await getStoragesReport.execute({
+        storageId,
+      });
+
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json(storagesCapacity);
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
+    }
   }
 
   public async registerStoragesReport(
     request: Request,
     response: Response,
   ): Promise<Response> {
+    const scope = '[ReportsController]';
+    const method = '[registerStoragesReport]';
     const {
       storageId,
       capacity,
@@ -32,20 +50,44 @@ export default class ReportsController {
       items,
     } = request.body;
 
-    const registerStoragesCapacity = container.resolve(
-      RegisterStoragesReportUseCase,
-    );
-    const storageCapacity = await registerStoragesCapacity.execute({
-      storageId,
-      capacity,
-      stored,
-      usage,
-      products,
-      value,
-      senderId,
-      items,
-    });
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
+      const registerStoragesCapacity = container.resolve(
+        RegisterStoragesReportUseCase,
+      );
+      console.log(
+        `[INFO]${scope}${method} ${JSON.stringify({
+          storageId,
+          capacity,
+          stored,
+          usage,
+          products,
+          value,
+          senderId,
+          items,
+        })}`,
+      );
+      const storageCapacity = await registerStoragesCapacity.execute({
+        storageId,
+        capacity,
+        stored,
+        usage,
+        products,
+        value,
+        senderId,
+        items,
+      });
 
-    return response.json(storageCapacity);
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json(storageCapacity);
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
+    }
   }
 }
