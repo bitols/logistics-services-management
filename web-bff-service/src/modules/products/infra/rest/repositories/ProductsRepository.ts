@@ -26,12 +26,6 @@ export class ProductsRepository implements IProductsRepository {
         },
       );
 
-      console.log(
-        `request all products by name: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
       console.error(error.message);
@@ -47,12 +41,6 @@ export class ProductsRepository implements IProductsRepository {
             Accept: 'application/json',
           },
         },
-      );
-
-      console.log(
-        `delete product: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
       );
     } catch (error: any) {
       console.error(error.message);
@@ -72,12 +60,6 @@ export class ProductsRepository implements IProductsRepository {
           },
         },
       );
-
-      console.log(
-        `request create product: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
       return data;
     } catch (error: any) {
       console.error(error.message);
@@ -94,13 +76,6 @@ export class ProductsRepository implements IProductsRepository {
           },
         },
       );
-
-      console.log(
-        `request product: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
       console.error(error.message);
@@ -119,13 +94,6 @@ export class ProductsRepository implements IProductsRepository {
           },
         },
       );
-
-      console.log(
-        `request all products by sender: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
       console.error(error.message);

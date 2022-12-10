@@ -19,9 +19,7 @@ export class UpdateLocationUseCase {
 
     receiver.location = data.location;
 
-    const ok = await this.receiversRepository.save(receiver);
-
-    console.log(ok);
+    await this.receiversRepository.save(receiver);
 
     return {
       id: receiver.id,

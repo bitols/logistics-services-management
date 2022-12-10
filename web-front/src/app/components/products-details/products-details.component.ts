@@ -36,7 +36,6 @@ export class ProductsDetailsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.currentProduct = data;
-          console.log(data);
         },
         error: (e) => {
           console.error(e);
@@ -49,7 +48,6 @@ export class ProductsDetailsComponent implements OnInit {
     this.productsService.delete(this.currentProduct.id)
       .subscribe({
         next: (data) => {
-          console.log(data);
           this.notificationService.showSuccess('Product deleted');
           this.reloadPage();
         },

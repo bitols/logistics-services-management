@@ -5,3 +5,8 @@
 .col-md-12 {
   margin-bottom: 2em;
 }
+
+.row {
+  background-color: white;
+  border-radius: 1em;
+}

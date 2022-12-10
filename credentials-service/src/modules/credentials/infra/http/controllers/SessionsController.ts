@@ -20,8 +20,6 @@ export default class SessionsController {
   ): Promise<Response> {
     const { token } = request.body;
 
-    console.log(request.body);
-
     const validationSession = container.resolve(ValidationSessionsUseCase);
 
     const session = await validationSession.execute({ token });

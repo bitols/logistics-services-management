@@ -11,16 +11,12 @@ export default class CreadentialsRepository implements ICredentialsRepository {
   }
 
   public async save(credential: ICredential): Promise<ICredential> {
-    console.log(`save credential: ${JSON.stringify(credential)}`);
-
     await this.ormRepository.save(credential);
 
     return credential;
   }
 
   public async create(data: ICreateCredentials): Promise<ICredential> {
-    console.log(`create credential: ${JSON.stringify(data)}`);
-
     const credential = this.ormRepository.create(data);
 
     return credential;
@@ -28,8 +24,6 @@ export default class CreadentialsRepository implements ICredentialsRepository {
   public async getByEmail(
     email: string,
   ): Promise<ICredential | null | undefined> {
-    console.log(`get credential by email: ${email}`);
-
     const credential = await this.ormRepository.findOneBy({
       email: email,
     });

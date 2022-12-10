@@ -5,12 +5,21 @@ import { IStorages } from '../domain/models/responses/IStorages';
 import AppErrors from '@shared/errors/AppErrors';
 @injectable()
 export default class CreateStoragesUseCase {
+  private scope = '[CreateStoragesUseCase]';
   constructor(
     @inject('StoragesRepository')
     private storagesRepository: IStoragesRepository,
   ) {}
 
   public async execute(data: ICreateStorages): Promise<IStorages> {
+    const method = '[execute]';
+
+    console.time(
+      `[INFO]${this.scope}${method} Request register ${JSON.stringify(
+        data,
+      )} to service`,
+    );
+
     const storages = await this.storagesRepository.getAllByName({
       senderId: data.senderId,
       name: data.name,
@@ -23,6 +32,12 @@ export default class CreateStoragesUseCase {
     if (!storage) {
       throw new AppErrors('Error on create storage');
     }
+
+    console.timeEnd(
+      `[INFO]${this.scope}${method} Request register ${JSON.stringify(
+        data,
+      )} to service`,
+    );
     return storage;
   }
 }

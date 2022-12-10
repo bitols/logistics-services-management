@@ -11,38 +11,28 @@ export class SendersRepository implements ISendersRepository {
   }
 
   public async create(data: ICreateSenders): Promise<ISender> {
-    console.log(`create sender: ${JSON.stringify(data)}`);
-
     const sender = this.ormRepository.create(data);
 
     return sender;
   }
 
   public async save(sender: ISender): Promise<ISender> {
-    console.log(`save sender: ${JSON.stringify(sender)}`);
-
     await this.ormRepository.save(sender);
 
     return sender;
   }
 
   public async remove(sender: ISender): Promise<void> {
-    console.log(`remove sender: ${JSON.stringify(sender)}`);
-
     await this.ormRepository.remove(sender);
   }
 
   public async getById(id: string): Promise<ISender | null | undefined> {
-    console.log(`get sender by id: ${id}`);
-
     const sender = await this.ormRepository.findOneById(id);
 
     return sender;
   }
 
   public async getAll(): Promise<ISender[]> {
-    console.log(`get all senders`);
-
     const senders = await this.ormRepository.find();
 
     return senders;

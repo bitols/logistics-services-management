@@ -19,12 +19,6 @@ export class ProductsRepository implements IProductsRepository {
         `/products/sender/${request.senderId}`,
       );
 
-      console.log(
-        `request all products by sender: ${JSON.stringify(
-          request,
-        )}, response status is: ${status}`,
-      );
-
       return data;
     } catch (error: any) {
       console.error(error.message);

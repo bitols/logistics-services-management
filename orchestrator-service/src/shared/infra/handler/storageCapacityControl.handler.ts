@@ -4,8 +4,11 @@ import { container } from 'tsyringe';
 export const storageCapacityControl = async (
   message: string,
 ): Promise<void> => {
+  const scope = '[storageCapacityControl.handler]';
   try {
-    console.log(`storageCapacityControl message received: ${message}`);
+    console.time(`[INFO]${scope} Total execution`);
+
+    console.log(`[INFO]${scope}  message received:${message}`);
     const storagesCapacityControl = JSON.parse(
       message,
     ) as IStoragesCapacityControl;
@@ -14,8 +17,21 @@ export const storageCapacityControl = async (
       StoragesCapacityChangeUseCase,
     );
 
+    console.time(
+      `[INFO]${scope} Update report storagesCapacityControl: ${JSON.stringify(
+        storagesCapacityControl,
+      )}`,
+    );
     await storagesCapacityChange.execute(storagesCapacityControl);
+    console.timeEnd(
+      `[INFO]${scope} Update report storagesCapacityControl: ${JSON.stringify(
+        storagesCapacityControl,
+      )}`,
+    );
+
+    console.timeEnd(`[INFO]${scope} Total execution`);
   } catch (error: any) {
-    console.log(error.message);
+    console.error(`[ERR]${scope}${error.message}`);
+    console.timeEnd(`[INFO]${scope} Total execution`);
   }
 };

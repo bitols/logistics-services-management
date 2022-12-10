@@ -25,7 +25,6 @@ export class SessionsService {
   public getToken(): any {
     const token = window.sessionStorage.getItem(TOKEN_KEY);
     if (token) {
-      console.log(token);
       return token;
     }
 
@@ -35,8 +34,7 @@ export class SessionsService {
   public getUser(): any {
     const user = window.sessionStorage.getItem(USER_KEY);
     if (user) {
-      console.log(user);
-      return JSON.parse(user);
+       return JSON.parse(user);
     }
 
     return {};

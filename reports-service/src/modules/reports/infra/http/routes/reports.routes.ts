@@ -1,3 +1,4 @@
+import { loggingRequest } from '@shared/infra/middlewares/loggingRequest';
 import { celebrate, Segments } from 'celebrate';
 import { Router } from 'express';
 import Joi from 'joi';
@@ -8,6 +9,7 @@ const reportsController = new ReportsController();
 
 reportsRouter.get(
   '/storages/:storageId',
+  loggingRequest,
   celebrate({
     [Segments.PARAMS]: {
       storageId: Joi.string().hex().required(),
@@ -18,6 +20,7 @@ reportsRouter.get(
 
 reportsRouter.post(
   '/storages',
+  loggingRequest,
   celebrate({
     [Segments.BODY]: {
       id: Joi.string().hex().optional(),

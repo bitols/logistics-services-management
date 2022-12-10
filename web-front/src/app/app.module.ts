@@ -14,7 +14,7 @@ import { LoginComponent } from './components/login/login.component';
 
 import { HomeComponent } from './components/home/home.component';
 
-import { httpInterceptorProviders } from './helpers/http.interceptor'
+import { httpInterceptorProviders } from './handler/http.interceptor'
 
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxMaskModule, IConfig } from 'ngx-mask';

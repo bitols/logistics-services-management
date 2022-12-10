@@ -17,12 +17,27 @@ export default class StoragesController {
     request: Request,
     response: Response,
   ): Promise<Response> {
+    const scope = '[StoragesController]';
+    const method = '[getById]';
     const { id } = request.params;
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-    const getStorage = container.resolve(GetStoragesUseCase);
-    const storage = await getStorage.execute({ id });
+      console.log(`[INFO]${scope}${method}  id:${id}`);
+      const getStorage = container.resolve(GetStoragesUseCase);
+      const storage = await getStorage.execute({ id });
 
-    return response.json(storage);
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json(storage);
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
+    }
   }
 
   public async getAllBySupplierId(
@@ -43,44 +58,76 @@ export default class StoragesController {
     request: Request,
     response: Response,
   ): Promise<Response> {
+    const scope = '[StoragesController]';
+    const method = '[getAllBySenderId]';
     const { id } = request.params;
     const name = request.query.name as string;
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-    if (name) {
-      const getAllStoragesByName = container.resolve(
-        GetAllStoragesByNameUsecase,
+      console.log(`[INFO]${scope}${method}  senderId:${id}`);
+      if (name) {
+        const getAllStoragesByName = container.resolve(
+          GetAllStoragesByNameUsecase,
+        );
+
+        const storages = await getAllStoragesByName.execute({
+          senderId: id,
+          name: name,
+        });
+        return response.json(storages);
+      }
+      const getAllStoragesBySender = container.resolve(
+        GetAllStoragesBySenderIdUseCase,
       );
 
-      const storages = await getAllStoragesByName.execute({
-        senderId: id,
-        name: name,
-      });
-      return response.json(storages);
-    }
-    const getAllStoragesBySender = container.resolve(
-      GetAllStoragesBySenderIdUseCase,
-    );
-    const storages = await getAllStoragesBySender.execute({ senderId: id });
+      const storages = await getAllStoragesBySender.execute({ senderId: id });
 
-    return response.json(storages);
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json(storages);
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
+    }
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
+    const scope = '[StoragesController]';
+    const method = '[create]';
     const { name, capacity, email, phone, address, supplierId, senderId } =
       request.body;
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-    const createStorage = container.resolve(CreateStoragesUseCase);
-    const storage = await createStorage.execute({
-      name,
-      capacity,
-      email,
-      phone,
-      address,
-      supplierId,
-      senderId,
-    });
+      console.log(`[INFO]${scope}${method}  name:${name}`);
+      const createStorage = container.resolve(CreateStoragesUseCase);
+      const storage = await createStorage.execute({
+        name,
+        capacity,
+        email,
+        phone,
+        address,
+        supplierId,
+        senderId,
+      });
 
-    return response.json(storage);
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json(storage);
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
+    }
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
@@ -104,16 +151,35 @@ export default class StoragesController {
     request: Request,
     response: Response,
   ): Promise<Response> {
+    const scope = '[StoragesController]';
+    const method = '[updateLocation]';
     const { id } = request.params;
     const { location } = request.body;
 
-    const updateLocation = container.resolve(UpdateLocationUseCase);
-    const storage = await updateLocation.execute({
-      id,
-      location,
-    });
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-    return response.json(storage);
+      console.log(
+        `[INFO]${scope}${method}  storageId:${id} location: ${JSON.stringify(
+          location,
+        )}`,
+      );
+      const updateLocation = container.resolve(UpdateLocationUseCase);
+      const storage = await updateLocation.execute({
+        id,
+        location,
+      });
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json(storage);
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
+    }
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
@@ -143,6 +209,8 @@ export default class StoragesController {
     request: Request,
     response: Response,
   ): Promise<Response> {
+    const scope = '[StoragesController]';
+    const method = '[addStoreProduct]';
     const {
       name,
       height,
@@ -154,11 +222,47 @@ export default class StoragesController {
       quantity,
     } = request.body;
 
-    const createStoredProducts = container.resolve(
-      CreateStoragesProductsUseCase,
-    );
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-    const storageProducts = await createStoredProducts.execute({
+      console.log(
+        `[INFO]${scope}${method}  storageId:${storageId} add product: ${name}`,
+      );
+      const createStoredProducts = container.resolve(
+        CreateStoragesProductsUseCase,
+      );
+
+      const storageProducts = await createStoredProducts.execute({
+        name,
+        height,
+        width,
+        lenght,
+        value,
+        productId,
+        storageId,
+        quantity,
+      });
+
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json(storageProducts);
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
+    }
+  }
+
+  public async removeStoreProduct(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const scope = '[StoragesController]';
+    const method = '[removeStoreProduct]';
+    const {
       name,
       height,
       width,
@@ -167,17 +271,31 @@ export default class StoragesController {
       productId,
       storageId,
       quantity,
-    });
-    return response.json(storageProducts);
-  }
+    } = request.body;
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-  public async removeStoreProduct(
-    request: Request,
-    response: Response,
-  ): Promise<Response> {
-    const deleteProduct = container.resolve(DeleteStoragesProductsUseCase);
-    await deleteProduct.execute(request.body);
+      console.log(
+        `[INFO]${scope}${method}  storageId:${storageId} rmv product: ${name}`,
+      );
+      const deleteProduct = container.resolve(DeleteStoragesProductsUseCase);
+      await deleteProduct.execute({
+        name,
+        height,
+        width,
+        lenght,
+        value,
+        productId,
+        storageId,
+        quantity,
+      });
 
-    return response.json({});
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      return response.json({});
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
+    }
   }
 }
