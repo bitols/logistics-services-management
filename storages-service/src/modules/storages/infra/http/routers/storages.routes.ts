@@ -7,7 +7,11 @@ import StoragesController from '../controllers/StoragesController';
 const storagesRouter = Router();
 const storagesController = new StoragesController();
 
-storagesRouter.delete('/products', storagesController.removeStoreProduct);
+storagesRouter.delete(
+  '/products',
+  loggingRequest,
+  storagesController.removeStoreProduct,
+);
 
 storagesRouter.get(
   '/:id',
@@ -60,6 +64,7 @@ storagesRouter.post(
 
 storagesRouter.patch(
   '/:id/location',
+  loggingRequest,
   celebrate({
     [Segments.BODY]: {
       location: Joi.object().required(),

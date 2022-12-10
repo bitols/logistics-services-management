@@ -14,13 +14,13 @@ export default class GetStoragesUseCase {
 
   public async execute(data: IGetStorages): Promise<IStorages> {
     const method = '[execute]';
-
-    const storage = await this.storagesRepository.getById(data);
     console.time(
       `[INFO]${this.scope}${method} Request ${JSON.stringify(
         data,
       )} from service`,
     );
+    const storage = await this.storagesRepository.getById(data);
+
     if (!storage) {
       console.timeEnd(
         `[INFO]${this.scope}${method} Request ${JSON.stringify(

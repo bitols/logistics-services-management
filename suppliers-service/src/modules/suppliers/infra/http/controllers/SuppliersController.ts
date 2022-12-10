@@ -35,11 +35,27 @@ export default class SuppliersController {
     response: Response,
   ): Promise<Response> {
     const { id } = request.params;
+    const scope = '[SuppliersController]';
+    const method = '[getById]';
 
-    const getSuppliers = container.resolve(GetSuppliersUseCase);
-    const supplier = await getSuppliers.execute({ id });
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-    return response.json(supplier);
+      console.log(`[INFO]${scope}${method}  id:${id}`);
+      const getSuppliers = container.resolve(GetSuppliersUseCase);
+      const supplier = await getSuppliers.execute({ id });
+
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json(supplier);
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.time(`[INFO]${scope}${method} Total execution`);
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
+    }
   }
 
   public async create(request: Request, response: Response): Promise<Response> {

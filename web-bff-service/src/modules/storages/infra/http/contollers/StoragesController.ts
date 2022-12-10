@@ -54,34 +54,51 @@ export default class StoragesController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
+    const scope = '[StoragesController]';
+    const method = '[create]';
     const { name, capacity, email, phone, address, supplierId, senderId } =
       request.body;
 
-    const getSuppliers = container.resolve(GetSuppliersUseCase);
-    const createStorage = container.resolve(CreateStoragesUseCase);
+    try {
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-    if (request.credential.senderId !== senderId) {
-      throw new AppErrors('Unauthorized', 401);
+      console.log(`[INFO]${scope}${method} storage: ${name}`);
+
+      const getSuppliers = container.resolve(GetSuppliersUseCase);
+      const createStorage = container.resolve(CreateStoragesUseCase);
+
+      if (request.credential.senderId !== senderId) {
+        throw new AppErrors('Unauthorized', 401);
+      }
+
+      const supplier = await getSuppliers.execute({ id: supplierId });
+      if (!supplier) {
+        throw new AppErrors('Data integrity violation', 400);
+      }
+
+      const storage = await createStorage.execute({
+        name,
+        capacity,
+        email,
+        phone,
+        address,
+        supplierId,
+        senderId,
+      });
+
+      console.time(`[INFO]${scope}${method} Mount response`);
+      const responseJson = response.json({
+        id: storage.id,
+      });
+      console.timeEnd(`[INFO]${scope}${method} Mount response`);
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      return responseJson;
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
     }
-
-    const supplier = await getSuppliers.execute({ id: supplierId });
-    if (!supplier) {
-      throw new AppErrors('Data integrity violation', 422);
-    }
-
-    const storage = await createStorage.execute({
-      name,
-      capacity,
-      email,
-      phone,
-      address,
-      supplierId,
-      senderId,
-    });
-
-    return response.json({
-      id: storage.id,
-    });
   }
 
   public async getStoredProducts(
