@@ -180,27 +180,43 @@ export default class StoragesController {
     request: Request,
     response: Response,
   ): Promise<Response> {
+    const scope = '[StoragesController]';
+    const method = '[addStoredProducts]';
     const { id: storageId } = request.params;
     const { productId, quantity } = request.body;
+    try {
+      const getStorages = container.resolve(GetStoragesUseCase);
+      const createStoredProducts = container.resolve(
+        AddStoragesProductsUseCase,
+      );
+      console.time(`[INFO]${scope}${method} Total execution`);
 
-    const getStorages = container.resolve(GetStoragesUseCase);
-    const createStoredProducts = container.resolve(AddStoragesProductsUseCase);
+      console.log(
+        `[INFO]${scope}${method} storageId: ${storageId}, productId: ${productId}, quantity: ${quantity}`,
+      );
 
-    const storage = await getStorages.execute({ id: storageId });
-    if (!storage) {
-      throw new AppErrors('Data integrity violation', 422);
+      const storage = await getStorages.execute({ id: storageId });
+      if (!storage) {
+        throw new AppErrors('Data integrity violation', 422);
+      }
+
+      if (request.credential.senderId !== storage.senderId) {
+        throw new AppErrors('Unauthorized', 401);
+      }
+
+      await createStoredProducts.execute({
+        storageId,
+        productId,
+        quantity,
+      });
+
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      return response.json({});
+    } catch (err: any) {
+      console.error(`[ERR]${scope}${method} ${err.message}`);
+      console.timeEnd(`[INFO]${scope}${method} Total execution`);
+      throw err;
     }
-
-    if (request.credential.senderId !== storage.senderId) {
-      throw new AppErrors('Unauthorized', 401);
-    }
-
-    await createStoredProducts.execute({
-      storageId,
-      productId,
-      quantity,
-    });
-    return response.json({});
   }
 
   public async removeStoredProducts(
