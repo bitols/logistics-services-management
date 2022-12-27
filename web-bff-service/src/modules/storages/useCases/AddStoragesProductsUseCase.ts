@@ -6,6 +6,7 @@ import { IStoragesRepository } from '../domain/repositories/IStoragesRepository'
 
 @injectable()
 export default class AddStoragesProductsUseCase {
+  private scope = '[AddStoragesProductsUseCase]';
   constructor(
     @inject('StoragesRepository')
     private storagesRepository: IStoragesRepository,
@@ -14,6 +15,12 @@ export default class AddStoragesProductsUseCase {
   ) {}
 
   public async execute(data: IAddStorageProducts): Promise<void> {
+    const method = '[execute]';
+    console.time(
+      `[INFO]${this.scope}${method} Request register ${JSON.stringify(
+        data,
+      )} to service`,
+    );
     const product = await this.productsRepository.getById({
       id: data.productId,
     });
@@ -37,7 +44,17 @@ export default class AddStoragesProductsUseCase {
         storageId: data.storageId,
         quantity: data.quantity,
       });
+      console.timeEnd(
+        `[INFO]${this.scope}${method} Request register ${JSON.stringify(
+          data,
+        )} to service`,
+      );
     } catch (error: any) {
+      console.timeEnd(
+        `[INFO]${this.scope}${method} Request register ${JSON.stringify(
+          data,
+        )} to service`,
+      );
       throw new AppErrors('Error on associate products', 500);
     }
   }
