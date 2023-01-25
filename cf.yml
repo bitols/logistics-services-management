@@ -1,0 +1,1591 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  CloudMap:
+    Properties:
+      Description: Service Map for Docker Compose project logistics-services-management
+      Name: logistics-services-management.local
+      Vpc: vpc-09db5cf2b7a6da418
+    Type: AWS::ServiceDiscovery::PrivateDnsNamespace
+  Cluster:
+    Properties:
+      ClusterName: logistics-services-management
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+    Type: AWS::ECS::Cluster
+  CredentialsService:
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: LogisticsmanagementnetworkNetwork
+          Subnets:
+          - subnet-03083935462252af0
+          - subnet-0f1e881b10c0e06a3
+          - subnet-0de5554623d9d4c78
+          - subnet-00f42b0c3a05bfbec
+          - subnet-0e02121620e2d5a53
+          - subnet-0cad77aed9da0295c
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - CredentialsServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: credentials
+      TaskDefinition:
+        Ref: CredentialsTaskDefinition
+    Type: AWS::ECS::Service
+  CredentialsServiceDiscoveryEntry:
+    Properties:
+      Description: '"credentials" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: credentials
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  CredentialsTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-east-1.compute.internal
+        - logistics-services-management.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: Credentials_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Credentials_ResolvConf_InitContainer
+        Environment:
+        - Name: APP_API_PORT
+          Value: "3337"
+        - Name: APP_SECRET
+          Value: 7d6978b89ec900c6157e3974c4851e32s
+        - Name: APP_TOKEN_EXPIRE
+          Value: 1h
+        - Name: DB_HOST
+          Value: cluster0.ftdfw.mongodb.net
+        - Name: DB_NAME
+          Value: credentials
+        - Name: DB_PASSWORD
+          Value: QOzUIsocAsfCvEJW
+        - Name: DB_USERNAME
+          Value: credentials
+        Essential: true
+        Image: docker.io/xalirow/credentials-service:latest@sha256:a2d934de3819394eebbd89dc11344722a1b72c51086890fe06688b35aad1eaef
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: credentials
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: CredentialsTaskExecutionRole
+      Family: logistics-services-management-credentials
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  CredentialsTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: credentials
+    Type: AWS::IAM::Role
+  KafkaService:
+    DependsOn:
+    - KafkaTCP9092Listener
+    - ZookeeperService
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+      - ContainerName: kafka
+        ContainerPort: 9092
+        TargetGroupArn:
+          Ref: KafkaTCP9092TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: LogisticsmanagementnetworkNetwork
+          Subnets:
+          - subnet-03083935462252af0
+          - subnet-0f1e881b10c0e06a3
+          - subnet-0de5554623d9d4c78
+          - subnet-00f42b0c3a05bfbec
+          - subnet-0e02121620e2d5a53
+          - subnet-0cad77aed9da0295c
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - KafkaServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: kafka
+      TaskDefinition:
+        Ref: KafkaTaskDefinition
+    Type: AWS::ECS::Service
+  KafkaServiceDiscoveryEntry:
+    Properties:
+      Description: '"kafka" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: kafka
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  KafkaTCP9092Listener:
+    Properties:
+      DefaultActions:
+      - ForwardConfig:
+          TargetGroups:
+          - TargetGroupArn:
+              Ref: KafkaTCP9092TargetGroup
+        Type: forward
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 9092
+      Protocol: TCP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  KafkaTCP9092TargetGroup:
+    Properties:
+      Port: 9092
+      Protocol: TCP
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      TargetType: ip
+      VpcId: vpc-09db5cf2b7a6da418
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  KafkaTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-east-1.compute.internal
+        - logistics-services-management.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: Kafka_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Kafka_ResolvConf_InitContainer
+        Environment:
+        - Name: KAFKAJS_NO_PARTITIONER_WARNING
+          Value: "1"
+        - Name: KAFKA_ADVERTISED_LISTENERS
+          Value: INSIDE://kafka:29092,OUTSIDE://localhost:9092
+        - Name: KAFKA_BROKER_ID
+          Value: "0"
+        - Name: KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
+          Value: "100"
+        - Name: KAFKA_INTER_BROKER_LISTENER_NAME
+          Value: INSIDE
+        - Name: KAFKA_LISTENERS
+          Value: INSIDE://kafka:29092,OUTSIDE://kafka:9092
+        - Name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+          Value: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+        - Name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+          Value: "1"
+        - Name: KAFKA_ZOOKEEPER_CONNECT
+          Value: zookeeper:2181
+        Essential: true
+        Image: docker.io/confluentinc/cp-enterprise-kafka:5.2.1@sha256:bb3d4572b51490b7e9fc2431125ae963bf7cdc4cd30ff4575b1e529e3e53a1e6
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: kafka
+        PortMappings:
+        - ContainerPort: 9092
+          HostPort: 9092
+          Protocol: tcp
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: KafkaTaskExecutionRole
+      Family: logistics-services-management-kafka
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  KafkaTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: kafka
+    Type: AWS::IAM::Role
+  LoadBalancer:
+    Properties:
+      LoadBalancerAttributes:
+      - Key: load_balancing.cross_zone.enabled
+        Value: "true"
+      Scheme: internet-facing
+      Subnets:
+      - subnet-03083935462252af0
+      - subnet-0f1e881b10c0e06a3
+      - subnet-0de5554623d9d4c78
+      - subnet-00f42b0c3a05bfbec
+      - subnet-0e02121620e2d5a53
+      - subnet-0cad77aed9da0295c
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      Type: network
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  LogGroup:
+    Properties:
+      LogGroupName: /docker-compose/logistics-services-management
+    Type: AWS::Logs::LogGroup
+  Logisticsmanagementnetwork3000Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: web-bff:3000/tcp on logistics-management-network network
+      FromPort: 3000
+      GroupId:
+        Ref: LogisticsmanagementnetworkNetwork
+      IpProtocol: TCP
+      ToPort: 3000
+    Type: AWS::EC2::SecurityGroupIngress
+  Logisticsmanagementnetwork9092Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: kafka:9092/tcp on logistics-management-network network
+      FromPort: 9092
+      GroupId:
+        Ref: LogisticsmanagementnetworkNetwork
+      IpProtocol: TCP
+      ToPort: 9092
+    Type: AWS::EC2::SecurityGroupIngress
+  LogisticsmanagementnetworkNetwork:
+    Properties:
+      GroupDescription: logistics-services-management Security Group for logistics-management-network
+        network
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.network
+        Value: logistics-services-management_logistics-management-network
+      VpcId: vpc-09db5cf2b7a6da418
+    Type: AWS::EC2::SecurityGroup
+  LogisticsmanagementnetworkNetworkIngress:
+    Properties:
+      Description: Allow communication within network logistics-management-network
+      GroupId:
+        Ref: LogisticsmanagementnetworkNetwork
+      IpProtocol: "-1"
+      SourceSecurityGroupId:
+        Ref: LogisticsmanagementnetworkNetwork
+    Type: AWS::EC2::SecurityGroupIngress
+  OrchestratorService:
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: LogisticsmanagementnetworkNetwork
+          Subnets:
+          - subnet-03083935462252af0
+          - subnet-0f1e881b10c0e06a3
+          - subnet-0de5554623d9d4c78
+          - subnet-00f42b0c3a05bfbec
+          - subnet-0e02121620e2d5a53
+          - subnet-0cad77aed9da0295c
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - OrchestratorServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: orchestrator
+      TaskDefinition:
+        Ref: OrchestratorTaskDefinition
+    Type: AWS::ECS::Service
+  OrchestratorServiceDiscoveryEntry:
+    Properties:
+      Description: '"orchestrator" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: orchestrator
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  OrchestratorTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-east-1.compute.internal
+        - logistics-services-management.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: Orchestrator_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Orchestrator_ResolvConf_InitContainer
+        Environment:
+        - Name: API_GOOGLE_GEOCODE
+          Value: https://maps.googleapis.com/maps/api/geocode
+        - Name: API_GOOGLE_GEOCODE_KEY
+          Value: AIzaSyC80nZOa8AEJWJE3V0B2TFStXifu13YuaA
+        - Name: API_PRODUCTS_ADDRESS
+          Value: http://products:3333
+        - Name: API_RECEIVERS_ADDRESS
+          Value: http://receivers:3334
+        - Name: API_REPORTS_ADDRESS
+          Value: http://reports:3336
+        - Name: API_SENDERS_ADDRESS
+          Value: http://senders:3330
+        - Name: API_STORAGES_ADDRESS
+          Value: http://storages:3332
+        - Name: API_SUPPLIERS_ADDRESS
+          Value: http://suppliers:3331
+        - Name: APP_API_PORT
+          Value: "3335"
+        - Name: KAFKA_CLIENT_ID
+          Value: logistics-services-management
+        - Name: KAFKA_GROUP_ID
+          Value: logistics-services
+        - Name: KAFKA_HOST
+          Value: kafka:29092
+        - Name: RECEIVER_LOCATION_TOPIC
+          Value: receiver-location
+        - Name: STORAGE_CAPACITY_TOPIC
+          Value: storage-capacity
+        - Name: STORAGE_LOCATION_TOPIC
+          Value: storage-location
+        - Name: STORAGE_PRODUCT_TOPIC
+          Value: storage-product
+        Essential: true
+        Image: docker.io/xalirow/orchestrator-service:latest@sha256:2e7b80c39d8081efe9f053a0de82a4c7672cdd5e2e25010f5405e1894877eff3
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: orchestrator
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: OrchestratorTaskExecutionRole
+      Family: logistics-services-management-orchestrator
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  OrchestratorTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: orchestrator
+    Type: AWS::IAM::Role
+  ProductsService:
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: LogisticsmanagementnetworkNetwork
+          Subnets:
+          - subnet-03083935462252af0
+          - subnet-0f1e881b10c0e06a3
+          - subnet-0de5554623d9d4c78
+          - subnet-00f42b0c3a05bfbec
+          - subnet-0e02121620e2d5a53
+          - subnet-0cad77aed9da0295c
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - ProductsServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: products
+      TaskDefinition:
+        Ref: ProductsTaskDefinition
+    Type: AWS::ECS::Service
+  ProductsServiceDiscoveryEntry:
+    Properties:
+      Description: '"products" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: products
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  ProductsTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-east-1.compute.internal
+        - logistics-services-management.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: Products_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Products_ResolvConf_InitContainer
+        Environment:
+        - Name: APP_API_PORT
+          Value: "3333"
+        - Name: DB_HOST
+          Value: cluster0.bw7lb.mongodb.net
+        - Name: DB_NAME
+          Value: products
+        - Name: DB_PASSWORD
+          Value: kAdbZwJFU1u769pi
+        - Name: DB_USERNAME
+          Value: products
+        - Name: KAFKA_CLIENT_ID
+          Value: logistics-services-management
+        - Name: KAFKA_HOST
+          Value: kafka:29092
+        Essential: true
+        Image: docker.io/xalirow/products-service:latest@sha256:1d0c4e747b1f0d51a84ee00458d556124c877dfb1e2e5a6ca61dd158c32e5add
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: products
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: ProductsTaskExecutionRole
+      Family: logistics-services-management-products
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  ProductsTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: products
+    Type: AWS::IAM::Role
+  ReceiversService:
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: LogisticsmanagementnetworkNetwork
+          Subnets:
+          - subnet-03083935462252af0
+          - subnet-0f1e881b10c0e06a3
+          - subnet-0de5554623d9d4c78
+          - subnet-00f42b0c3a05bfbec
+          - subnet-0e02121620e2d5a53
+          - subnet-0cad77aed9da0295c
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - ReceiversServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: receivers
+      TaskDefinition:
+        Ref: ReceiversTaskDefinition
+    Type: AWS::ECS::Service
+  ReceiversServiceDiscoveryEntry:
+    Properties:
+      Description: '"receivers" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: receivers
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  ReceiversTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-east-1.compute.internal
+        - logistics-services-management.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: Receivers_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Receivers_ResolvConf_InitContainer
+        Environment:
+        - Name: APP_API_PORT
+          Value: "3334"
+        - Name: DB_HOST
+          Value: cluster0.gxar7.mongodb.net
+        - Name: DB_NAME
+          Value: receivers
+        - Name: DB_PASSWORD
+          Value: ATDJx5cjxVx7qvrM
+        - Name: DB_USERNAME
+          Value: receivers
+        Essential: true
+        Image: docker.io/xalirow/receivers-service:latest@sha256:ada8a4fe5b93f3545cdee49ef894051db0b6209ab4a77e1158ad9f67a2de1cde
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: receivers
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: ReceiversTaskExecutionRole
+      Family: logistics-services-management-receivers
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  ReceiversTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: receivers
+    Type: AWS::IAM::Role
+  ReportsService:
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: LogisticsmanagementnetworkNetwork
+          Subnets:
+          - subnet-03083935462252af0
+          - subnet-0f1e881b10c0e06a3
+          - subnet-0de5554623d9d4c78
+          - subnet-00f42b0c3a05bfbec
+          - subnet-0e02121620e2d5a53
+          - subnet-0cad77aed9da0295c
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - ReportsServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: reports
+      TaskDefinition:
+        Ref: ReportsTaskDefinition
+    Type: AWS::ECS::Service
+  ReportsServiceDiscoveryEntry:
+    Properties:
+      Description: '"reports" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: reports
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  ReportsTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-east-1.compute.internal
+        - logistics-services-management.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: Reports_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Reports_ResolvConf_InitContainer
+        Environment:
+        - Name: APP_API_PORT
+          Value: "3336"
+        - Name: DB_HOST
+          Value: cluster0.j2lwq.mongodb.net
+        - Name: DB_NAME
+          Value: reports
+        - Name: DB_PASSWORD
+          Value: lmRX0EHEKaf4Xuu2
+        - Name: DB_USERNAME
+          Value: reports
+        Essential: true
+        Image: docker.io/xalirow/reports-service:latest@sha256:faab02d6737a5597efc1dd9da2d69ce842727e76a5cc18c683abed136750c1ef
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: reports
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: ReportsTaskExecutionRole
+      Family: logistics-services-management-reports
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  ReportsTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: reports
+    Type: AWS::IAM::Role
+  SendersService:
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: LogisticsmanagementnetworkNetwork
+          Subnets:
+          - subnet-03083935462252af0
+          - subnet-0f1e881b10c0e06a3
+          - subnet-0de5554623d9d4c78
+          - subnet-00f42b0c3a05bfbec
+          - subnet-0e02121620e2d5a53
+          - subnet-0cad77aed9da0295c
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - SendersServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: senders
+      TaskDefinition:
+        Ref: SendersTaskDefinition
+    Type: AWS::ECS::Service
+  SendersServiceDiscoveryEntry:
+    Properties:
+      Description: '"senders" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: senders
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  SendersTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-east-1.compute.internal
+        - logistics-services-management.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: Senders_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Senders_ResolvConf_InitContainer
+        Environment:
+        - Name: APP_API_PORT
+          Value: "3330"
+        - Name: DB_HOST
+          Value: cluster0.llwh0.mongodb.net
+        - Name: DB_NAME
+          Value: senders
+        - Name: DB_PASSWORD
+          Value: adB0OebSab1oj5Kv
+        - Name: DB_USERNAME
+          Value: senders
+        Essential: true
+        Image: docker.io/xalirow/senders-service:latest@sha256:a8152bf88df9ae6c5188f1e6e3fcb8af61dd910e4fa5a1c9f5c94dc30ce981c2
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: senders
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: SendersTaskExecutionRole
+      Family: logistics-services-management-senders
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  SendersTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: senders
+    Type: AWS::IAM::Role
+  StoragesService:
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: LogisticsmanagementnetworkNetwork
+          Subnets:
+          - subnet-03083935462252af0
+          - subnet-0f1e881b10c0e06a3
+          - subnet-0de5554623d9d4c78
+          - subnet-00f42b0c3a05bfbec
+          - subnet-0e02121620e2d5a53
+          - subnet-0cad77aed9da0295c
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - StoragesServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: storages
+      TaskDefinition:
+        Ref: StoragesTaskDefinition
+    Type: AWS::ECS::Service
+  StoragesServiceDiscoveryEntry:
+    Properties:
+      Description: '"storages" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: storages
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  StoragesTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-east-1.compute.internal
+        - logistics-services-management.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: Storages_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Storages_ResolvConf_InitContainer
+        Environment:
+        - Name: APP_API_PORT
+          Value: "3332"
+        - Name: DB_HOST
+          Value: cluster0.ymx1e.mongodb.net
+        - Name: DB_NAME
+          Value: storages
+        - Name: DB_PASSWORD
+          Value: 8p0cYL2ODepNmt4K
+        - Name: DB_USERNAME
+          Value: storages
+        - Name: KAFKA_CLIENT_ID
+          Value: logistics-services-management
+        - Name: KAFKA_HOST
+          Value: kafka:29092
+        - Name: STORAGE_CAPACITY_TOPIC
+          Value: storage-capacity
+        - Name: STORAGE_LOCATION_TOPIC
+          Value: storage-location
+        - Name: STORAGE_PRODUCT_TOPIC
+          Value: storage-product
+        Essential: true
+        Image: docker.io/xalirow/storages-service:latest@sha256:3595f0917d8849e1b0dc39423204d4812a9ebbcab228643b7e4fdabb768b6bab
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: storages
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: StoragesTaskExecutionRole
+      Family: logistics-services-management-storages
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  StoragesTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: storages
+    Type: AWS::IAM::Role
+  SuppliersService:
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: LogisticsmanagementnetworkNetwork
+          Subnets:
+          - subnet-03083935462252af0
+          - subnet-0f1e881b10c0e06a3
+          - subnet-0de5554623d9d4c78
+          - subnet-00f42b0c3a05bfbec
+          - subnet-0e02121620e2d5a53
+          - subnet-0cad77aed9da0295c
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - SuppliersServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: suppliers
+      TaskDefinition:
+        Ref: SuppliersTaskDefinition
+    Type: AWS::ECS::Service
+  SuppliersServiceDiscoveryEntry:
+    Properties:
+      Description: '"suppliers" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: suppliers
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  SuppliersTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-east-1.compute.internal
+        - logistics-services-management.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: Suppliers_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Suppliers_ResolvConf_InitContainer
+        Environment:
+        - Name: APP_API_PORT
+          Value: "3331"
+        - Name: DB_HOST
+          Value: cluster0.prysc.mongodb.net
+        - Name: DB_NAME
+          Value: suppliers
+        - Name: DB_PASSWORD
+          Value: uwmMpX9J8WtLIH2H
+        - Name: DB_USERNAME
+          Value: suppliers
+        Essential: true
+        Image: docker.io/xalirow/suppliers-service:latest@sha256:c5e698cff04880f87950e658a15bef051fb82a449da33cb0c27f8297f62589e8
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: suppliers
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: SuppliersTaskExecutionRole
+      Family: logistics-services-management-suppliers
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  SuppliersTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: suppliers
+    Type: AWS::IAM::Role
+  WebbffService:
+    DependsOn:
+    - WebbffTCP3000Listener
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+      - ContainerName: web-bff
+        ContainerPort: 3000
+        TargetGroupArn:
+          Ref: WebbffTCP3000TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: LogisticsmanagementnetworkNetwork
+          Subnets:
+          - subnet-03083935462252af0
+          - subnet-0f1e881b10c0e06a3
+          - subnet-0de5554623d9d4c78
+          - subnet-00f42b0c3a05bfbec
+          - subnet-0e02121620e2d5a53
+          - subnet-0cad77aed9da0295c
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - WebbffServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: web-bff
+      TaskDefinition:
+        Ref: WebbffTaskDefinition
+    Type: AWS::ECS::Service
+  WebbffServiceDiscoveryEntry:
+    Properties:
+      Description: '"web-bff" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: web-bff
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  WebbffTCP3000Listener:
+    Properties:
+      DefaultActions:
+      - ForwardConfig:
+          TargetGroups:
+          - TargetGroupArn:
+              Ref: WebbffTCP3000TargetGroup
+        Type: forward
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 3000
+      Protocol: TCP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  WebbffTCP3000TargetGroup:
+    Properties:
+      Port: 3000
+      Protocol: TCP
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      TargetType: ip
+      VpcId: vpc-09db5cf2b7a6da418
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  WebbffTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-east-1.compute.internal
+        - logistics-services-management.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: Webbff_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Webbff_ResolvConf_InitContainer
+        Environment:
+        - Name: API_CREDENTIALS_ADDRESS
+          Value: http://credentials:3337
+        - Name: API_PRODUCTS_ADDRESS
+          Value: http://products:3333
+        - Name: API_RECEIVERS_ADDRESS
+          Value: http://receivers:3334
+        - Name: API_REPORTS_ADDRESS
+          Value: http://reports:3336
+        - Name: API_SENDERS_ADDRESS
+          Value: http://senders:3330
+        - Name: API_STORAGES_ADDRESS
+          Value: http://storages:3332
+        - Name: API_SUPPLIERS_ADDRESS
+          Value: http://suppliers:3331
+        - Name: APP_API_PORT
+          Value: "3000"
+        Essential: true
+        Image: docker.io/xalirow/web-bff-service:latest@sha256:30472e0400926bc280f7951c2c12ae92058d0738a436544f9f94d9ba00967a10
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: web-bff
+        PortMappings:
+        - ContainerPort: 3000
+          HostPort: 3000
+          Protocol: tcp
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: WebbffTaskExecutionRole
+      Family: logistics-services-management-web-bff
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  WebbffTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: web-bff
+    Type: AWS::IAM::Role
+  ZookeeperService:
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: LogisticsmanagementnetworkNetwork
+          Subnets:
+          - subnet-03083935462252af0
+          - subnet-0f1e881b10c0e06a3
+          - subnet-0de5554623d9d4c78
+          - subnet-00f42b0c3a05bfbec
+          - subnet-0e02121620e2d5a53
+          - subnet-0cad77aed9da0295c
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - ZookeeperServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: zookeeper
+      TaskDefinition:
+        Ref: ZookeeperTaskDefinition
+    Type: AWS::ECS::Service
+  ZookeeperServiceDiscoveryEntry:
+    Properties:
+      Description: '"zookeeper" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: zookeeper
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  ZookeeperTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-east-1.compute.internal
+        - logistics-services-management.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: Zookeeper_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Zookeeper_ResolvConf_InitContainer
+        Environment:
+        - Name: ZOOKEEPER_CLIENT_PORT
+          Value: "2181"
+        - Name: ZOOKEEPER_TICK_TIME
+          Value: "2000"
+        Essential: true
+        Image: docker.io/confluentinc/cp-zookeeper:5.2.1@sha256:5d4fd5a8f1a6fd74de42c2f823511cd0d3ce052dbafaea85860008944bde7a36
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: zookeeper
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: ZookeeperTaskExecutionRole
+      Family: logistics-services-management-zookeeper
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  ZookeeperTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: zookeeper
+    Type: AWS::IAM::Role
