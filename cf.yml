@@ -346,6 +346,16 @@ Resources:
       IpProtocol: TCP
       ToPort: 3000
     Type: AWS::EC2::SecurityGroupIngress
+  Logisticsmanagementnetwork8081Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: web-front:8081/tcp on logistics-management-network network
+      FromPort: 8081
+      GroupId:
+        Ref: LogisticsmanagementnetworkNetwork
+      IpProtocol: TCP
+      ToPort: 8081
+    Type: AWS::EC2::SecurityGroupIngress
   Logisticsmanagementnetwork9092Ingress:
     Properties:
       CidrIp: 0.0.0.0/0
@@ -1424,7 +1434,7 @@ Resources:
         - Name: APP_API_PORT
           Value: "3000"
         Essential: true
-        Image: docker.io/xalirow/web-bff-service:latest@sha256:30472e0400926bc280f7951c2c12ae92058d0738a436544f9f94d9ba00967a10
+        Image: docker.io/xalirow/web-bff-service:latest@sha256:51aeb5cf53edaa718d5874d89f593a469cb7346e0ceb452fe963198eb0f79b26
         LinuxParameters: {}
         LogConfiguration:
           LogDriver: awslogs
@@ -1467,6 +1477,156 @@ Resources:
         Value: logistics-services-management
       - Key: com.docker.compose.service
         Value: web-bff
+    Type: AWS::IAM::Role
+  WebfrontService:
+    DependsOn:
+    - WebfrontTCP8081Listener
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+      - ContainerName: web-front
+        ContainerPort: 8081
+        TargetGroupArn:
+          Ref: WebfrontTCP8081TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: LogisticsmanagementnetworkNetwork
+          Subnets:
+          - subnet-03083935462252af0
+          - subnet-0f1e881b10c0e06a3
+          - subnet-0de5554623d9d4c78
+          - subnet-00f42b0c3a05bfbec
+          - subnet-0e02121620e2d5a53
+          - subnet-0cad77aed9da0295c
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - WebfrontServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: web-front
+      TaskDefinition:
+        Ref: WebfrontTaskDefinition
+    Type: AWS::ECS::Service
+  WebfrontServiceDiscoveryEntry:
+    Properties:
+      Description: '"web-front" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: web-front
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  WebfrontTCP8081Listener:
+    Properties:
+      DefaultActions:
+      - ForwardConfig:
+          TargetGroups:
+          - TargetGroupArn:
+              Ref: WebfrontTCP8081TargetGroup
+        Type: forward
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 8081
+      Protocol: TCP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  WebfrontTCP8081TargetGroup:
+    Properties:
+      Port: 8081
+      Protocol: TCP
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      TargetType: ip
+      VpcId: vpc-09db5cf2b7a6da418
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  WebfrontTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-east-1.compute.internal
+        - logistics-services-management.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: Webfront_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Webfront_ResolvConf_InitContainer
+        Essential: true
+        Image: docker.io/xalirow/web-front:latest@sha256:8d844c908b4a32e7f18e8281b5b2ae592de9ce8669c93ae3babf039186611b9f
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: logistics-services-management
+        Name: web-front
+        PortMappings:
+        - ContainerPort: 8081
+          HostPort: 8081
+          Protocol: tcp
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: WebfrontTaskExecutionRole
+      Family: logistics-services-management-web-front
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  WebfrontTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: logistics-services-management
+      - Key: com.docker.compose.service
+        Value: web-front
     Type: AWS::IAM::Role
   ZookeeperService:
     Properties:
