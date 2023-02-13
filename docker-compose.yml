@@ -2,6 +2,7 @@ version: '3'
 
 services:
   credentials:
+    image: 'xalirow/credentials-service'
     build: ./credentials-service
     container_name: credentials_service
     environment:
@@ -16,6 +17,7 @@ services:
       - logistics-management-network
 
   senders:
+    image: 'xalirow/senders-service'
     build: ./senders-service
     container_name: senders_service
     environment:
@@ -28,6 +30,7 @@ services:
       - logistics-management-network
 
   suppliers:
+    image: 'xalirow/suppliers-service'
     build: ./suppliers-service
     container_name: suppliers_service
     environment:
@@ -40,6 +43,7 @@ services:
       - logistics-management-network
 
   storages:
+    image: 'xalirow/storages-service'
     build: ./storages-service
     container_name: storages_service
     environment:
@@ -57,6 +61,7 @@ services:
       - logistics-management-network
 
   products:
+    image: 'xalirow/products-service'
     build: ./products-service
     container_name: products_service
     environment:
@@ -71,6 +76,7 @@ services:
       - logistics-management-network
 
   reports:
+    image: 'xalirow/reports-service'
     build: ./reports-service
     container_name: reports_service
     environment:
@@ -83,6 +89,7 @@ services:
       - logistics-management-network
 
   receivers:
+    image: 'xalirow/receivers-service'
     build: ./receivers-service
     container_name: receivers_service
     environment:
@@ -95,6 +102,7 @@ services:
       - logistics-management-network
 
   web-bff:
+    image: 'xalirow/web-bff-service'
     build: ./web-bff-service
     container_name: web-bff-service
     environment:
@@ -111,7 +119,17 @@ services:
     ports:
       - '3000:3000'
 
+  web-front:
+    image: 'xalirow/web-front'
+    build: ./web-front
+    container_name: web-front
+    networks:
+      - logistics-management-network
+    ports:
+      - '8081:8081'   
+
   orchestrator:
+    image: 'xalirow/orchestrator-service'
     build: ./orchestrator-service
     container_name: orchestrator-service
     environment:

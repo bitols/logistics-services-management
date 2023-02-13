@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { options } from '../app.module';
 import { Storages } from '../models/storages.model';
+import { environment } from '../../environments/environment';
 
-const baseUrl = 'http://localhost:3000';
+const baseUrl = environment.bffAddress;
 
 @Injectable({
   providedIn: 'root'
